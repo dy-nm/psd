@@ -1,20 +1,17 @@
-# Selamat Datang di Web Statis PSD
+# 🌐 Selamat Datang di Web Statis Psd
 
-Buku digital ini merupakan materi kuliah **Pengolahan Sinyal Digital (PSD)** yang disusun oleh **Dedy Nurohim**.
+Berikut adalah Perkenalan dari saya
 
-Di sini kamu akan menemukan materi, notebook interaktif, dan contoh pengolahan sinyal secara terstruktur.
+## 👤 Profil Utama
 
-## Topik yang Dibahas
+| Informasi | Detail |
+|:----------|:-------|
+| **Nama** | Dedy Nurohim |
+| **NIM** | 240411100115 |
+| **Fakultas** | Teknik |
+| **Prodi** | Teknik Informatika |
 
-- Dasar-dasar pengolahan sinyal
-- Representasi sinyal dalam domain waktu dan frekuensi
-- Filter digital
-- Transformasi Fourier (DFT/FFT)
-- Notebook interaktif berbasis Python
-
-## Cara Menggunakan Buku Ini
-
-Navigasi menggunakan daftar isi di sebelah kiri. Setiap halaman dapat berisi penjelasan teori, kode Python, maupun visualisasi interaktif.
+---
 
 ```{tableofcontents}
 ```
