@@ -486,7 +486,7 @@ document.write(`
 <p>Wilayah kajian ditentukan menggunakan berkas <strong>GeoJSON</strong> berbentuk polygon yang mencakup wilayah Kabupaten Lamongan (dan sekitarnya), digambar melalui <a class="reference external" href="https://geojson.io">geojson.io</a> kemudian disimpan sebagai berkas <code class="docutils literal notranslate"><span class="pre">.geojson</span></code> dan dibaca kembali menggunakan Python untuk membatasi wilayah pengambilan data pada tahap crawling.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
 <span class="c1"># GeoJSON wilayah kajian (Kabupaten Lamongan), digambar melalui geojson.io</span>
 <span class="c1"># =====================================================================</span>
@@ -551,7 +551,7 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;aoi_lamongan.geojson&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;aoi_lamongan.geojson&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">aoi_geojson</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
 <span class="n">polygon_coords</span> <span class="o">=</span> <span class="n">aoi_geojson</span><span class="p">[</span><span class="s2">&quot;features&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;geometry&quot;</span><span class="p">][</span><span class="s2">&quot;coordinates&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
@@ -583,120 +583,22 @@ document.write(`
 <h2>3. Data Collection (Crawling Data)<a class="headerlink" href="#data-collection-crawling-data" title="Link to this heading">#</a></h2>
 <section id="a-instalasi-library-dan-koneksi-ke-copernicus-data-space-ecosystem">
 <h3>a. Instalasi Library dan Koneksi ke Copernicus Data Space Ecosystem<a class="headerlink" href="#a-instalasi-library-dan-koneksi-ke-copernicus-data-space-ecosystem" title="Link to this heading">#</a></h3>
-<div class="cell docutils container">
+<div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">openeo</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: openeo in c:\laragon\bin\python\python-3.10\lib\site-packages (0.51.0)
-Requirement already satisfied: requests&gt;=2.26.0 in c:\laragon\bin\python\python-3.10\lib\site-packages (from openeo) (2.32.5)
-Requirement already satisfied: urllib3&gt;=1.9.0 in c:\laragon\bin\python\python-3.10\lib\site-packages (from openeo) (2.7.0)
-Requirement already satisfied: shapely&gt;=1.6.4 in c:\laragon\bin\python\python-3.10\lib\site-packages (from openeo) (2.1.2)
-Requirement already satisfied: numpy&gt;=1.17.0 in c:\laragon\bin\python\python-3.10\lib\site-packages (from openeo) (2.2.6)
-Requirement already satisfied: xarray&lt;2025.01.2,&gt;=0.12.3 in c:\laragon\bin\python\python-3.10\lib\site-packages (from openeo) (2025.1.1)
-Requirement already satisfied: pandas&lt;3.0.0,&gt;0.20.0 in c:\laragon\bin\python\python-3.10\lib\site-packages (from openeo) (2.2.3)
-Requirement already satisfied: pystac&gt;=1.5.0 in c:\laragon\bin\python\python-3.10\lib\site-packages (from openeo) (1.15.2)
-Requirement already satisfied: deprecated&gt;=1.2.12 in c:\laragon\bin\python\python-3.10\lib\site-packages (from openeo) (1.3.1)
-Requirement already satisfied: oschmod&gt;=0.3.12 in c:\laragon\bin\python\python-3.10\lib\site-packages (from openeo) (0.3.12)
-Requirement already satisfied: geopandas&gt;=0.14 in c:\laragon\bin\python\python-3.10\lib\site-packages (from openeo) (1.1.4)
-Requirement already satisfied: python-dateutil&gt;=2.8.2 in c:\laragon\bin\python\python-3.10\lib\site-packages (from pandas&lt;3.0.0,&gt;0.20.0-&gt;openeo) (2.9.0.post0)
-Requirement already satisfied: pytz&gt;=2020.1 in c:\laragon\bin\python\python-3.10\lib\site-packages (from pandas&lt;3.0.0,&gt;0.20.0-&gt;openeo) (2026.1.post1)
-Requirement already satisfied: tzdata&gt;=2022.7 in c:\laragon\bin\python\python-3.10\lib\site-packages (from pandas&lt;3.0.0,&gt;0.20.0-&gt;openeo) (2026.2)
-Requirement already satisfied: packaging&gt;=23.2 in c:\laragon\bin\python\python-3.10\lib\site-packages (from xarray&lt;2025.01.2,&gt;=0.12.3-&gt;openeo) (26.0)
-Requirement already satisfied: wrapt&lt;3,&gt;=1.10 in c:\laragon\bin\python\python-3.10\lib\site-packages (from deprecated&gt;=1.2.12-&gt;openeo) (2.3.0)
-Requirement already satisfied: pyogrio&gt;=0.7.2 in c:\laragon\bin\python\python-3.10\lib\site-packages (from geopandas&gt;=0.14-&gt;openeo) (0.13.0)
-Requirement already satisfied: pyproj&gt;=3.5.0 in c:\laragon\bin\python\python-3.10\lib\site-packages (from geopandas&gt;=0.14-&gt;openeo) (3.7.1)
-Requirement already satisfied: pywin32 in c:\laragon\bin\python\python-3.10\lib\site-packages (from oschmod&gt;=0.3.12-&gt;openeo) (312)
-Requirement already satisfied: certifi in c:\laragon\bin\python\python-3.10\lib\site-packages (from pyogrio&gt;=0.7.2-&gt;geopandas&gt;=0.14-&gt;openeo) (2026.4.22)
-Requirement already satisfied: pystac-core&lt;2,&gt;=1.15.0 in c:\laragon\bin\python\python-3.10\lib\site-packages (from pystac&gt;=1.5.0-&gt;openeo) (1.15.2)
-Requirement already satisfied: pystac-ext-classification in c:\laragon\bin\python\python-3.10\lib\site-packages (from pystac&gt;=1.5.0-&gt;openeo) (2.0.1)
-Requirement already satisfied: pystac-ext-datacube in c:\laragon\bin\python\python-3.10\lib\site-packages (from pystac&gt;=1.5.0-&gt;openeo) (2.2.1)
-Requirement already satisfied: pystac-ext-eo in c:\laragon\bin\python\python-3.10\lib\site-packages (from pystac&gt;=1.5.0-&gt;openeo) (1.1.1)
-Requirement already satisfied: pystac-ext-file in c:\laragon\bin\python\python-3.10\lib\site-packages (from pystac&gt;=1.5.0-&gt;openeo) (2.1.1)
-Requirement already satisfied: pystac-ext-grid in c:\laragon\bin\python\python-3.10\lib\site-packages (from pystac&gt;=1.5.0-&gt;openeo) (1.1.1)
-Requirement already satisfied: pystac-ext-item-assets in c:\laragon\bin\python\python-3.10\lib\site-packages (from pystac&gt;=1.5.0-&gt;openeo) (1.0.1)
-Requirement already satisfied: pystac-ext-label in c:\laragon\bin\python\python-3.10\lib\site-packages (from pystac&gt;=1.5.0-&gt;openeo) (1.0.2)
-Requirement already satisfied: pystac-ext-mgrs in c:\laragon\bin\python\python-3.10\lib\site-packages (from pystac&gt;=1.5.0-&gt;openeo) (1.0.1)
-Requirement already satisfied: pystac-ext-mlm in c:\laragon\bin\python\python-3.10\lib\site-packages (from pystac&gt;=1.5.0-&gt;openeo) (1.4.1)
-Requirement already satisfied: pystac-ext-pointcloud in c:\laragon\bin\python\python-3.10\lib\site-packages (from pystac&gt;=1.5.0-&gt;openeo) (1.0.1)
-Requirement already satisfied: pystac-ext-projection in c:\laragon\bin\python\python-3.10\lib\site-packages (from pystac&gt;=1.5.0-&gt;openeo) (2.0.1)
-Requirement already satisfied: pystac-ext-raster in c:\laragon\bin\python\python-3.10\lib\site-packages (from pystac&gt;=1.5.0-&gt;openeo) (1.1.1)
-Requirement already satisfied: pystac-ext-render in c:\laragon\bin\python\python-3.10\lib\site-packages (from pystac&gt;=1.5.0-&gt;openeo) (2.0.0)
-Requirement already satisfied: pystac-ext-sar in c:\laragon\bin\python\python-3.10\lib\site-packages (from pystac&gt;=1.5.0-&gt;openeo) (1.0.1)
-Requirement already satisfied: pystac-ext-sat in c:\laragon\bin\python\python-3.10\lib\site-packages (from pystac&gt;=1.5.0-&gt;openeo) (1.0.1)
-Requirement already satisfied: pystac-ext-scientific in c:\laragon\bin\python\python-3.10\lib\site-packages (from pystac&gt;=1.5.0-&gt;openeo) (1.0.1)
-Requirement already satisfied: pystac-ext-storage in c:\laragon\bin\python\python-3.10\lib\site-packages (from pystac&gt;=1.5.0-&gt;openeo) (2.0.1)
-Requirement already satisfied: pystac-ext-table in c:\laragon\bin\python\python-3.10\lib\site-packages (from pystac&gt;=1.5.0-&gt;openeo) (1.2.1)
-Requirement already satisfied: pystac-ext-timestamps in c:\laragon\bin\python\python-3.10\lib\site-packages (from pystac&gt;=1.5.0-&gt;openeo) (1.1.1)
-Requirement already satisfied: pystac-ext-version in c:\laragon\bin\python\python-3.10\lib\site-packages (from pystac&gt;=1.5.0-&gt;openeo) (1.2.1)
-Requirement already satisfied: pystac-ext-view in c:\laragon\bin\python\python-3.10\lib\site-packages (from pystac&gt;=1.5.0-&gt;openeo) (1.0.1)
-Requirement already satisfied: pystac-ext-xarray-assets in c:\laragon\bin\python\python-3.10\lib\site-packages (from pystac&gt;=1.5.0-&gt;openeo) (1.0.1)
-Requirement already satisfied: six&gt;=1.5 in c:\laragon\bin\python\python-3.10\lib\site-packages (from python-dateutil&gt;=2.8.2-&gt;pandas&lt;3.0.0,&gt;0.20.0-&gt;openeo) (1.17.0)
-Requirement already satisfied: charset_normalizer&lt;4,&gt;=2 in c:\laragon\bin\python\python-3.10\lib\site-packages (from requests&gt;=2.26.0-&gt;openeo) (3.4.4)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in c:\laragon\bin\python\python-3.10\lib\site-packages (from requests&gt;=2.26.0-&gt;openeo) (3.11)
-Note: you may need to restart the kernel to use updated packages.
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: Ignoring invalid distribution -andas (c:\laragon\bin\python\python-3.10\lib\site-packages)
-WARNING: Ignoring invalid distribution -andas (c:\laragon\bin\python\python-3.10\lib\site-packages)
-WARNING: Ignoring invalid distribution -andas (c:\laragon\bin\python\python-3.10\lib\site-packages)
-
-[notice] A new release of pip is available: 26.1.1 -&gt; 26.2.1
-[notice] To update, run: python.exe -m pip install --upgrade pip
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">openeo</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">openeo</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">openeo</span>
 <span class="n">connection</span> <span class="o">=</span> <span class="n">openeo</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;openeo.dataspace.copernicus.eu&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">authenticate_oidc</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html">Visit <a href="https://identity.dataspace.copernicus.eu/auth/realms/CDSE/device?user_code=MIEN-CBBS" title="Authenticate at https://identity.dataspace.copernicus.eu/auth/realms/CDSE/device?user_code=MIEN-CBBS" target="_blank" rel="noopener noreferrer">https://identity.dataspace.copernicus.eu/auth/realms/CDSE/device?user_code=MIEN-CBBS</a> <a href="#" onclick="navigator.clipboard.writeText('https://identity.dataspace.copernicus.eu/auth/realms/CDSE/device?user_code=MIEN-CBBS');return false;" title="Copy authentication URL to clipboard">&#128203;</a> to authenticate.</div><div class="output text_html"><code>[##################################---]</code> ⌛ Authorization pending</div><div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">import</span><span class="w"> </span><span class="nn">openeo</span>
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">connection</span> <span class="o">=</span> <span class="n">openeo</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;openeo.dataspace.copernicus.eu&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">authenticate_oidc</span><span class="p">()</span>
-
-<span class="nn">File C:\laragon\bin\python\python-3.10\lib\site-packages\openeo\rest\connection.py:697,</span> in <span class="ni">Connection.authenticate_oidc</span><span class="nt">(self, provider_id, client_id, client_secret, store_refresh_token, use_pkce, display, max_poll_time)</span>
-<span class="g g-Whitespace">    </span><span class="mi">693</span> <span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Trying device code flow.&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">694</span> <span class="n">authenticator</span> <span class="o">=</span> <span class="n">OidcDeviceAuthenticator</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">695</span>     <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">,</span> <span class="n">use_pkce</span><span class="o">=</span><span class="n">use_pkce</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="n">display</span><span class="p">,</span> <span class="n">max_poll_time</span><span class="o">=</span><span class="n">max_poll_time</span>
-<span class="g g-Whitespace">    </span><span class="mi">696</span> <span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">697</span> <span class="n">con</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_authenticate_oidc</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">698</span>     <span class="n">authenticator</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">699</span>     <span class="n">provider_id</span><span class="o">=</span><span class="n">provider_id</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">700</span>     <span class="n">store_refresh_token</span><span class="o">=</span><span class="n">store_refresh_token</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">701</span>     <span class="c1"># TODO: expose `auto_renew_from_refresh_token` directly as option instead of reusing `store_refresh_token` arg?</span>
-<span class="g g-Whitespace">    </span><span class="mi">702</span>     <span class="n">auto_renew_from_refresh_token</span><span class="o">=</span><span class="n">store_refresh_token</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">703</span> <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">704</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Authenticated using device code flow.&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">705</span> <span class="k">return</span> <span class="n">con</span>
-
-<span class="nn">File C:\laragon\bin\python\python-3.10\lib\site-packages\openeo\rest\connection.py:413,</span> in <span class="ni">Connection._authenticate_oidc</span><span class="nt">(self, authenticator, provider_id, store_refresh_token, auto_renew_from_refresh_token, fallback_refresh_token, oidc_auth_renewer)</span>
-<span class="g g-Whitespace">    </span><span class="mi">409</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">410</span><span class="sd"> Authenticate through OIDC and set up bearer token (based on OIDC access_token) for further requests.</span>
-<span class="g g-Whitespace">    </span><span class="mi">411</span><span class="sd"> &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">412</span> <span class="n">request_refresh_token</span> <span class="o">=</span> <span class="n">store_refresh_token</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">oidc_auth_renewer</span> <span class="ow">and</span> <span class="n">auto_renew_from_refresh_token</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">413</span> <span class="n">tokens</span> <span class="o">=</span> <span class="n">authenticator</span><span class="o">.</span><span class="n">get_tokens</span><span class="p">(</span><span class="n">request_refresh_token</span><span class="o">=</span><span class="n">request_refresh_token</span><span class="p">)</span>
-<span class="nn">    414 _log.info(&quot;Obtained tokens: {t}&quot;.format(t=[k for k, v</span> in <span class="ni">tokens._asdict().items</span><span class="nt">() if v]))</span>
-<span class="g g-Whitespace">    </span><span class="mi">416</span> <span class="n">refresh_token</span> <span class="o">=</span> <span class="n">tokens</span><span class="o">.</span><span class="n">refresh_token</span> <span class="ow">or</span> <span class="n">fallback_refresh_token</span>
-
-<span class="nn">File C:\laragon\bin\python\python-3.10\lib\site-packages\openeo\rest\auth\oidc.py:928,</span> in <span class="ni">OidcDeviceAuthenticator.get_tokens</span><span class="nt">(self, request_refresh_token)</span>
-<span class="g g-Whitespace">    </span><span class="mi">926</span> <span class="k">while</span> <span class="n">elapsed</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_poll_time</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">927</span>     <span class="n">poll_ui</span><span class="o">.</span><span class="n">show_progress</span><span class="p">()</span>
-<span class="ne">--&gt; </span><span class="mi">928</span>     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">sleep</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">930</span>     <span class="k">if</span> <span class="n">elapsed</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">next_poll</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">931</span>         <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">932</span>             <span class="sa">f</span><span class="s2">&quot;Doing </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">grant_type</span><span class="si">!r}</span><span class="s2"> token request </span><span class="si">{</span><span class="n">token_endpoint</span><span class="si">!r}</span><span class="s2"> with post data fields </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">post_data</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">!r}</span><span class="s2"> (client_id </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">client_id</span><span class="si">!r}</span><span class="s2">)&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">933</span>         <span class="p">)</span>
-
-<span class="ne">KeyboardInterrupt</span>: 
+<div class="output text_html">Visit <a href="https://identity.dataspace.copernicus.eu/auth/realms/CDSE/device?user_code=ZQII-ZLIT" title="Authenticate at https://identity.dataspace.copernicus.eu/auth/realms/CDSE/device?user_code=ZQII-ZLIT" target="_blank" rel="noopener noreferrer">https://identity.dataspace.copernicus.eu/auth/realms/CDSE/device?user_code=ZQII-ZLIT</a> <a href="#" onclick="navigator.clipboard.writeText('https://identity.dataspace.copernicus.eu/auth/realms/CDSE/device?user_code=ZQII-ZLIT');return false;" title="Copy authentication URL to clipboard">&#128203;</a> to authenticate.</div><div class="output text_html">✅ Authorized successfully</div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Authenticated using device code flow.
 </pre></div>
 </div>
 </div>
@@ -708,7 +610,7 @@ WARNING: Ignoring invalid distribution -andas (c:\laragon\bin\python\python-3.10
 <p><strong>Catatan:</strong> apabila notebook ini dijalankan sebelum tanggal 31 Agustus 2026, data yang tersedia hanya akan mencakup tanggal terbaru yang sudah direkam satelit pada saat crawling dijalankan. Notebook perlu dijalankan ulang mendekati/sesudah tanggal tersebut agar rentang data benar-benar lengkap.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pollutants</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;CO&quot;</span><span class="p">,</span> <span class="s2">&quot;NO2&quot;</span><span class="p">,</span> <span class="s2">&quot;HCHO&quot;</span><span class="p">,</span> <span class="s2">&quot;O3&quot;</span><span class="p">,</span> <span class="s2">&quot;SO2&quot;</span><span class="p">,</span> <span class="s2">&quot;CH4&quot;</span><span class="p">]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pollutants</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;CO&quot;</span><span class="p">,</span> <span class="s2">&quot;NO2&quot;</span><span class="p">,</span> <span class="s2">&quot;HCHO&quot;</span><span class="p">,</span> <span class="s2">&quot;O3&quot;</span><span class="p">,</span> <span class="s2">&quot;SO2&quot;</span><span class="p">,</span> <span class="s2">&quot;CH4&quot;</span><span class="p">]</span>
 
 <span class="n">start_date</span> <span class="o">=</span> <span class="s2">&quot;2025-08-25&quot;</span>
 <span class="n">end_date</span> <span class="o">=</span> <span class="s2">&quot;2026-08-31&quot;</span>
@@ -821,32 +723,16 @@ Selesai mengunduh data CH4 -&gt; CH4_Lamongan.nc
 <section id="a-membaca-seluruh-berkas-netcdf-dan-menyimpan-ke-csv">
 <h3>a. Membaca Seluruh Berkas NetCDF dan Menyimpan ke CSV<a class="headerlink" href="#a-membaca-seluruh-berkas-netcdf-dan-menyimpan-ke-csv" title="Link to this heading">#</a></h3>
 <p>Setiap berkas NetCDF hasil crawling dibaca, dihitung rata-rata nilai per hari untuk seluruh grid dalam wilayah kajian, kemudian disimpan ke dalam berkas CSV terpisah untuk masing-masing polutan.</p>
-<div class="cell docutils container">
+<div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>netCDF4
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting netCDF4
-  Downloading netcdf4-1.7.4-cp311-abi3-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (2.1 kB)
-Collecting cftime (from netCDF4)
-  Downloading cftime-1.6.5-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (8.7 kB)
-Requirement already satisfied: certifi in /usr/local/lib/python3.13/dist-packages (from netCDF4) (2026.7.22)
-Requirement already satisfied: numpy&gt;=1.21.2 in /usr/local/lib/python3.13/dist-packages (from netCDF4) (2.1.3)
-Downloading netcdf4-1.7.4-cp311-abi3-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (10.1 MB)
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">10.1/10.1 MB</span> <span class=" -Color -Color-Red">27.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading cftime-1.6.5-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (1.6 MB)
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.6/1.6 MB</span> <span class=" -Color -Color-Red">88.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hInstalling collected packages: cftime, netCDF4
-Successfully installed cftime-1.6.5 netCDF4-1.7.4
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">netCDF4</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">netCDF4</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">netCDF4</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
@@ -1140,7 +1026,7 @@ Kolom: [&#39;date&#39;, &#39;CO&#39;, &#39;NO2&#39;, &#39;HCHO&#39;, &#39;O3&#39
 <p>Untuk masing-masing polutan, diperiksa struktur data (tipe kolom, jumlah baris) serta beberapa baris pertama untuk memastikan hasil crawling sesuai yang diharapkan.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=== Struktur Data Polutan Lamongan ===&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=== Struktur Data Polutan Lamongan ===&quot;</span><span class="p">)</span>
 <span class="n">merged_df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Ukuran Dataset ===&quot;</span><span class="p">)</span>
@@ -1526,7 +1412,7 @@ Jumlah kolom : 7
 <p>Missing value pada data Sentinel-5P umumnya terjadi akibat tutupan awan (<em>cloud cover</em>) yang menghalangi pengukuran satelit, sehingga sensor tidak mencatat nilai valid pada tanggal tertentu.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;Polutan&#39;</span><span class="si">:</span><span class="s2">&lt;8</span><span class="si">}{</span><span class="s1">&#39;Jumlah Baris&#39;</span><span class="si">:</span><span class="s2">&lt;15</span><span class="si">}{</span><span class="s1">&#39;Missing Value&#39;</span><span class="si">:</span><span class="s2">&lt;15</span><span class="si">}{</span><span class="s1">&#39;Persentase&#39;</span><span class="si">:</span><span class="s2">&lt;10</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;Polutan&#39;</span><span class="si">:</span><span class="s2">&lt;8</span><span class="si">}{</span><span class="s1">&#39;Jumlah Baris&#39;</span><span class="si">:</span><span class="s2">&lt;15</span><span class="si">}{</span><span class="s1">&#39;Missing Value&#39;</span><span class="si">:</span><span class="s2">&lt;15</span><span class="si">}{</span><span class="s1">&#39;Persentase&#39;</span><span class="si">:</span><span class="s2">&lt;10</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">pol</span> <span class="ow">in</span> <span class="n">pollutants</span><span class="p">:</span>
     <span class="n">n_total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">merged_df</span><span class="p">)</span>
@@ -1554,7 +1440,7 @@ CH4     366            319            87.16%
 <p>Statistik deskriptif dan deteksi outlier menggunakan metode <em>Interquartile Range</em> (IQR) digunakan untuk mengidentifikasi nilai yang berada jauh di luar sebaran normal data, termasuk mengecek kewajaran nilai (apakah terdapat nilai negatif ekstrem yang tidak wajar secara fisis).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">summary_rows</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">summary_rows</span> <span class="o">=</span> <span class="p">[]</span>
 
 <span class="k">for</span> <span class="n">pol</span> <span class="ow">in</span> <span class="n">pollutants</span><span class="p">:</span>
 
@@ -1861,7 +1747,7 @@ CH4     366            319            87.16%
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">pol</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">pollutants</span><span class="p">):</span>
@@ -1891,7 +1777,7 @@ CH4     366            319            87.16%
 <p>Grafik berikut menampilkan perubahan konsentrasi masing-masing polutan di wilayah Kabupaten Lamongan dari waktu ke waktu, menggunakan data harian hasil crawling (tanpa tahap pembersihan lebih lanjut, sesuai lingkup tugas ini yang berhenti pada tahap Data Understanding).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
     <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span>
