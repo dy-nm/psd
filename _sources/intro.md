@@ -1,11 +1,20 @@
-# Welcome to your Jupyter Book
+# Selamat Datang di Web Statis PSD
 
-This is a small sample book to give you a feel for how book content is
-structured.
-It shows off a few of the major file types, as well as some sample content.
-It does not go in-depth into any particular topic - check out [the Jupyter Book documentation](https://jupyterbook.org) for more information.
+Buku digital ini merupakan materi kuliah **Pengolahan Sinyal Digital (PSD)** yang disusun oleh **Dedy Nurohim**.
 
-Check out the content pages bundled with this sample book to see more.
+Di sini kamu akan menemukan materi, notebook interaktif, dan contoh pengolahan sinyal secara terstruktur.
+
+## Topik yang Dibahas
+
+- Dasar-dasar pengolahan sinyal
+- Representasi sinyal dalam domain waktu dan frekuensi
+- Filter digital
+- Transformasi Fourier (DFT/FFT)
+- Notebook interaktif berbasis Python
+
+## Cara Menggunakan Buku Ini
+
+Navigasi menggunakan daftar isi di sebelah kiri. Setiap halaman dapat berisi penjelasan teori, kode Python, maupun visualisasi interaktif.
 
 ```{tableofcontents}
 ```
