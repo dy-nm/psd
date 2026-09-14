@@ -4290,6 +4290,54 @@ Setiap kolom merupakan representasi metrik matematis dari 4 domain TSFEL:</p>
 <p>37 rows × 71 columns</p>
 </div></div></div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Salin CSV terbaru ke _static/ agar tersedia di HTML build</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span>
+<span class="n">csv_file</span> <span class="o">=</span> <span class="s1">&#39;ekstraksi_fitur_no2_psd-a.csv&#39;</span>
+<span class="n">static_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;__file__&#39;</span><span class="p">)),</span> <span class="s1">&#39;_static&#39;</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">static_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">csv_file</span><span class="p">):</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="n">csv_file</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">static_dir</span><span class="p">,</span> <span class="n">csv_file</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;CSV disalin ke _static/&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CSV disalin ke _static/
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output text_html">
+<div style="margin:20px 0;padding:20px;
+background:linear-gradient(135deg,#f0f4ff,#e8f0fe);
+border-radius:12px;border-left:5px solid #4285f4;
+font-family:Arial,sans-serif;">
+
+<p style="margin:0 0 6px 0;font-weight:bold;color:#1a1a1a;font-size:15px;">
+Dataset Hasil Ekstraksi Fitur NO2 (TSFEL) - ekstraksi_fitur_no2_psd-a
+</p>
+
+<p style="margin:0 0 14px 0;color:#555;font-size:13px;">
+Format CSV &nbsp;|&nbsp; Ekstraksi Domain Temporal, Spektral, dan Statistik (68 Fitur)
+</p>
+
+<a href="_static/ekstraksi_fitur_no2_psd-a.csv"
+   download="ekstraksi_fitur_no2_psd-a.csv"
+   style="display:inline-block;padding:10px 24px;
+   background:linear-gradient(135deg,#4285f4,#1a73e8);
+   color:white;text-decoration:none;border-radius:8px;
+   font-weight:bold;font-size:14px;
+   box-shadow:0 2px 8px rgba(66,133,244,0.4);">
+   &#11015; Download CSV
+</a>
+
+</div>
+</div></div>
+</div>
 </section>
 </section>
 </section>
