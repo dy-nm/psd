@@ -62,7 +62,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'Deskripsi_fitur_perhitungan_manual_no2';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Alur Kerja (Workflow) Clustering KNIME" href="K_Means_Clustering_Knime.html" />
+    <link rel="prev" title="Clustering Polutan Udara (NO2, CO, SO2)" href="code_clustering_Code.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -185,9 +185,7 @@
 
 <li class="toctree-l1"><a class="reference internal" href="Crawling_Polutan_sambeng.html">Crawling &amp; Analisis Data Polutan Udara di Kecamatan Sambeng, Kabupaten Lamongan</a></li>
 
-<li class="toctree-l1"><a class="reference internal" href="code_clustering_Code.html">Clustering Polutan</a></li>
-<li class="toctree-l1"><a class="reference internal" href="K_Means_Clustering_Knime.html">Alur Kerja (Workflow) Clustering KNIME</a></li>
-
+<li class="toctree-l1"><a class="reference internal" href="code_clustering_Code.html">Clustering Polutan Udara (NO2, CO, SO2)</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Deskripsi Fitur &amp; Perhitungan Manual</a></li>
 </ul>
 
@@ -390,7 +388,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rumus">2. Rumus</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perhitungan-manual">3. Perhitungan Manual</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verifikasi-dengan-tsfel">4. Verifikasi dengan TSFEL</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nilai-aktual-pada-dataset-ekstraksi-fitur-no2-csv-id-13-dedy-nurohim-sambeng-lamongan">5. Nilai Aktual pada Dataset (<code class="docutils literal notranslate"><span class="pre">ekstraksi_fitur_no2.csv</span></code>, id=13, Dedy Nurohim, Sambeng Lamongan)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nilai-aktual-pada-dataset-no2-sambeng-tsfel-csv-wilayah-sambeng-lamongan">5. Nilai Aktual pada Dataset (<code class="docutils literal notranslate"><span class="pre">NO2_Sambeng_TSFEL.csv</span></code>, Wilayah Sambeng, Lamongan)</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fitur-2-ecdf-percentile-count-signal-percentile">Fitur 2: <code class="docutils literal notranslate"><span class="pre">ecdf_percentile_count(signal[,</span> <span class="pre">percentile])</span></code></a><ul class="nav section-nav flex-column">
@@ -398,7 +396,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2. Rumus</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">3. Perhitungan Manual</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">4. Verifikasi dengan TSFEL</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">5. Nilai Aktual pada Dataset (<code class="docutils literal notranslate"><span class="pre">ekstraksi_fitur_no2.csv</span></code>, id=13, Dedy Nurohim, Sambeng Lamongan)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">5. Nilai Aktual pada Dataset (<code class="docutils literal notranslate"><span class="pre">NO2_Sambeng_TSFEL.csv</span></code>, Wilayah Sambeng, Lamongan)</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ringkasan-perbandingan">Ringkasan Perbandingan</a></li>
@@ -568,8 +566,8 @@ di mana \)</span>x_{(i)}<span class="math notranslate nohighlight">\( adalah nil
 </div>
 <p>Hasil perhitungan manual (<span class="math notranslate nohighlight">\(2\)</span> dan <span class="math notranslate nohighlight">\(6\)</span>, atau <span class="math notranslate nohighlight">\(4\)</span>) <strong>terbukti 100% cocok dan terverifikasi</strong> dengan fungsi TSFEL asli. ✅</p>
 </section>
-<section id="nilai-aktual-pada-dataset-ekstraksi-fitur-no2-csv-id-13-dedy-nurohim-sambeng-lamongan">
-<h3>5. Nilai Aktual pada Dataset (<code class="docutils literal notranslate"><span class="pre">ekstraksi_fitur_no2.csv</span></code>, id=13, Dedy Nurohim, Sambeng Lamongan)<a class="headerlink" href="#nilai-aktual-pada-dataset-ekstraksi-fitur-no2-csv-id-13-dedy-nurohim-sambeng-lamongan" title="Link to this heading">#</a></h3>
+<section id="nilai-aktual-pada-dataset-no2-sambeng-tsfel-csv-wilayah-sambeng-lamongan">
+<h3>5. Nilai Aktual pada Dataset (<code class="docutils literal notranslate"><span class="pre">NO2_Sambeng_TSFEL.csv</span></code>, Wilayah Sambeng, Lamongan)<a class="headerlink" href="#nilai-aktual-pada-dataset-no2-sambeng-tsfel-csv-wilayah-sambeng-lamongan" title="Link to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
 \[\text{ecdf\_percentile} = 0.000031 \quad (3.099440 \times 10^{-5} \, \text{mol/m}^2)\]</div>
 <p><em>Makna fisis:</em> Nilai ini menunjukkan batas konsentrasi NO2 harian pada kurva kumulatif observasi di wilayah kajian Sambeng, Lamongan yang diekstraksi dari data satelit Sentinel-5P. Nilai sebesar <span class="math notranslate nohighlight">\(3.099 \times 10^{-5} \, \text{mol/m}^2\)</span> merepresentasikan kondisi konsentrasi NO2 tipikal/median di wilayah pedesaan Sambeng.</p>
@@ -632,7 +630,7 @@ di mana \)</span>\mathbb{I}$ adalah fungsi indikator bernilai 1 jika kondisi ter
 <p>Hasil perhitungan manual (<span class="math notranslate nohighlight">\(1\)</span> dan <span class="math notranslate nohighlight">\(6\)</span>, atau <span class="math notranslate nohighlight">\(4\)</span>) <strong>terbukti 100% cocok dan terverifikasi</strong> dengan fungsi TSFEL asli. ✅</p>
 </section>
 <section id="id5">
-<h3>5. Nilai Aktual pada Dataset (<code class="docutils literal notranslate"><span class="pre">ekstraksi_fitur_no2.csv</span></code>, id=13, Dedy Nurohim, Sambeng Lamongan)<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<h3>5. Nilai Aktual pada Dataset (<code class="docutils literal notranslate"><span class="pre">NO2_Sambeng_TSFEL.csv</span></code>, Wilayah Sambeng, Lamongan)<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
 \[\text{ecdf\_percentile\_count} = 182.5\]</div>
 <p><em>Makna fisis:</em> Pada data observasi deret waktu NO2 tahunan wilayah Sambeng yang mencakup 365 hari kalender observasi, ambang persentil 50% (median) mencakup tepat <span class="math notranslate nohighlight">\(50\% \times 365 = 182.5\)</span> sampel hari observasi.</p>
@@ -647,7 +645,7 @@ di mana \)</span>\mathbb{I}$ adalah fungsi indikator bernilai 1 jika kondisi ter
 <th class="head"><p>Definisi / Rumus Matematis</p></th>
 <th class="head"><p>Hasil Manual (<span class="math notranslate nohighlight">\(p=0.5\)</span>)</p></th>
 <th class="head"><p>Hasil Manual (<span class="math notranslate nohighlight">\(p=[0.2, 0.8]\)</span>)</p></th>
-<th class="head"><p>Nilai Aktual di Dataset (id=13, Dedy Nurohim - Sambeng)</p></th>
+<th class="head"><p>Nilai Aktual di Dataset (<code class="docutils literal notranslate"><span class="pre">NO2_Sambeng_TSFEL.csv</span></code>)</p></th>
 </tr>
 </thead>
 <tbody>
@@ -658,10 +656,10 @@ di mana \)</span>\mathbb{I}$ adalah fungsi indikator bernilai 1 jika kondisi ter
 <td><p><strong><span class="math notranslate nohighlight">\(0.000031\)</span></strong> (<span class="math notranslate nohighlight">\(3.099440 \times 10^{-5}\)</span>)</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong><code class="docutils literal notranslate"><span class="pre">ecdf_percentile_count</span></code></strong></p></td>
-<td><p>$</p></td>
-<td><p>{ x_{(i)} \mid y_i \le p }</p></td>
-<td><p>$</p></td>
+<td><p><span class="math notranslate nohighlight">\(\vert \{ x_{(i)} \mid y_i \le p \} \vert\)</span></p></td>
 <td><p><strong>4</strong></p></td>
+<td><p><strong>(1, 6)</strong></p></td>
+<td><p><strong><span class="math notranslate nohighlight">\(182.5\)</span></strong></p></td>
 </tr>
 </tbody>
 </table>
@@ -700,12 +698,12 @@ di mana \)</span>\mathbb{I}$ adalah fungsi indikator bernilai 1 jika kondisi ter
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="K_Means_Clustering_Knime.html"
+       href="code_clustering_Code.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Alur Kerja (Workflow) Clustering KNIME</p>
+        <p class="prev-next-title">Clustering Polutan Udara (NO2, CO, SO2)</p>
       </div>
     </a>
 </div>
@@ -730,7 +728,7 @@ di mana \)</span>\mathbb{I}$ adalah fungsi indikator bernilai 1 jika kondisi ter
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rumus">2. Rumus</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perhitungan-manual">3. Perhitungan Manual</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verifikasi-dengan-tsfel">4. Verifikasi dengan TSFEL</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nilai-aktual-pada-dataset-ekstraksi-fitur-no2-csv-id-13-dedy-nurohim-sambeng-lamongan">5. Nilai Aktual pada Dataset (<code class="docutils literal notranslate"><span class="pre">ekstraksi_fitur_no2.csv</span></code>, id=13, Dedy Nurohim, Sambeng Lamongan)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nilai-aktual-pada-dataset-no2-sambeng-tsfel-csv-wilayah-sambeng-lamongan">5. Nilai Aktual pada Dataset (<code class="docutils literal notranslate"><span class="pre">NO2_Sambeng_TSFEL.csv</span></code>, Wilayah Sambeng, Lamongan)</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fitur-2-ecdf-percentile-count-signal-percentile">Fitur 2: <code class="docutils literal notranslate"><span class="pre">ecdf_percentile_count(signal[,</span> <span class="pre">percentile])</span></code></a><ul class="nav section-nav flex-column">
@@ -738,7 +736,7 @@ di mana \)</span>\mathbb{I}$ adalah fungsi indikator bernilai 1 jika kondisi ter
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2. Rumus</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">3. Perhitungan Manual</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">4. Verifikasi dengan TSFEL</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">5. Nilai Aktual pada Dataset (<code class="docutils literal notranslate"><span class="pre">ekstraksi_fitur_no2.csv</span></code>, id=13, Dedy Nurohim, Sambeng Lamongan)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">5. Nilai Aktual pada Dataset (<code class="docutils literal notranslate"><span class="pre">NO2_Sambeng_TSFEL.csv</span></code>, Wilayah Sambeng, Lamongan)</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ringkasan-perbandingan">Ringkasan Perbandingan</a></li>

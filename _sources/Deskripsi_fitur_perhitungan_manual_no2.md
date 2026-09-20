@@ -88,7 +88,7 @@ print(hasil_p50)      # Output: 4
 ```
 Hasil perhitungan manual ($2$ dan $6$, atau $4$) **terbukti 100% cocok dan terverifikasi** dengan fungsi TSFEL asli. ✅
 
-### 5. Nilai Aktual pada Dataset (`ekstraksi_fitur_no2.csv`, id=13, Dedy Nurohim, Sambeng Lamongan)
+### 5. Nilai Aktual pada Dataset (`NO2_Sambeng_TSFEL.csv`, Wilayah Sambeng, Lamongan)
 $$\text{ecdf\_percentile} = 0.000031 \quad (3.099440 \times 10^{-5} \, \text{mol/m}^2)$$
 *Makna fisis:* Nilai ini menunjukkan batas konsentrasi NO2 harian pada kurva kumulatif observasi di wilayah kajian Sambeng, Lamongan yang diekstraksi dari data satelit Sentinel-5P. Nilai sebesar $3.099 \times 10^{-5} \, \text{mol/m}^2$ merepresentasikan kondisi konsentrasi NO2 tipikal/median di wilayah pedesaan Sambeng.
 
@@ -137,7 +137,7 @@ print(hasil_count_p50)      # Output: 4
 ```
 Hasil perhitungan manual ($1$ dan $6$, atau $4$) **terbukti 100% cocok dan terverifikasi** dengan fungsi TSFEL asli. ✅
 
-### 5. Nilai Aktual pada Dataset (`ekstraksi_fitur_no2.csv`, id=13, Dedy Nurohim, Sambeng Lamongan)
+### 5. Nilai Aktual pada Dataset (`NO2_Sambeng_TSFEL.csv`, Wilayah Sambeng, Lamongan)
 $$\text{ecdf\_percentile\_count} = 182.5$$
 *Makna fisis:* Pada data observasi deret waktu NO2 tahunan wilayah Sambeng yang mencakup 365 hari kalender observasi, ambang persentil 50% (median) mencakup tepat $50\% \times 365 = 182.5$ sampel hari observasi.
 
@@ -145,7 +145,7 @@ $$\text{ecdf\_percentile\_count} = 182.5$$
 
 ## Ringkasan Perbandingan
 
-| Fitur | Definisi / Rumus Matematis | Hasil Manual ($p=0.5$) | Hasil Manual ($p=[0.2, 0.8]$) | Nilai Aktual di Dataset (id=13, Dedy Nurohim - Sambeng) |
+| Fitur | Definisi / Rumus Matematis | Hasil Manual ($p=0.5$) | Hasil Manual ($p=[0.2, 0.8]$) | Nilai Aktual di Dataset (`NO2_Sambeng_TSFEL.csv`) |
 |---|---|---|---|---|
 | **`ecdf_percentile`** | $\max \{ x_{(i)} \mid y_i \le p \}$ | **4** | **(2, 6)** | **$0.000031$** ($3.099440 \times 10^{-5}$) |
-| **`ecdf_percentile_count`** | $|\{ x_{(i)} \mid y_i \le p \}|$ | **4** | **(1, 6)** | **$182.5$** |
+| **`ecdf_percentile_count`** | $\vert \{ x_{(i)} \mid y_i \le p \} \vert$ | **4** | **(1, 6)** | **$182.5$** |

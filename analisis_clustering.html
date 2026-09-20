@@ -62,7 +62,6 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'analisis_clustering';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Crawling &amp; Analisis Data Polutan Udara di Kecamatan Sambeng, Kabupaten Lamongan" href="Crawling_Polutan_sambeng.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -125,6 +124,8 @@
       
       
       
+        
+      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -180,12 +181,15 @@
                 </a>
             </li>
         </ul>
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Crawling_Polutan_Lamongan.html">Crawling &amp; Analisis Data Polutan Udara di Kabupaten Lamongan</a></li>
 
 <li class="toctree-l1"><a class="reference internal" href="Crawling_Polutan_sambeng.html">Crawling &amp; Analisis Data Polutan Udara di Kecamatan Sambeng, Kabupaten Lamongan</a></li>
 
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Analisis Penentuan Jumlah Cluster Optimal pada K-Means Clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code_clustering_Code.html">Clustering Polutan Udara (NO2, CO, SO2)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="K_Means_Clustering_Knime.html">Alur Kerja (Workflow) Clustering KNIME</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="Deskripsi_fitur_perhitungan_manual_no2.html">Deskripsi Fitur &amp; Perhitungan Manual</a></li>
 </ul>
 
     </div>
@@ -731,16 +735,15 @@ SO2: 37 komponen PCA -&gt; variansi kumulatif dijelaskan = 100.00%
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a4881d7ee5a01521e97ef0df059e5e8a96ad2b3c48ba456ab5857785557c002b.png" src="_images/a4881d7ee5a01521e97ef0df059e5e8a96ad2b3c48ba456ab5857785557c002b.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CO: k terbaik = 2  (silhouette = 0.795)
-</pre></div>
-</div>
-<img alt="_images/2331fe9ac1f8b71aee9a8645e5cfe158c772a4efbe21e0d8f73b214d7d15a598.png" src="_images/2331fe9ac1f8b71aee9a8645e5cfe158c772a4efbe21e0d8f73b214d7d15a598.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>NO2: k terbaik = 2  (silhouette = 0.745)
-</pre></div>
-</div>
-<img alt="_images/e08eb793fbcc4114a63ad0bdb589d64e827ed55b6fcbcbc517744abafe68fd77.png" src="_images/e08eb793fbcc4114a63ad0bdb589d64e827ed55b6fcbcbc517744abafe68fd77.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SO2: k terbaik = 2  (silhouette = 0.789)
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">pca_results</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">processed</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">res</span><span class="p">,</span> <span class="n">k_best</span><span class="p">,</span> <span class="n">sil_best</span> <span class="o">=</span> <span class="n">evaluate_k_range</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;X_pca&quot;</span><span class="p">])</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="n">pca_results</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">k_best</span><span class="p">,</span> <span class="n">sil_best</span><span class="p">)</span>
+
+<span class="ne">NameError</span>: name &#39;processed&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -936,15 +939,6 @@ SO2: 37 komponen PCA -&gt; variansi kumulatif dijelaskan = 100.00%
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="Crawling_Polutan_sambeng.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Crawling &amp; Analisis Data Polutan Udara di Kecamatan Sambeng, Kabupaten Lamongan</p>
-      </div>
-    </a>
 </div>
                 </footer>
               
