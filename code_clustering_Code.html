@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Clustering Polutan &#8212; WELCOME TO MY NOTEBOOK</title>
+    <title>Clustering Polutan Udara (NO2, CO, SO2) &#8212; WELCOME TO MY NOTEBOOK</title>
   
   
   
@@ -62,6 +62,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'code_clustering_Code';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Alur Kerja (Workflow) Clustering KNIME" href="K_Means_Clustering_Knime.html" />
     <link rel="prev" title="Crawling &amp; Analisis Data Polutan Udara di Kecamatan Sambeng, Kabupaten Lamongan" href="Crawling_Polutan_sambeng.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -185,7 +186,10 @@
 
 <li class="toctree-l1"><a class="reference internal" href="Crawling_Polutan_sambeng.html">Crawling &amp; Analisis Data Polutan Udara di Kecamatan Sambeng, Kabupaten Lamongan</a></li>
 
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Clustering Polutan</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Clustering Polutan Udara (NO2, CO, SO2)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="K_Means_Clustering_Knime.html">Alur Kerja (Workflow) Clustering KNIME</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="Deskripsi_fitur_perhitungan_manual_no2.html">Deskripsi Fitur &amp; Perhitungan Manual</a></li>
 </ul>
 
     </div>
@@ -371,7 +375,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Clustering Polutan</h1>
+    <h1>Clustering Polutan Udara (NO2, CO, SO2)</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -381,9 +385,27 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementasi-k-means-dengan-python-scikit-learn">1. Implementasi K-Means dengan Python (Scikit-Learn)</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluasi-jumlah-cluster-elbow-method">1.1 Evaluasi Jumlah Cluster (Elbow Method)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-scatter-plot-pca-dan-profiling">1.2 Visualisasi Scatter Plot PCA dan Profiling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#konsep-dasar-metodologi-analisis">1. Konsep Dasar &amp; Metodologi Analisis</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#principal-component-analysis-pca-alasan-reduksi-ke-37-komponen">1.1 Principal Component Analysis (PCA) &amp; Alasan Reduksi ke 37 Komponen</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uji-kecenderungan-klaster-hopkins-statistic">1.2 Uji Kecenderungan Klaster (<em>Hopkins Statistic</em>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metrik-penentuan-jumlah-klaster-optimal-k">1.3 Metrik Penentuan Jumlah Klaster Optimal (<span class="math notranslate nohighlight">\(k\)</span>)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementasi-k-means-dengan-python-scikit-learn">2. Implementasi K-Means dengan Python (Scikit-Learn)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluasi-jumlah-cluster-elbow-method-silhouette-analysis">2.1 Evaluasi Jumlah Cluster (Elbow Method &amp; Silhouette Analysis)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-evaluasi-jumlah-klaster-elbow-method-silhouette-score">Analisis Evaluasi Jumlah Klaster (Elbow Method &amp; Silhouette Score)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tabel-evaluasi-k-means-k-2-s-d-k-8">Tabel Evaluasi K-Means (<span class="math notranslate nohighlight">\(k=2\)</span> s.d. <span class="math notranslate nohighlight">\(k=8\)</span>):</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perbandingan-analisis-pca-37-komponen-vs-68-fitur-asli">2.2 Perbandingan Analisis: PCA (37 Komponen) vs 68 Fitur Asli</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-scatter-plot-persebaran-daerah-profiling-klaster">2.3 Visualisasi Scatter Plot Persebaran Daerah &amp; Profiling Klaster</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretasi-kesimpulan-analisis">3. Interpretasi &amp; Kesimpulan Analisis</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kelayakan-pengelompokan-data-cluster-tendency">1. Kelayakan Pengelompokan Data (<em>Cluster Tendency</em>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#efektivitas-reduksi-dimensi-pca-ke-37-komponen">2. Efektivitas Reduksi Dimensi PCA ke 37 Komponen</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jumlah-klaster-terbaik">3. Jumlah Klaster Terbaik:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#karakteristik-wilayah-kajian-sambeng-lamongan">4. Karakteristik Wilayah Kajian (Sambeng, Lamongan):</a></li>
 </ul>
 </li>
 </ul>
@@ -397,45 +419,82 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="clustering-polutan">
-<h1>Clustering Polutan<a class="headerlink" href="#clustering-polutan" title="Link to this heading">#</a></h1>
-<p>Dokumen ini menjelaskan proses pengelompokan (clustering) area berdasarkan tingkat dan karakteristik polutan (dalam hal ini NO2). Setelah melakukan ekstraksi fitur (menggunakan TSFEL) pada data deret waktu polutan dari area Kwanyar dan digabungkan dengan data dari area milik teman sekelas.</p>
-<p>Tujuan dari tahapan ini adalah untuk menemukan daerah-daerah mana saja yang memiliki karakteristik, tren, dan pola polusi yang serupa.</p>
-<section id="implementasi-k-means-dengan-python-scikit-learn">
-<h2>1. Implementasi K-Means dengan Python (Scikit-Learn)<a class="headerlink" href="#implementasi-k-means-dengan-python-scikit-learn" title="Link to this heading">#</a></h2>
-<p>Untuk mengimplementasikan rekomendasi di atas, kita dapat menggunakan bahasa pemrograman Python dengan <em>library</em> <strong>Scikit-Learn</strong> (<code class="docutils literal notranslate"><span class="pre">sklearn</span></code>). Library ini adalah standar industri yang sangat bagus dan stabil untuk pemodelan <em>Machine Learning</em> konvensional seperti PCA dan K-Means.</p>
-<section id="evaluasi-jumlah-cluster-elbow-method">
-<h3>1.1 Evaluasi Jumlah Cluster (Elbow Method)<a class="headerlink" href="#evaluasi-jumlah-cluster-elbow-method" title="Link to this heading">#</a></h3>
-<p>Untuk mengetahui berapa cluster yang paling optimal, kita menggunakan <strong>Elbow Method</strong>. Kita akan melatih model K-Means dengan variasi jumlah cluster (misalnya <span class="math notranslate nohighlight">\(K=2\)</span> sampai <span class="math notranslate nohighlight">\(K=10\)</span>), lalu menghitung nilai inersia (jarak kuadrat rata-rata ke pusat cluster).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">PCA</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.cluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">KMeans</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;./source/Ekstraksi_fitur/ekstraksi_fitur_nama_polutan.csv&#39;</span><span class="p">)</span>
-<span class="n">fitur</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;nama&#39;</span><span class="p">,</span> <span class="s1">&#39;daerah&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
-<span class="n">fitur_scaled</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">fitur</span><span class="p">)</span>
-<span class="n">fitur_pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">fitur_scaled</span><span class="p">)</span>
-
-<span class="n">inertia</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">K_range</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">K_range</span><span class="p">:</span>
-    <span class="n">kmeans_temp</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">n_init</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-    <span class="n">kmeans_temp</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">fitur_pca</span><span class="p">)</span>
-    <span class="n">inertia</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kmeans_temp</span><span class="o">.</span><span class="n">inertia_</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">K_range</span><span class="p">,</span> <span class="n">inertia</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Evaluasi Jumlah Cluster dengan Elbow Method&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Jumlah Cluster (K)&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Inersia (Jarak Kuadrat)&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
+  <section class="tex2jax_ignore mathjax_ignore" id="clustering-polutan-udara-no2-co-so2">
+<h1>Clustering Polutan Udara (NO2, CO, SO2)<a class="headerlink" href="#clustering-polutan-udara-no2-co-so2" title="Link to this heading">#</a></h1>
+<p>Dokumen ini menjelaskan proses pengelompokan (<em>clustering</em>) wilayah berdasarkan tingkat dan karakteristik polutan udara (<strong>NO2</strong>, <strong>CO</strong>, dan <strong>SO2</strong>). Data yang digunakan merupakan hasil ekstraksi fitur deret waktu menggunakan <strong>TSFEL</strong> dari <strong>37 mahasiswa / wilayah kajian</strong> (termasuk wilayah Sambeng, Lamongan dan sekitarnya).</p>
+<p>Tujuan utama analisis ini adalah:</p>
+<ol class="arabic simple">
+<li><p>Menguji apakah data fitur polutan memiliki kecenderungan mengelompok secara alami (<em>Cluster Tendency</em>).</p></li>
+<li><p>Melakukan reduksi dimensi fitur menjadi <strong>37 komponen</strong> menggunakan <strong>Principal Component Analysis (PCA)</strong>.</p></li>
+<li><p>Menentukan jumlah klaster optimal (<span class="math notranslate nohighlight">\(k\)</span>) menggunakan kombinasi <strong>Elbow Method (Inertia/WCSS)</strong> dan <strong>Silhouette Score</strong>.</p></li>
+<li><p>Membandingkan hasil klastering antara data hasil reduksi <strong>PCA 37 komponen</strong> dengan <strong>68 fitur asli</strong>.</p></li>
+<li><p>Memvisualisasikan persebaran daerah per klaster (<em>Scatter Plot</em>) serta melakukan <em>profiling</em> daerah untuk mengidentifikasi tingkat keparahan polusi.</p></li>
+</ol>
+<hr class="docutils" />
+<section id="konsep-dasar-metodologi-analisis">
+<h2>1. Konsep Dasar &amp; Metodologi Analisis<a class="headerlink" href="#konsep-dasar-metodologi-analisis" title="Link to this heading">#</a></h2>
+<section id="principal-component-analysis-pca-alasan-reduksi-ke-37-komponen">
+<h3>1.1 Principal Component Analysis (PCA) &amp; Alasan Reduksi ke 37 Komponen<a class="headerlink" href="#principal-component-analysis-pca-alasan-reduksi-ke-37-komponen" title="Link to this heading">#</a></h3>
+<p>PCA adalah teknik reduksi dimensi linier yang mentransformasikan fitur-fitur asli menjadi sekumpulan variabel baru yang saling ortogonal (<em>tidak berkorelasi</em>) yang disebut <strong>Principal Components (PC)</strong>.</p>
+<p><strong>Mengapa reduksi dimensi dilakukan menjadi 37 komponen?</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Batas Rank Aljabar Linier:</strong> Dataset kelas terdiri atas <span class="math notranslate nohighlight">\(N = 37\)</span> baris sampel (lokasi) dan <span class="math notranslate nohighlight">\(P = 68\)</span> kolom fitur numerik TSFEL. Secara matematis, rank maksimum dari matriks kovarians data dibatasi oleh:
+$<span class="math notranslate nohighlight">\(\text{Rank Maksimum} = \min(N, P) = \min(37, 68) = 37\)</span>$</p></li>
+<li><p><strong>Preservasi 100% Variansi:</strong> Dengan mengambil <strong>37 komponen utama</strong>, model mempertahankan <strong>100.00% variansi kumulatif</strong> dari data asli tanpa ada kehilangan informasi sedikit pun.</p></li>
+<li><p><strong>Efisiensi &amp; Visualisasi:</strong> Dua komponen pertama (PC1 dan PC2) merangkum sebagian besar variansi dominan (<span class="math notranslate nohighlight">\(\approx 70\% - 77\%\)</span>), sehingga sangat ideal untuk diproyeksikan ke dalam grafik 2D (<em>Scatter Plot</em>).</p></li>
+</ol>
+</section>
+<section id="uji-kecenderungan-klaster-hopkins-statistic">
+<h3>1.2 Uji Kecenderungan Klaster (<em>Hopkins Statistic</em>)<a class="headerlink" href="#uji-kecenderungan-klaster-hopkins-statistic" title="Link to this heading">#</a></h3>
+<p>Sebelum menentukan jumlah klaster <span class="math notranslate nohighlight">\(k\)</span>, kita perlu memastikan apakah data benar-benar memiliki struktur pengelompokan alami, atau hanya sebaran acak/seragam (<em>uniform noise</em>). Pengujian dilakukan menggunakan <strong>Hopkins Statistic (<span class="math notranslate nohighlight">\(H\)</span>)</strong>:</p>
+<ul class="simple">
+<li><p>Jika <span class="math notranslate nohighlight">\(H \approx 0.5\)</span>: data tersebar secara acak seragam (tidak layak diklaster).</p></li>
+<li><p>Jika <span class="math notranslate nohighlight">\(H &gt; 0.75\)</span>: data memiliki kecenderungan mengelompok (<em>clustering tendency</em>) yang sangat kuat.</p></li>
+</ul>
+<p><em>Hasil Uji Hopkins pada Dataset Kelas:</em></p>
+<ul class="simple">
+<li><p><strong>Polutan CO:</strong> <span class="math notranslate nohighlight">\(H = 0.880\)</span> (Struktur klaster sangat kuat)</p></li>
+<li><p><strong>Polutan NO2:</strong> <span class="math notranslate nohighlight">\(H = 0.842\)</span> (Struktur klaster sangat kuat)</p></li>
+<li><p><strong>Polutan SO2:</strong> <span class="math notranslate nohighlight">\(H = 0.886\)</span> (Struktur klaster sangat kuat)</p></li>
+</ul>
+</section>
+<section id="metrik-penentuan-jumlah-klaster-optimal-k">
+<h3>1.3 Metrik Penentuan Jumlah Klaster Optimal (<span class="math notranslate nohighlight">\(k\)</span>)<a class="headerlink" href="#metrik-penentuan-jumlah-klaster-optimal-k" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Elbow Method (Inersia / WCSS):</strong> Menghitung total jarak kuadrat antara setiap titik data ke pusat klasternya (<em>centroid</em>). Titik “siku” (<em>elbow</em>) pada kurva menunjukkan titik penurunan inersia yang mulai melandai.</p></li>
+<li><p><strong>Silhouette Score:</strong> Mengukur seberapa dekat suatu titik dengan anggota klasternya sendiri dibandingkan dengan klaster terdekat lainnya (rentang nilai <span class="math notranslate nohighlight">\(-1\)</span> hingga <span class="math notranslate nohighlight">\(+1\)</span>).</p></li>
+</ol>
+<p><strong>Panduan Interpretasi Silhouette Score (Kaufman &amp; Rousseeuw):</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Rentang Skor Silhouette</p></th>
+<th class="head text-left"><p>Kualitas Struktur Klaster</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><strong>0.71 – 1.00</strong></p></td>
+<td class="text-left"><p>Struktur klaster <strong>Sangat Kuat (<em>Strong Structure</em>)</strong></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong>0.51 – 0.70</strong></p></td>
+<td class="text-left"><p>Struktur klaster <strong>Cukup Meyakinkan (<em>Reasonable Structure</em>)</strong></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong>0.26 – 0.50</strong></p></td>
+<td class="text-left"><p>Struktur klaster <strong>Lemah (<em>Weak Structure</em>)</strong></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(\le\)</span> 0.25</strong></p></td>
+<td class="text-left"><p>Tidak ada struktur klaster yang berarti</p></td>
+</tr>
+</tbody>
+</table>
 </div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="implementasi-k-means-dengan-python-scikit-learn">
+<h2>2. Implementasi K-Means dengan Python (Scikit-Learn)<a class="headerlink" href="#implementasi-k-means-dengan-python-scikit-learn" title="Link to this heading">#</a></h2>
+<section id="evaluasi-jumlah-cluster-elbow-method-silhouette-analysis">
+<h3>2.1 Evaluasi Jumlah Cluster (Elbow Method &amp; Silhouette Analysis)<a class="headerlink" href="#evaluasi-jumlah-cluster-elbow-method-silhouette-analysis" title="Link to this heading">#</a></h3>
+<p>Pada tahap ini, kita melatih model K-Means pada data hasil reduksi PCA 37 komponen untuk rentang <span class="math notranslate nohighlight">\(k = 2\)</span> sampai <span class="math notranslate nohighlight">\(k = 10\)</span>, kemudian mengevaluasi kurva inersia dan skor pemisahannya.</p>
 <ol class="arabic simple">
 <li><p>NO2</p></li>
 </ol>
@@ -553,51 +612,170 @@ document.write(`
 <img alt="_images/75fdae6ad596f747370baeafb793d5bf736155b051c59a7a7e95d2856207d236.png" src="_images/75fdae6ad596f747370baeafb793d5bf736155b051c59a7a7e95d2856207d236.png" />
 </div>
 </div>
-<p><em>Catatan: Anda akan melihat patahan siku (elbow) pada grafik di atas. Jika patahannya paling tajam di angka 6, maka <span class="math notranslate nohighlight">\(K=6\)</span> adalah pilihan yang tepat.</em></p>
 </section>
-<section id="visualisasi-scatter-plot-pca-dan-profiling">
-<h3>1.2 Visualisasi Scatter Plot PCA dan Profiling<a class="headerlink" href="#visualisasi-scatter-plot-pca-dan-profiling" title="Link to this heading">#</a></h3>
-<p>Setelah menentukan menggunakan <span class="math notranslate nohighlight">\(K=6\)</span>, kita jalankan algoritma K-Means final. Kemudian kita membuat <strong>Scatter Plot PCA</strong> menggunakan PCA 1 dan PCA 2 untuk melihat apakah klaster terpisah dengan baik secara matematis.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">PCA</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.cluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">KMeans</span>
-
-<span class="c1"># 1. Memuat Data</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;ekstraksi_fitur_nama_polutan.csv&#39;</span><span class="p">)</span>
-<span class="n">identitas</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;nama&#39;</span><span class="p">,</span> <span class="s1">&#39;daerah&#39;</span><span class="p">]]</span>
-<span class="n">fitur</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;nama&#39;</span><span class="p">,</span> <span class="s1">&#39;daerah&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="c1"># 2. Standardisasi &amp; PCA</span>
-<span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
-<span class="n">fitur_pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">fitur</span><span class="p">))</span>
-
-<span class="c1"># 3. K-Means (K=6)</span>
-<span class="n">kmeans</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">n_init</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">clusters</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">fitur_pca</span><span class="p">)</span>
-
-<span class="n">df_hasil</span> <span class="o">=</span> <span class="n">identitas</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">df_hasil</span><span class="p">[</span><span class="s1">&#39;Cluster&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">clusters</span>
-
-<span class="c1"># 4. Visualisasi Scatter Plot</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">df_hasil</span><span class="p">[</span><span class="s1">&#39;daerah&#39;</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">df_hasil</span><span class="p">[</span><span class="s1">&#39;Cluster&#39;</span><span class="p">],</span> <span class="n">hue</span><span class="o">=</span><span class="n">df_hasil</span><span class="p">[</span><span class="s1">&#39;Cluster&#39;</span><span class="p">],</span> <span class="n">palette</span><span class="o">=</span><span class="s1">&#39;tab10&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Scatter Plot Persebaran Daerah per Cluster (NAMA_POLUTAN)&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Nama Daerah&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Cluster&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Cluster&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-<span class="c1"># 5. Menampilkan profil klaster berdasarkan daerah (Top 3 per klaster)</span>
-<span class="n">profil_daerah</span> <span class="o">=</span> <span class="n">df_hasil</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Cluster&#39;</span><span class="p">,</span> <span class="s1">&#39;daerah&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Jumlah&#39;</span><span class="p">)</span>
-<span class="n">top_3_per_cluster</span> <span class="o">=</span> <span class="n">profil_daerah</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Cluster&#39;</span><span class="p">,</span> <span class="s1">&#39;Jumlah&#39;</span><span class="p">],</span> <span class="n">ascending</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">])</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Cluster&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">top_3_per_cluster</span><span class="p">)</span>
-</pre></div>
+<section id="analisis-evaluasi-jumlah-klaster-elbow-method-silhouette-score">
+<h3>Analisis Evaluasi Jumlah Klaster (Elbow Method &amp; Silhouette Score)<a class="headerlink" href="#analisis-evaluasi-jumlah-klaster-elbow-method-silhouette-score" title="Link to this heading">#</a></h3>
+<p>Berdasarkan kurva inersia di atas dan evaluasi kuantitatif Silhouette Score pada data hasil reduksi PCA (37 komponen):</p>
+<section id="tabel-evaluasi-k-means-k-2-s-d-k-8">
+<h4>Tabel Evaluasi K-Means (<span class="math notranslate nohighlight">\(k=2\)</span> s.d. <span class="math notranslate nohighlight">\(k=8\)</span>):<a class="headerlink" href="#tabel-evaluasi-k-means-k-2-s-d-k-8" title="Link to this heading">#</a></h4>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Polutan</p></th>
+<th class="head text-center"><p>Nilai <span class="math notranslate nohighlight">\(k\)</span></p></th>
+<th class="head text-center"><p>Inersia (WCSS)</p></th>
+<th class="head text-center"><p>Silhouette Score</p></th>
+<th class="head text-left"><p>Keterangan Evaluasi</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>NO2</strong></p></td>
+<td class="text-center"><p><strong><span class="math notranslate nohighlight">\(k=2\)</span></strong></p></td>
+<td class="text-center"><p><strong>1326.58</strong></p></td>
+<td class="text-center"><p><strong>0.745</strong></p></td>
+<td class="text-left"><p><strong>Optimal Matematis Tertinggi (Struktur Kuat)</strong></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(k=3\)</span></p></td>
+<td class="text-center"><p>1001.28</p></td>
+<td class="text-center"><p>0.191</p></td>
+<td class="text-left"><p>Klaster tumpang tindih</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(k=4\)</span></p></td>
+<td class="text-center"><p>811.80</p></td>
+<td class="text-center"><p>0.205</p></td>
+<td class="text-left"><p>Struktur lemah</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p></p></td>
+<td class="text-center"><p><strong><span class="math notranslate nohighlight">\(k=6\)</span></strong></p></td>
+<td class="text-center"><p><strong>578.31</strong></p></td>
+<td class="text-center"><p><strong>0.186</strong></p></td>
+<td class="text-left"><p><strong>Patahan Siku (Elbow) untuk Segmentasi Mikro Daerah</strong></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>CO</strong></p></td>
+<td class="text-center"><p><strong><span class="math notranslate nohighlight">\(k=2\)</span></strong></p></td>
+<td class="text-center"><p><strong>1123.80</strong></p></td>
+<td class="text-center"><p><strong>0.795</strong></p></td>
+<td class="text-left"><p><strong>Optimal Matematis Tertinggi (Struktur Kuat)</strong></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(k=3\)</span></p></td>
+<td class="text-center"><p>660.21</p></td>
+<td class="text-center"><p>0.697</p></td>
+<td class="text-left"><p>Struktur cukup meyakinkan</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p></p></td>
+<td class="text-center"><p><strong><span class="math notranslate nohighlight">\(k=4\)</span></strong></p></td>
+<td class="text-center"><p><strong>509.37</strong></p></td>
+<td class="text-center"><p><strong>0.343</strong></p></td>
+<td class="text-left"><p><strong>Patahan Siku (Elbow) 4 Tingkat Keparahan Polusi</strong></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(k=6\)</span></p></td>
+<td class="text-center"><p>361.35</p></td>
+<td class="text-center"><p>0.154</p></td>
+<td class="text-left"><p>Terjadi fragmentasi berlebih</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>SO2</strong></p></td>
+<td class="text-center"><p><strong><span class="math notranslate nohighlight">\(k=2\)</span></strong></p></td>
+<td class="text-center"><p><strong>1210.46</strong></p></td>
+<td class="text-center"><p><strong>0.789</strong></p></td>
+<td class="text-left"><p><strong>Optimal Matematis Tertinggi (Struktur Kuat)</strong></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(k=3\)</span></p></td>
+<td class="text-center"><p>691.64</p></td>
+<td class="text-center"><p>0.708</p></td>
+<td class="text-left"><p>Struktur cukup meyakinkan</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(k=4\)</span></p></td>
+<td class="text-center"><p>525.29</p></td>
+<td class="text-center"><p>0.392</p></td>
+<td class="text-left"><p>Struktur mulai melemah</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p></p></td>
+<td class="text-center"><p><strong><span class="math notranslate nohighlight">\(k=6\)</span></strong></p></td>
+<td class="text-center"><p><strong>335.56</strong></p></td>
+<td class="text-center"><p><strong>0.136</strong></p></td>
+<td class="text-left"><p><strong>Patahan Siku (Elbow) untuk Segmentasi Mikro Daerah</strong></p></td>
+</tr>
+</tbody>
+</table>
 </div>
+<blockquote>
+<div><p><strong>Catatan Analisis Dual-Perspektif:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Secara Matematis Global:</strong> Nilai <strong><span class="math notranslate nohighlight">\(K = 2\)</span></strong> memberikan Silhouette Score tertinggi (<span class="math notranslate nohighlight">\(0.745 - 0.795\)</span>), yang mengelompokkan wilayah ke dalam 2 kategori besar: wilayah dengan tingkat emisi tinggi/ekstrem vs wilayah dengan emisi rendah/normal.</p></li>
+<li><p><strong>Secara Praktis &amp; Eksploratif (<em>Elbow Method</em>):</strong> Pada grafik inersia terlihat patahan siku (<em>elbow</em>) di sekitar <strong><span class="math notranslate nohighlight">\(K = 4\)</span> (untuk CO)</strong> dan <strong><span class="math notranslate nohighlight">\(K = 6\)</span> (untuk NO2 dan SO2)</strong>. Pemilihan <span class="math notranslate nohighlight">\(K=4\)</span> atau <span class="math notranslate nohighlight">\(K=6\)</span> sangat berguna ketika kita ingin melihat pengelompokan mikro antardaerah yang lebih spesifik untuk kebutuhan kebijakan lingkungan daerah.</p></li>
+</ol>
+</div></blockquote>
+</section>
+</section>
+<section id="perbandingan-analisis-pca-37-komponen-vs-68-fitur-asli">
+<h3>2.2 Perbandingan Analisis: PCA (37 Komponen) vs 68 Fitur Asli<a class="headerlink" href="#perbandingan-analisis-pca-37-komponen-vs-68-fitur-asli" title="Link to this heading">#</a></h3>
+<p>Sebelum melakukan <em>profiling</em> dan <em>scatter plot</em>, berikut adalah rangkuman perbandingan hasil klastering antara data yang direduksi ke <strong>37 komponen PCA</strong> dengan data <strong>68 fitur asli</strong> tanpa reduksi dimensi:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Polutan</p></th>
+<th class="head text-center"><p>Jumlah Sampel</p></th>
+<th class="head text-center"><p>Jumlah Fitur</p></th>
+<th class="head text-center"><p>Hopkins Stat</p></th>
+<th class="head text-center"><p>Variansi PCA (37 Komp)</p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\(k\)</span> Terbaik (PCA)</p></th>
+<th class="head text-center"><p>Silhouette (PCA)</p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\(k\)</span> Terbaik (68 Fitur)</p></th>
+<th class="head text-center"><p>Silhouette (68 Fitur)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>CO</strong></p></td>
+<td class="text-center"><p>37</p></td>
+<td class="text-center"><p>68</p></td>
+<td class="text-center"><p>0.880</p></td>
+<td class="text-center"><p><strong>100.00%</strong></p></td>
+<td class="text-center"><p><strong><span class="math notranslate nohighlight">\(k=2\)</span></strong></p></td>
+<td class="text-center"><p><strong>0.795</strong></p></td>
+<td class="text-center"><p><strong><span class="math notranslate nohighlight">\(k=2\)</span></strong></p></td>
+<td class="text-center"><p><strong>0.795</strong></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>NO2</strong></p></td>
+<td class="text-center"><p>37</p></td>
+<td class="text-center"><p>68</p></td>
+<td class="text-center"><p>0.842</p></td>
+<td class="text-center"><p><strong>100.00%</strong></p></td>
+<td class="text-center"><p><strong><span class="math notranslate nohighlight">\(k=2\)</span></strong></p></td>
+<td class="text-center"><p><strong>0.745</strong></p></td>
+<td class="text-center"><p><strong><span class="math notranslate nohighlight">\(k=2\)</span></strong></p></td>
+<td class="text-center"><p><strong>0.745</strong></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>SO2</strong></p></td>
+<td class="text-center"><p>37</p></td>
+<td class="text-center"><p>68</p></td>
+<td class="text-center"><p>0.886</p></td>
+<td class="text-center"><p><strong>100.00%</strong></p></td>
+<td class="text-center"><p><strong><span class="math notranslate nohighlight">\(k=2\)</span></strong></p></td>
+<td class="text-center"><p><strong>0.789</strong></p></td>
+<td class="text-center"><p><strong><span class="math notranslate nohighlight">\(k=2\)</span></strong></p></td>
+<td class="text-center"><p><strong>0.789</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Mengapa hasilnya identik?</strong>
+Karena jumlah komponen PCA yang dipilih (<span class="math notranslate nohighlight">\(37\)</span>) sama dengan jumlah sampel (<span class="math notranslate nohighlight">\(37\)</span>), transformasi PCA merupakan rotasi ortogonal penuh dalam subruang data yang mempertahankan jarak Euclidean antartitik (<em>isometri</em>).</p>
+<p><strong>Keuntungan PCA:</strong>
+Meskipun metrik jaraknya sama, PCA memampatkan informasi variansi terbesar ke komponen-komponen awal (PC1 dan PC2 merangkum <span class="math notranslate nohighlight">\(\approx 70\%-77\%\)</span> variansi), sehingga memungkinkan kita memproyeksikan persebaran daerah ke dalam grafik 2D (<em>Scatter Plot</em>) tanpa kehilangan pola esensial data.</p>
+</section>
+<hr class="docutils" />
+<section id="visualisasi-scatter-plot-persebaran-daerah-profiling-klaster">
+<h3>2.3 Visualisasi Scatter Plot Persebaran Daerah &amp; Profiling Klaster<a class="headerlink" href="#visualisasi-scatter-plot-persebaran-daerah-profiling-klaster" title="Link to this heading">#</a></h3>
+<p>Pada tahap ini, kita menerapkan model K-Means final menggunakan nilai <span class="math notranslate nohighlight">\(K\)</span> yang dipilih dari analisis siku (<em>elbow</em>) untuk memetakan nama daerah ke dalam masing-masing klaster polusi:</p>
+<ul class="simple">
+<li><p><strong>NO2:</strong> Menggunakan <span class="math notranslate nohighlight">\(K = 6\)</span></p></li>
+<li><p><strong>CO:</strong> Menggunakan <span class="math notranslate nohighlight">\(K = 4\)</span></p></li>
+<li><p><strong>SO2:</strong> Menggunakan <span class="math notranslate nohighlight">\(K = 6\)</span></p></li>
+</ul>
 <ol class="arabic simple">
 <li><p>NO2</p></li>
 </ol>
@@ -792,6 +970,29 @@ document.write(`
 </div>
 </section>
 </section>
+<section id="interpretasi-kesimpulan-analisis">
+<h2>3. Interpretasi &amp; Kesimpulan Analisis<a class="headerlink" href="#interpretasi-kesimpulan-analisis" title="Link to this heading">#</a></h2>
+<p>Berdasarkan seluruh tahapan eksplorasi deret waktu, reduksi dimensi PCA, dan evaluasi K-Means Clustering, dapat ditarik beberapa kesimpulan penting:</p>
+<section id="kelayakan-pengelompokan-data-cluster-tendency">
+<h3>1. Kelayakan Pengelompokan Data (<em>Cluster Tendency</em>)<a class="headerlink" href="#kelayakan-pengelompokan-data-cluster-tendency" title="Link to this heading">#</a></h3>
+<p>Nilai Hopkins Statistic untuk ketiga polutan berada pada rentang <strong><span class="math notranslate nohighlight">\(0.842 - 0.886\)</span></strong> (jauh di atas batas acak <span class="math notranslate nohighlight">\(0.50\)</span>). Hal ini membuktikan secara ilmiah bahwa data fitur polutan memiliki kecenderungan mengelompok alami yang sangat kuat dan sangat layak dianalisis menggunakan K-Means.</p>
+</section>
+<section id="efektivitas-reduksi-dimensi-pca-ke-37-komponen">
+<h3>2. Efektivitas Reduksi Dimensi PCA ke 37 Komponen<a class="headerlink" href="#efektivitas-reduksi-dimensi-pca-ke-37-komponen" title="Link to this heading">#</a></h3>
+<p>Reduksi dimensi ke <strong>37 komponen</strong> berhasil mempertahankan <strong>100.00% informasi variansi data asli</strong>. Hal ini menjawab pembuktian aljabar linier bahwa batas rank matriks data kelas dengan 37 mahasiswa adalah <span class="math notranslate nohighlight">\(\min(37, 68) = 37\)</span>.</p>
+</section>
+<section id="jumlah-klaster-terbaik">
+<h3>3. Jumlah Klaster Terbaik:<a class="headerlink" href="#jumlah-klaster-terbaik" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Secara Metrik Matematis Murni (Silhouette Score):</strong> Jumlah klaster terbaik adalah <strong><span class="math notranslate nohighlight">\(K = 2\)</span></strong> dengan skor sangat tinggi (<strong>0.745 – 0.795</strong>), yang membagi wilayah menjadi 2 kelompok kontras: daerah beremisi tinggi/ekstrem dan daerah beremisi rendah/normal.</p></li>
+<li><p><strong>Secara Karakteristik Polusi Antardaerah (Elbow Method):</strong> Pemilihan <strong><span class="math notranslate nohighlight">\(K = 4\)</span> (CO)</strong> dan <strong><span class="math notranslate nohighlight">\(K = 6\)</span> (NO2, SO2)</strong> berhasil mengelompokkan wilayah ke dalam tingkatan keparahan yang lebih rinci, memisahkan wilayah industri/pelabuhan padat dari wilayah pedesaan/agraris.</p></li>
+</ul>
+</section>
+<section id="karakteristik-wilayah-kajian-sambeng-lamongan">
+<h3>4. Karakteristik Wilayah Kajian (Sambeng, Lamongan):<a class="headerlink" href="#karakteristik-wilayah-kajian-sambeng-lamongan" title="Link to this heading">#</a></h3>
+<p>Pada hasil pengelompokan polutan NO2, wilayah <strong>Sambeng, Lamongan</strong> (Dedy Nurohim) konsisten berada pada kelompok klaster dengan rata-rata konsentrasi polutan yang rendah dan stabil, mencerminkan kualitas udara khas pedesaan yang belum terpengaruh oleh aktivitas emisi kendaraan berat atau industri padat.</p>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -833,6 +1034,15 @@ document.write(`
         <p class="prev-next-title">Crawling &amp; Analisis Data Polutan Udara di Kecamatan Sambeng, Kabupaten Lamongan</p>
       </div>
     </a>
+    <a class="right-next"
+       href="K_Means_Clustering_Knime.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Alur Kerja (Workflow) Clustering KNIME</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -849,9 +1059,27 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementasi-k-means-dengan-python-scikit-learn">1. Implementasi K-Means dengan Python (Scikit-Learn)</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluasi-jumlah-cluster-elbow-method">1.1 Evaluasi Jumlah Cluster (Elbow Method)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-scatter-plot-pca-dan-profiling">1.2 Visualisasi Scatter Plot PCA dan Profiling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#konsep-dasar-metodologi-analisis">1. Konsep Dasar &amp; Metodologi Analisis</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#principal-component-analysis-pca-alasan-reduksi-ke-37-komponen">1.1 Principal Component Analysis (PCA) &amp; Alasan Reduksi ke 37 Komponen</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uji-kecenderungan-klaster-hopkins-statistic">1.2 Uji Kecenderungan Klaster (<em>Hopkins Statistic</em>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metrik-penentuan-jumlah-klaster-optimal-k">1.3 Metrik Penentuan Jumlah Klaster Optimal (<span class="math notranslate nohighlight">\(k\)</span>)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementasi-k-means-dengan-python-scikit-learn">2. Implementasi K-Means dengan Python (Scikit-Learn)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluasi-jumlah-cluster-elbow-method-silhouette-analysis">2.1 Evaluasi Jumlah Cluster (Elbow Method &amp; Silhouette Analysis)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-evaluasi-jumlah-klaster-elbow-method-silhouette-score">Analisis Evaluasi Jumlah Klaster (Elbow Method &amp; Silhouette Score)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tabel-evaluasi-k-means-k-2-s-d-k-8">Tabel Evaluasi K-Means (<span class="math notranslate nohighlight">\(k=2\)</span> s.d. <span class="math notranslate nohighlight">\(k=8\)</span>):</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perbandingan-analisis-pca-37-komponen-vs-68-fitur-asli">2.2 Perbandingan Analisis: PCA (37 Komponen) vs 68 Fitur Asli</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-scatter-plot-persebaran-daerah-profiling-klaster">2.3 Visualisasi Scatter Plot Persebaran Daerah &amp; Profiling Klaster</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretasi-kesimpulan-analisis">3. Interpretasi &amp; Kesimpulan Analisis</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kelayakan-pengelompokan-data-cluster-tendency">1. Kelayakan Pengelompokan Data (<em>Cluster Tendency</em>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#efektivitas-reduksi-dimensi-pca-ke-37-komponen">2. Efektivitas Reduksi Dimensi PCA ke 37 Komponen</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jumlah-klaster-terbaik">3. Jumlah Klaster Terbaik:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#karakteristik-wilayah-kajian-sambeng-lamongan">4. Karakteristik Wilayah Kajian (Sambeng, Lamongan):</a></li>
 </ul>
 </li>
 </ul>
