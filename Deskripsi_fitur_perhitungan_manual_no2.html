@@ -1,0 +1,799 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Deskripsi Fitur &amp; Perhitungan Manual &#8212; WELCOME TO MY NOTEBOOK</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Deskripsi_fitur_perhitungan_manual_no2';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Alur Kerja (Workflow) Clustering KNIME" href="K_Means_Clustering_Knime.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/profil.png" class="logo__image only-light" alt="WELCOME TO MY NOTEBOOK - Home"/>
+    <script>document.write(`<img src="_static/profil.png" class="logo__image only-dark" alt="WELCOME TO MY NOTEBOOK - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    🌐 Selamat Datang di Web catatan saya
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Crawling_Polutan_Lamongan.html">Crawling &amp; Analisis Data Polutan Udara di Kabupaten Lamongan</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="Crawling_Polutan_sambeng.html">Crawling &amp; Analisis Data Polutan Udara di Kecamatan Sambeng, Kabupaten Lamongan</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="code_clustering_Code.html">Clustering Polutan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="K_Means_Clustering_Knime.html">Alur Kerja (Workflow) Clustering KNIME</a></li>
+
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Deskripsi Fitur &amp; Perhitungan Manual</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/dy-nm/psd" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/dy-nm/psd/issues/new?title=Issue%20on%20page%20%2FDeskripsi_fitur_perhitungan_manual_no2.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/Deskripsi_fitur_perhitungan_manual_no2.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Deskripsi Fitur & Perhitungan Manual</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#konsep-dasar-ecdf-empirical-cumulative-distribution-function">Konsep Dasar: ECDF (Empirical Cumulative Distribution Function)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fitur-1-ecdf-percentile-signal-percentile">Fitur 1: <code class="docutils literal notranslate"><span class="pre">ecdf_percentile(signal[,</span> <span class="pre">percentile])</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deskripsi">1. Deskripsi</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rumus">2. Rumus</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perhitungan-manual">3. Perhitungan Manual</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verifikasi-dengan-tsfel">4. Verifikasi dengan TSFEL</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nilai-aktual-pada-dataset-ekstraksi-fitur-no2-csv-id-13-dedy-nurohim-sambeng-lamongan">5. Nilai Aktual pada Dataset (<code class="docutils literal notranslate"><span class="pre">ekstraksi_fitur_no2.csv</span></code>, id=13, Dedy Nurohim, Sambeng Lamongan)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fitur-2-ecdf-percentile-count-signal-percentile">Fitur 2: <code class="docutils literal notranslate"><span class="pre">ecdf_percentile_count(signal[,</span> <span class="pre">percentile])</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">1. Deskripsi</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2. Rumus</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">3. Perhitungan Manual</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">4. Verifikasi dengan TSFEL</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">5. Nilai Aktual pada Dataset (<code class="docutils literal notranslate"><span class="pre">ekstraksi_fitur_no2.csv</span></code>, id=13, Dedy Nurohim, Sambeng Lamongan)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ringkasan-perbandingan">Ringkasan Perbandingan</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="deskripsi-fitur-perhitungan-manual">
+<h1>Deskripsi Fitur &amp; Perhitungan Manual<a class="headerlink" href="#deskripsi-fitur-perhitungan-manual" title="Link to this heading">#</a></h1>
+<p>Sesuai pembagian tugas kelas (lihat kolom <strong>Pembagian Fitur</strong>), bagian ini mencakup <strong>2 fitur</strong>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Fitur</p></th>
+<th class="head"><p>Nama Fungsi TSFEL</p></th>
+<th class="head"><p>Domain Fitur</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Fitur 1</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ecdf_percentile(signal[,</span> <span class="pre">percentile])</span></code></p></td>
+<td><p>Statistik (<em>Statistical</em>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Fitur 2</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ecdf_percentile_count(signal[,</span> <span class="pre">percentile])</span></code></p></td>
+<td><p>Statistik (<em>Statistical</em>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Sinyal contoh yang dipakai (ilustrasi):</strong>
+<code class="docutils literal notranslate"><span class="pre">signal</span> <span class="pre">=</span> <span class="pre">[2,</span> <span class="pre">4,</span> <span class="pre">3,</span> <span class="pre">6,</span> <span class="pre">5,</span> <span class="pre">7,</span> <span class="pre">4,</span> <span class="pre">8]</span></code> dengan <span class="math notranslate nohighlight">\(N = 8\)</span> titik observasi.</p>
+<blockquote>
+<div><p><strong>Keterangan:</strong> Untuk mempermudah penjelasan langkah-demi-langkah perhitungan manual secara terperinci dan mudah diverifikasi, digunakan sampel sinyal representatif 8 titik observasi di atas. Hasil perhitungan manual diverifikasi langsung menggunakan fungsi TSFEL asli (<code class="docutils literal notranslate"><span class="pre">tsfel.feature_extraction.features</span></code>) pada sinyal yang sama untuk membuktikan kebenaran algoritma dan rumusnya, sebelum diterapkan pada data aktual deret waktu polutan NO2 wilayah Sambeng, Lamongan.</p>
+</div></blockquote>
+<hr class="docutils" />
+<section id="konsep-dasar-ecdf-empirical-cumulative-distribution-function">
+<h2>Konsep Dasar: ECDF (Empirical Cumulative Distribution Function)<a class="headerlink" href="#konsep-dasar-ecdf-empirical-cumulative-distribution-function" title="Link to this heading">#</a></h2>
+<p>Sebelum menghitung kedua fitur, fungsi distribusi kumulatif empiris (<strong>ECDF</strong>) dihitung terlebih dahulu dari sinyal:</p>
+<ol class="arabic simple">
+<li><p>Urutkan sinyal dari nilai terkecil ke terbesar (<em>ascending order</em>):
+$<span class="math notranslate nohighlight">\(x_{(1)} \le x_{(2)} \le \dots \le x_{(N)}\)</span>$</p></li>
+<li><p>Hitung probabilitas kumulatif untuk tiap observasi ke-<span class="math notranslate nohighlight">\(i\)</span>:
+$<span class="math notranslate nohighlight">\(y_i = \frac{i}{N}, \quad \text{untuk } i = 1, 2, \dots, N\)</span>$</p></li>
+</ol>
+<p>Pada sinyal contoh <span class="math notranslate nohighlight">\(N = 8\)</span>:</p>
+<ul class="simple">
+<li><p>Nilai sinyal awal: <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">4,</span> <span class="pre">3,</span> <span class="pre">6,</span> <span class="pre">5,</span> <span class="pre">7,</span> <span class="pre">4,</span> <span class="pre">8]</span></code></p></li>
+<li><p>Nilai terurut (<span class="math notranslate nohighlight">\(x_{(i)}\)</span>): <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">3,</span> <span class="pre">4,</span> <span class="pre">4,</span> <span class="pre">5,</span> <span class="pre">6,</span> <span class="pre">7,</span> <span class="pre">8]</span></code></p></li>
+</ul>
+<p>Tabel ECDF sinyal ilustrasi:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Indeks Urut (<span class="math notranslate nohighlight">\(i\)</span>)</p></th>
+<th class="head text-center"><p>Nilai Terurut (<span class="math notranslate nohighlight">\(x_{(i)}\)</span>)</p></th>
+<th class="head text-center"><p>Probabilitas Kumulatif (<span class="math notranslate nohighlight">\(y_i = i/8\)</span>)</p></th>
+<th class="head text-center"><p>Persentase Kumulatif</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>1</p></td>
+<td class="text-center"><p>2</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(1/8 = 0.125\)</span></p></td>
+<td class="text-center"><p>12.5%</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>2</p></td>
+<td class="text-center"><p>3</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(2/8 = 0.250\)</span></p></td>
+<td class="text-center"><p>25.0%</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>3</p></td>
+<td class="text-center"><p>4</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(3/8 = 0.375\)</span></p></td>
+<td class="text-center"><p>37.5%</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>4</p></td>
+<td class="text-center"><p>4</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(4/8 = 0.500\)</span></p></td>
+<td class="text-center"><p>50.0%</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>5</p></td>
+<td class="text-center"><p>5</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(5/8 = 0.625\)</span></p></td>
+<td class="text-center"><p>62.5%</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>6</p></td>
+<td class="text-center"><p>6</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(6/8 = 0.750\)</span></p></td>
+<td class="text-center"><p>75.0%</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>7</p></td>
+<td class="text-center"><p>7</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(7/8 = 0.875\)</span></p></td>
+<td class="text-center"><p>87.5%</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>8</p></td>
+<td class="text-center"><p>8</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(8/8 = 1.000\)</span></p></td>
+<td class="text-center"><p>100.0%</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="fitur-1-ecdf-percentile-signal-percentile">
+<h2>Fitur 1: <code class="docutils literal notranslate"><span class="pre">ecdf_percentile(signal[,</span> <span class="pre">percentile])</span></code><a class="headerlink" href="#fitur-1-ecdf-percentile-signal-percentile" title="Link to this heading">#</a></h2>
+<section id="deskripsi">
+<h3>1. Deskripsi<a class="headerlink" href="#deskripsi" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">ecdf_percentile</span></code> menghitung <strong>nilai batas magnitudo data (<span class="math notranslate nohighlight">\(x\)</span>) pada kurva ECDF yang bersesuaian dengan ambang persentil tertentu (<span class="math notranslate nohighlight">\(p\)</span>)</strong>. Fitur ini merepresentasikan nilai konsentrasi polutan tertinggi di mana akumulasi frekuensi relatif data belum melampaui ambang persentil <span class="math notranslate nohighlight">\(p\)</span>.</p>
+<p>Dalam analisis kualitas udara, fitur ini sangat penting untuk mengetahui ambang batas konsentrasi polutan pada kondisi normal harian (misal persentil 20% untuk batas polusi rendah, persentil 50% untuk median, atau 80% untuk batas sebelum terjadinya lonjakan polusi ekstrem).</p>
+</section>
+<section id="rumus">
+<h3>2. Rumus<a class="headerlink" href="#rumus" title="Link to this heading">#</a></h3>
+<p>Untuk ambang persentil <span class="math notranslate nohighlight">\(p \in (0, 1]\)</span>:
+$<span class="math notranslate nohighlight">\(\text{ecdf\_percentile}(x, p) = \max \{ x_{(i)} \mid y_i \le p \}\)</span><span class="math notranslate nohighlight">\(
+di mana \)</span>x_{(i)}<span class="math notranslate nohighlight">\( adalah nilai sinyal terurut dan \)</span>y_i = \frac{i}{N}$ adalah nilai probabilitas kumulatif ECDF.</p>
+<p>Secara <em>default</em>, TSFEL mengevaluasi sepasang ambang persentil: <span class="math notranslate nohighlight">\(p = [0.2, \, 0.8]\)</span> (persentil ke-20 dan persentil ke-80), atau nilai persentil tunggal <span class="math notranslate nohighlight">\(p = 0.5\)</span> (median).</p>
+</section>
+<section id="perhitungan-manual">
+<h3>3. Perhitungan Manual<a class="headerlink" href="#perhitungan-manual" title="Link to this heading">#</a></h3>
+<p>Menggunakan sinyal ilustrasi di atas:</p>
+<ul class="simple">
+<li><p><strong>Untuk <span class="math notranslate nohighlight">\(p = 0.2\)</span> (Persentil ke-20):</strong></p>
+<ul>
+<li><p>Cari indeks di mana <span class="math notranslate nohighlight">\(y_i \le 0.2\)</span>.</p></li>
+<li><p>Dari tabel ECDF: <span class="math notranslate nohighlight">\(y_1 = 0.125 \le 0.2\)</span>, sedangkan <span class="math notranslate nohighlight">\(y_2 = 0.250 &gt; 0.2\)</span>.</p></li>
+<li><p>Himpunan data yang memenuhi: <span class="math notranslate nohighlight">\(\{x_{(1)}\} = \{2\}\)</span>.</p></li>
+<li><p>Nilai maksimumnya: <span class="math notranslate nohighlight">\(\max(\{2\}) = \mathbf{2}\)</span>.</p></li>
+</ul>
+</li>
+<li><p><strong>Untuk <span class="math notranslate nohighlight">\(p = 0.8\)</span> (Persentil ke-80):</strong></p>
+<ul>
+<li><p>Cari indeks di mana <span class="math notranslate nohighlight">\(y_i \le 0.8\)</span>.</p></li>
+<li><p>Dari tabel ECDF: <span class="math notranslate nohighlight">\(y_1\)</span> sampai <span class="math notranslate nohighlight">\(y_6\)</span> memiliki <span class="math notranslate nohighlight">\(y_i \le 0.8\)</span> (karena <span class="math notranslate nohighlight">\(y_6 = 0.750 \le 0.8\)</span> dan <span class="math notranslate nohighlight">\(y_7 = 0.875 &gt; 0.8\)</span>).</p></li>
+<li><p>Himpunan data yang memenuhi: <span class="math notranslate nohighlight">\(\{2, 3, 4, 4, 5, 6\}\)</span>.</p></li>
+<li><p>Nilai maksimumnya: <span class="math notranslate nohighlight">\(\max(\{2, 3, 4, 4, 5, 6\}) = \mathbf{6}\)</span>.</p></li>
+</ul>
+</li>
+</ul>
+<p><em>Jika menggunakan persentil tunggal <span class="math notranslate nohighlight">\(p = 0.5\)</span> (Persentil ke-50):</em></p>
+<ul class="simple">
+<li><p>Indeks dengan <span class="math notranslate nohighlight">\(y_i \le 0.5\)</span> adalah <span class="math notranslate nohighlight">\(i = 1, 2, 3, 4\)</span> (<span class="math notranslate nohighlight">\(y_4 = 0.500\)</span>).</p></li>
+<li><p>Nilai maksimumnya: <span class="math notranslate nohighlight">\(\max(\{2, 3, 4, 4\}) = \mathbf{4}\)</span>.</p></li>
+</ul>
+</section>
+<section id="verifikasi-dengan-tsfel">
+<h3>4. Verifikasi dengan TSFEL<a class="headerlink" href="#verifikasi-dengan-tsfel" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">tsfel.feature_extraction.features</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+
+<span class="n">signal</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+
+<span class="c1"># 1. Menggunakan default TSFEL (percentile=[0.2, 0.8])</span>
+<span class="n">hasil_default</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">ecdf_percentile</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hasil_default</span><span class="p">)</span>  <span class="c1"># Output: (2, 6)</span>
+
+<span class="c1"># 2. Menggunakan persentil 0.5</span>
+<span class="n">hasil_p50</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">ecdf_percentile</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hasil_p50</span><span class="p">)</span>      <span class="c1"># Output: 4</span>
+</pre></div>
+</div>
+<p>Hasil perhitungan manual (<span class="math notranslate nohighlight">\(2\)</span> dan <span class="math notranslate nohighlight">\(6\)</span>, atau <span class="math notranslate nohighlight">\(4\)</span>) <strong>terbukti 100% cocok dan terverifikasi</strong> dengan fungsi TSFEL asli. ✅</p>
+</section>
+<section id="nilai-aktual-pada-dataset-ekstraksi-fitur-no2-csv-id-13-dedy-nurohim-sambeng-lamongan">
+<h3>5. Nilai Aktual pada Dataset (<code class="docutils literal notranslate"><span class="pre">ekstraksi_fitur_no2.csv</span></code>, id=13, Dedy Nurohim, Sambeng Lamongan)<a class="headerlink" href="#nilai-aktual-pada-dataset-ekstraksi-fitur-no2-csv-id-13-dedy-nurohim-sambeng-lamongan" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[\text{ecdf\_percentile} = 0.000031 \quad (3.099440 \times 10^{-5} \, \text{mol/m}^2)\]</div>
+<p><em>Makna fisis:</em> Nilai ini menunjukkan batas konsentrasi NO2 harian pada kurva kumulatif observasi di wilayah kajian Sambeng, Lamongan yang diekstraksi dari data satelit Sentinel-5P. Nilai sebesar <span class="math notranslate nohighlight">\(3.099 \times 10^{-5} \, \text{mol/m}^2\)</span> merepresentasikan kondisi konsentrasi NO2 tipikal/median di wilayah pedesaan Sambeng.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="fitur-2-ecdf-percentile-count-signal-percentile">
+<h2>Fitur 2: <code class="docutils literal notranslate"><span class="pre">ecdf_percentile_count(signal[,</span> <span class="pre">percentile])</span></code><a class="headerlink" href="#fitur-2-ecdf-percentile-count-signal-percentile" title="Link to this heading">#</a></h2>
+<section id="id1">
+<h3>1. Deskripsi<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">ecdf_percentile_count</span></code> menghitung <strong>jumlah sampel observasi (<em>count</em>) yang nilainya berada di bawah atau sama dengan ambang persentil <span class="math notranslate nohighlight">\(p\)</span> pada kurva ECDF</strong>.</p>
+<p>Fitur ini mengukur volume atau frekuensi kejadian harian yang berada pada kelompok konsentrasi rendah hingga sedang. Pada data deret waktu tahunan polutan udara, fitur ini menunjukkan berapa hari dalam satu periode pengamatan kualitas udara berada di bawah ambang batas persentil yang ditentukan.</p>
+</section>
+<section id="id2">
+<h3>2. Rumus<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>Untuk ambang persentil <span class="math notranslate nohighlight">\(p \in (0, 1]\)</span>:
+$<span class="math notranslate nohighlight">\(\text{ecdf\_percentile\_count}(x, p) = \sum_{i=1}^{N} \mathbb{I}(y_i \le p) = |\{ x_{(i)} \mid y_i \le p \}|\)</span><span class="math notranslate nohighlight">\(
+di mana \)</span>\mathbb{I}$ adalah fungsi indikator bernilai 1 jika kondisi terpenuhi, dan 0 jika tidak.</p>
+</section>
+<section id="id3">
+<h3>3. Perhitungan Manual<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>Menggunakan sinyal ilustrasi dengan <span class="math notranslate nohighlight">\(N = 8\)</span>:</p>
+<ul class="simple">
+<li><p><strong>Untuk <span class="math notranslate nohighlight">\(p = 0.2\)</span> (Persentil ke-20):</strong></p>
+<ul>
+<li><p>Hitung banyaknya titik yang memiliki <span class="math notranslate nohighlight">\(y_i \le 0.2\)</span>.</p></li>
+<li><p>Hanya ada 1 titik yaitu <span class="math notranslate nohighlight">\(i = 1\)</span> (<span class="math notranslate nohighlight">\(y_1 = 0.125\)</span>).</p></li>
+<li><p>Jumlah sampel = <span class="math notranslate nohighlight">\(\mathbf{1}\)</span>.</p></li>
+</ul>
+</li>
+<li><p><strong>Untuk <span class="math notranslate nohighlight">\(p = 0.8\)</span> (Persentil ke-80):</strong></p>
+<ul>
+<li><p>Hitung banyaknya titik yang memiliki <span class="math notranslate nohighlight">\(y_i \le 0.8\)</span>.</p></li>
+<li><p>Terdapat 6 titik yaitu <span class="math notranslate nohighlight">\(i = 1, 2, 3, 4, 5, 6\)</span> (<span class="math notranslate nohighlight">\(y_6 = 0.750 \le 0.8\)</span>).</p></li>
+<li><p>Jumlah sampel = <span class="math notranslate nohighlight">\(\mathbf{6}\)</span>.</p></li>
+</ul>
+</li>
+</ul>
+<p><em>Jika menggunakan persentil tunggal <span class="math notranslate nohighlight">\(p = 0.5\)</span> (Persentil ke-50):</em></p>
+<ul class="simple">
+<li><p>Banyaknya titik yang memiliki <span class="math notranslate nohighlight">\(y_i \le 0.5\)</span> adalah <span class="math notranslate nohighlight">\(i = 1, 2, 3, 4\)</span>.</p></li>
+<li><p>Jumlah sampel = <span class="math notranslate nohighlight">\(\mathbf{4}\)</span>.</p></li>
+</ul>
+</section>
+<section id="id4">
+<h3>4. Verifikasi dengan TSFEL<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">tsfel.feature_extraction.features</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+
+<span class="n">signal</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+
+<span class="c1"># 1. Menggunakan default TSFEL (percentile=[0.2, 0.8])</span>
+<span class="n">hasil_count_default</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">ecdf_percentile_count</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hasil_count_default</span><span class="p">)</span>  <span class="c1"># Output: (1, 6)</span>
+
+<span class="c1"># 2. Menggunakan persentil 0.5</span>
+<span class="n">hasil_count_p50</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">ecdf_percentile_count</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hasil_count_p50</span><span class="p">)</span>      <span class="c1"># Output: 4</span>
+</pre></div>
+</div>
+<p>Hasil perhitungan manual (<span class="math notranslate nohighlight">\(1\)</span> dan <span class="math notranslate nohighlight">\(6\)</span>, atau <span class="math notranslate nohighlight">\(4\)</span>) <strong>terbukti 100% cocok dan terverifikasi</strong> dengan fungsi TSFEL asli. ✅</p>
+</section>
+<section id="id5">
+<h3>5. Nilai Aktual pada Dataset (<code class="docutils literal notranslate"><span class="pre">ekstraksi_fitur_no2.csv</span></code>, id=13, Dedy Nurohim, Sambeng Lamongan)<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[\text{ecdf\_percentile\_count} = 182.5\]</div>
+<p><em>Makna fisis:</em> Pada data observasi deret waktu NO2 tahunan wilayah Sambeng yang mencakup 365 hari kalender observasi, ambang persentil 50% (median) mencakup tepat <span class="math notranslate nohighlight">\(50\% \times 365 = 182.5\)</span> sampel hari observasi.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="ringkasan-perbandingan">
+<h2>Ringkasan Perbandingan<a class="headerlink" href="#ringkasan-perbandingan" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Fitur</p></th>
+<th class="head"><p>Definisi / Rumus Matematis</p></th>
+<th class="head"><p>Hasil Manual (<span class="math notranslate nohighlight">\(p=0.5\)</span>)</p></th>
+<th class="head"><p>Hasil Manual (<span class="math notranslate nohighlight">\(p=[0.2, 0.8]\)</span>)</p></th>
+<th class="head"><p>Nilai Aktual di Dataset (id=13, Dedy Nurohim - Sambeng)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong><code class="docutils literal notranslate"><span class="pre">ecdf_percentile</span></code></strong></p></td>
+<td><p><span class="math notranslate nohighlight">\(\max \{ x_{(i)} \mid y_i \le p \}\)</span></p></td>
+<td><p><strong>4</strong></p></td>
+<td><p><strong>(2, 6)</strong></p></td>
+<td><p><strong><span class="math notranslate nohighlight">\(0.000031\)</span></strong> (<span class="math notranslate nohighlight">\(3.099440 \times 10^{-5}\)</span>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><code class="docutils literal notranslate"><span class="pre">ecdf_percentile_count</span></code></strong></p></td>
+<td><p>$</p></td>
+<td><p>{ x_{(i)} \mid y_i \le p }</p></td>
+<td><p>$</p></td>
+<td><p><strong>4</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="K_Means_Clustering_Knime.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Alur Kerja (Workflow) Clustering KNIME</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#konsep-dasar-ecdf-empirical-cumulative-distribution-function">Konsep Dasar: ECDF (Empirical Cumulative Distribution Function)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fitur-1-ecdf-percentile-signal-percentile">Fitur 1: <code class="docutils literal notranslate"><span class="pre">ecdf_percentile(signal[,</span> <span class="pre">percentile])</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deskripsi">1. Deskripsi</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rumus">2. Rumus</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perhitungan-manual">3. Perhitungan Manual</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verifikasi-dengan-tsfel">4. Verifikasi dengan TSFEL</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nilai-aktual-pada-dataset-ekstraksi-fitur-no2-csv-id-13-dedy-nurohim-sambeng-lamongan">5. Nilai Aktual pada Dataset (<code class="docutils literal notranslate"><span class="pre">ekstraksi_fitur_no2.csv</span></code>, id=13, Dedy Nurohim, Sambeng Lamongan)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fitur-2-ecdf-percentile-count-signal-percentile">Fitur 2: <code class="docutils literal notranslate"><span class="pre">ecdf_percentile_count(signal[,</span> <span class="pre">percentile])</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">1. Deskripsi</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2. Rumus</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">3. Perhitungan Manual</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">4. Verifikasi dengan TSFEL</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">5. Nilai Aktual pada Dataset (<code class="docutils literal notranslate"><span class="pre">ekstraksi_fitur_no2.csv</span></code>, id=13, Dedy Nurohim, Sambeng Lamongan)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ringkasan-perbandingan">Ringkasan Perbandingan</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dedy Nurohim
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

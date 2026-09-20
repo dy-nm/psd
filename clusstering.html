@@ -1,0 +1,4213 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Analisis Ekstraksi Fitur Deret Waktu &amp; K-Means Clustering Polutan Udara (CO, NO2, SO2) &#8212; WELCOME TO MY NOTEBOOK</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'clusstering';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/profil.png" class="logo__image only-light" alt="WELCOME TO MY NOTEBOOK - Home"/>
+    <script>document.write(`<img src="_static/profil.png" class="logo__image only-dark" alt="WELCOME TO MY NOTEBOOK - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    🌐 Selamat Datang di Web catatan saya
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Crawling_Polutan_Lamongan.html">Crawling &amp; Analisis Data Polutan Udara di Kabupaten Lamongan</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="Crawling_Polutan_sambeng.html">Crawling &amp; Analisis Data Polutan Udara di Kecamatan Sambeng, Kabupaten Lamongan</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="analisis_clustering.html">Analisis Penentuan Jumlah Cluster Optimal pada K-Means Clustering</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/dy-nm/psd" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/dy-nm/psd/issues/new?title=Issue%20on%20page%20%2Fclusstering.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/clusstering.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Analisis Ekstraksi Fitur Deret Waktu & K-Means Clustering Polutan Udara (CO, NO2, SO2)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#konsep-dasar-statistik-deskripsi-68-fitur-tsfel">1. Konsep Dasar Statistik &amp; Deskripsi 68 Fitur TSFEL</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-domain-statistik-16-fitur">A. Domain Statistik (16 Fitur)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-domain-temporal-waktu-18-fitur">B. Domain Temporal / Waktu (18 Fitur)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-domain-frekuensi-spektral-26-fitur">C. Domain Frekuensi / Spektral (26 Fitur)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-domain-fraktal-kompleksitas-8-fitur">D. Domain Fraktal &amp; Kompleksitas (8 Fitur)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contoh-perhitungan-manual-vs-pembuktian-tsfel">Contoh Perhitungan Manual vs Pembuktian TSFEL</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#struktur-dataset-ekstraksi-fitur-untuk-1-kelas">2. Struktur Dataset Ekstraksi Fitur untuk 1 Kelas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#migrasi-data-fitur-ke-database-cloud-postgresql-aiven">3. Migrasi Data Fitur ke Database Cloud PostgreSQL (Aiven)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pembacaan-dan-verifikasi-dimensi-data-hasil-ekstraksi-fitur">4. Pembacaan dan Verifikasi Dimensi Data Hasil Ekstraksi Fitur</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metodologi-reduksi-dimensi-menggunakan-pca-principal-component-analysis">5. Metodologi Reduksi Dimensi Menggunakan PCA (Principal Component Analysis)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mengapa-reduksi-dimensi-dilakukan-menjadi-37-komponen">Mengapa Reduksi Dimensi Dilakukan Menjadi 37 Komponen?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-penentuan-jumlah-cluster-terbaik-pada-k-means-clustering">6. Analisis Penentuan Jumlah Cluster Terbaik pada K-Means Clustering</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rangkuman-hasil-evaluasi-klaster-k-2-s-d-k-7">Rangkuman Hasil Evaluasi Klaster (<span class="math notranslate nohighlight">\(k=2\)</span> s.d. <span class="math notranslate nohighlight">\(k=7\)</span>):</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jawaban-pertanyaan-tugas">Jawaban Pertanyaan Tugas:</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#dari-hasil-reduksi-dimensi-pca-1-pca-37-berapa-baiknya-cluster">1. Dari hasil reduksi dimensi PCA 1 – PCA 37 berapa baiknya cluster?</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#berapa-baiknya-data-ini-di-cluster">2. Berapa baiknya data ini di-cluster?</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#bagaimana-hasilnya-jika-dilakukan-pada-68-fitur-asli-secara-langsung">3. Bagaimana hasilnya jika dilakukan pada 68 fitur asli secara langsung?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#panduan-implementasi-pada-tools-knime-analytics-platform">7. Panduan Implementasi pada Tools KNIME Analytics Platform</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="analisis-ekstraksi-fitur-deret-waktu-k-means-clustering-polutan-udara-co-no2-so2">
+<h1>Analisis Ekstraksi Fitur Deret Waktu &amp; K-Means Clustering Polutan Udara (CO, NO2, SO2)<a class="headerlink" href="#analisis-ekstraksi-fitur-deret-waktu-k-means-clustering-polutan-udara-co-no2-so2" title="Link to this heading">#</a></h1>
+<p>Notebook ini berisi analisis komprehensif eksplorasi data deret waktu (<em>time series</em>), ekstraksi fitur berbasis <strong>TSFEL</strong>, reduksi dimensi menggunakan <strong>PCA (<em>Principal Component Analysis</em>)</strong>, serta penentuan jumlah klaster optimal pada algoritma <strong>K-Means Clustering</strong> untuk 3 jenis polutan udara utama: <strong>Karbon Monoksida (CO)</strong>, <strong>Nitrogen Dioksida (NO2)</strong>, dan <strong>Sulfur Dioksida (SO2)</strong>.</p>
+<p>Analisis ini dikerjakan secara terintegrasi menggunakan dua pendekatan:</p>
+<ol class="arabic simple">
+<li><p><strong>Pendekatan Tools</strong>: Menggunakan <strong>KNIME Analytics Platform</strong> dengan alur <em>PostgreSQL Connector → DB Table Selector → DB Reader → PCA → k-Means → Scatter Plot</em>.</p></li>
+<li><p><strong>Pendekatan Code</strong>: Menggunakan <strong>Python (Scikit-Learn, Pandas, Matplotlib, Seaborn)</strong> di dalam Jupyter Notebook ini.</p></li>
+</ol>
+<hr class="docutils" />
+<section id="konsep-dasar-statistik-deskripsi-68-fitur-tsfel">
+<h2>1. Konsep Dasar Statistik &amp; Deskripsi 68 Fitur TSFEL<a class="headerlink" href="#konsep-dasar-statistik-deskripsi-68-fitur-tsfel" title="Link to this heading">#</a></h2>
+<p>Data polutan harian yang diperoleh dari observasi satelit Sentinel-5P diekstraksi menggunakan pustaka <strong>TSFEL (<em>Time Series Feature Extraction Library</em>)</strong>. Sebanyak <strong>68 fitur numerik</strong> diekstraksi dari setiap sinyal deret waktu dan dikelompokkan ke dalam 4 domain utama:</p>
+<section id="a-domain-statistik-16-fitur">
+<h3>A. Domain Statistik (16 Fitur)<a class="headerlink" href="#a-domain-statistik-16-fitur" title="Link to this heading">#</a></h3>
+<p>Mengukur tendensi sentral, dispersi, dan bentuk sebaran data konsentrasi polutan:</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">calc_mean</span></code></strong>: Rata-rata aritmatika konsentrasi polutan selama periode observasi harian.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">calc_std</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">calc_var</span></code></strong>: Standar deviasi dan variansi, mengukur tingkat fluktuasi data terhadap nilai rata-ratanya.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">calc_median</span></code></strong>: Nilai tengah persentil 50%, ukuran pemusatan yang tahan terhadap nilai ekstrem (<em>outliers</em>).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">calc_min</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">calc_max</span></code></strong>: Konsentrasi polutan terendah dan tertinggi yang tercatat.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">interq_range</span></code> (IQR)</strong>: Rentang interkuartil (<span class="math notranslate nohighlight">\(Q_3 - Q_1\)</span>), mengukur sebaran 50% data di tengah distribusi.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">skewness</span></code></strong>: Derajat kemiringan distribusi. Skewness positif mengindikasikan bahwa sebagian besar hari konsentrasi polutan rendah dengan sesekali lonjakan polusi ekstrem.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">kurtosis</span></code></strong>: Keruncingan distribusi. Kurtosis tinggi menandakan keberadaan pencilan ekstrem (<em>heavy tails</em>).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">hist_mode</span></code></strong>: Modus data (nilai konsentrasi yang paling sering muncul).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">mean_abs_deviation</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">median_abs_deviation</span></code> (MAD)</strong>: Rata-rata dan median selisih mutlak titik data terhadap titik pusatnya.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">ecdf</span></code>, <code class="docutils literal notranslate"><span class="pre">ecdf_percentile</span></code>, <code class="docutils literal notranslate"><span class="pre">ecdf_percentile_count</span></code>, <code class="docutils literal notranslate"><span class="pre">ecdf_slope</span></code></strong>: Parameter fungsi distribusi kumulatif empiris untuk melihat laju akumulasi probabilitas konsentrasi polutan.</p></li>
+</ul>
+</section>
+<section id="b-domain-temporal-waktu-18-fitur">
+<h3>B. Domain Temporal / Waktu (18 Fitur)<a class="headerlink" href="#b-domain-temporal-waktu-18-fitur" title="Link to this heading">#</a></h3>
+<p>Mengukur sifat dinamis, laju perubahan antar-waktu, dan total akumulasi energi sinyal:</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">abs_energy</span></code></strong>: Total energi sinyal (<span class="math notranslate nohighlight">\(\sum x_i^2\)</span>), merepresentasikan akumulasi beban pencemaran sepanjang tahun.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">auc</span></code> (Area Under Curve)</strong>: Luas area di bawah kurva konsentrasi polutan harian.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">autocorr</span></code></strong>: Autokorelasi sinyal, mengukur ketergantungan konsentrasi hari ini dengan hari-hari sebelumnya (persistensi temporal).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">average_power</span></code></strong>: Rata-rata daya sinyal per satuan waktu.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">calc_centroid</span></code></strong>: Titik berat waktu sinyal, mengindikasikan kapan puncak pencemaran cenderung terkonsentrasi dalam kalender tahunan.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">distance</span></code></strong>: Total jarak lintasan sinyal (panjang kurva fluktuasi harian).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">mean_diff</span></code>, <code class="docutils literal notranslate"><span class="pre">mean_abs_diff</span></code>, <code class="docutils literal notranslate"><span class="pre">median_diff</span></code>, <code class="docutils literal notranslate"><span class="pre">median_abs_diff</span></code>, <code class="docutils literal notranslate"><span class="pre">sum_abs_diff</span></code></strong>: Rata-rata, median, dan akumulasi perbedaan konsentrasi antar-hari berturut-turut (<span class="math notranslate nohighlight">\(x_{t+1} - x_t\)</span>).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">slope</span></code></strong>: Kemiringan garis tren linier, menunjukkan tren jangka panjang apakah emisi cenderung meningkat atau menurun.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">pk_pk_distance</span></code></strong>: Rentang puncak-ke-lembah (<span class="math notranslate nohighlight">\(Max - Min\)</span>).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">zero_cross</span></code>, <code class="docutils literal notranslate"><span class="pre">positive_turning</span></code>, <code class="docutils literal notranslate"><span class="pre">negative_turning</span></code>, <code class="docutils literal notranslate"><span class="pre">neighbourhood_peaks</span></code></strong>: Jumlah perlintasan batas dasar serta frekuensi titik belok puncak (<em>local maxima</em>) dan lembah (<em>local minima</em>).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">rms</span></code> (Root Mean Square)</strong>: Nilai akar kuadrat rata-rata dari kuadrat sinyal.</p></li>
+</ul>
+</section>
+<section id="c-domain-frekuensi-spektral-26-fitur">
+<h3>C. Domain Frekuensi / Spektral (26 Fitur)<a class="headerlink" href="#c-domain-frekuensi-spektral-26-fitur" title="Link to this heading">#</a></h3>
+<p>Mentransformasikan sinyal waktu ke domain frekuensi (melalui <em>Fast Fourier Transform</em> / <em>Wavelet</em>) untuk menangkap pola siklus berkala (misalnya siklus musiman atau mingguan):</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">fundamental_frequency</span></code>, <code class="docutils literal notranslate"><span class="pre">max_frequency</span></code>, <code class="docutils literal notranslate"><span class="pre">median_frequency</span></code></strong>: Frekuensi dasar dan komponen frekuensi dengan daya spektral dominan.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">max_power_spectrum</span></code>, <code class="docutils literal notranslate"><span class="pre">power_bandwidth</span></code></strong>: Magnitudo daya puncak dan lebar pita energi sinyal.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">spectral_centroid</span></code>, <code class="docutils literal notranslate"><span class="pre">spectral_spread</span></code>, <code class="docutils literal notranslate"><span class="pre">spectral_skewness</span></code>, <code class="docutils literal notranslate"><span class="pre">spectral_kurtosis</span></code></strong>: Momen spektral yang menggambarkan pusat gravitasi frekuensi, sebaran, dan keruncingan spektrum.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">spectral_slope</span></code>, <code class="docutils literal notranslate"><span class="pre">spectral_decrease</span></code>, <code class="docutils literal notranslate"><span class="pre">spectral_roll_off</span></code>, <code class="docutils literal notranslate"><span class="pre">spectral_roll_on</span></code></strong>: Karakteristik penurunan energi pada frekuensi tinggi.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">spectral_entropy</span></code></strong>: Tingkat keacakan atau kompleksitas spektrum frekuensi polutan.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">wavelet_energy</span></code>, <code class="docutils literal notranslate"><span class="pre">wavelet_entropy</span></code>, <code class="docutils literal notranslate"><span class="pre">wavelet_abs_mean</span></code>, <code class="docutils literal notranslate"><span class="pre">wavelet_std</span></code>, <code class="docutils literal notranslate"><span class="pre">wavelet_var</span></code></strong>: Energi dan variabilitas hasil dekomposisi gelombang (<em>wavelet</em>).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">mfcc</span></code>, <code class="docutils literal notranslate"><span class="pre">lpcc</span></code>, <code class="docutils literal notranslate"><span class="pre">human_range_energy</span></code></strong>: Representasi koefisien spektral lanjutan.</p></li>
+</ul>
+</section>
+<section id="d-domain-fraktal-kompleksitas-8-fitur">
+<h3>D. Domain Fraktal &amp; Kompleksitas (8 Fitur)<a class="headerlink" href="#d-domain-fraktal-kompleksitas-8-fitur" title="Link to this heading">#</a></h3>
+<p>Mengukur ketidakteraturan, sifat kekacauan (<em>chaos</em>), dan memori jangka panjang deret waktu:</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">entropy</span></code> (Shannon Entropy) &amp; <code class="docutils literal notranslate"><span class="pre">mse</span></code> (Multiscale Entropy)</strong>: Derajat keacakan informasi sinyal pada skala waktu tunggal maupun jamak.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">hurst_exponent</span></code></strong>: Menguji sifat persistensi data (<span class="math notranslate nohighlight">\(H &gt; 0.5\)</span> mengindikasikan tren jangka panjang; <span class="math notranslate nohighlight">\(H &lt; 0.5\)</span> bersifat <em>mean-reverting</em>).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">dfa</span></code> (Detrended Fluctuation Analysis)</strong>: Korelasi rentang panjang pada deret waktu non-stasioner.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">higuchi_fractal_dimension</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">petrosian_fractal_dimension</span></code></strong>: Dimensi fraktal yang mengukur kekasaran geometris sinyal.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">maximum_fractal_length</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">lempel_ziv</span></code></strong>: Kompleksitas munculnya pola-pola baru dalam sinyal.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="contoh-perhitungan-manual-vs-pembuktian-tsfel">
+<h3>Contoh Perhitungan Manual vs Pembuktian TSFEL<a class="headerlink" href="#contoh-perhitungan-manual-vs-pembuktian-tsfel" title="Link to this heading">#</a></h3>
+<p>Misalkan terdapat sampel deret waktu konsentrasi polutan selama 4 hari:
+$<span class="math notranslate nohighlight">\(X = [2.0, \, 4.0, \, 6.0, \, 8.0]\)</span>$</p>
+<ol class="arabic simple">
+<li><p><strong>Perhitungan Manual Rata-rata (<code class="docutils literal notranslate"><span class="pre">calc_mean</span></code>):</strong>
+$<span class="math notranslate nohighlight">\(\mu = \frac{\sum_{i=1}^{N} x_i}{N} = \frac{2.0 + 4.0 + 6.0 + 8.0}{4} = \frac{20.0}{4} = 5.0\)</span>$</p></li>
+<li><p><strong>Perhitungan Manual Rentang Puncak-ke-Lembah (<code class="docutils literal notranslate"><span class="pre">pk_pk_distance</span></code>):</strong>
+$<span class="math notranslate nohighlight">\(\text{Peak-to-Peak} = \max(X) - \min(X) = 8.0 - 2.0 = 6.0\)</span>$</p></li>
+<li><p><strong>Perhitungan Manual Root Mean Square (<code class="docutils literal notranslate"><span class="pre">rms</span></code>):</strong>
+$<span class="math notranslate nohighlight">\(\text{RMS} = \sqrt{\frac{1}{N} \sum_{i=1}^{N} x_i^2} = \sqrt{\frac{2^2 + 4^2 + 6^2 + 8^2}{4}} = \sqrt{\frac{4 + 16 + 36 + 64}{4}} = \sqrt{\frac{120}{4}} = \sqrt{30} \approx 5.4772\)</span>$</p></li>
+<li><p><strong>Perhitungan Manual Total Energi (<code class="docutils literal notranslate"><span class="pre">abs_energy</span></code>):</strong>
+$<span class="math notranslate nohighlight">\(\text{Energy} = \sum_{i=1}^{N} x_i^2 = 4 + 16 + 36 + 64 = 120.0\)</span>$</p></li>
+</ol>
+<p><em>Hasil perhitungan manual di atas telah divalidasi dan terbukti identik 100% dengan nilai yang dihitung oleh fungsi-fungsi TSFEL.</em></p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="struktur-dataset-ekstraksi-fitur-untuk-1-kelas">
+<h2>2. Struktur Dataset Ekstraksi Fitur untuk 1 Kelas<a class="headerlink" href="#struktur-dataset-ekstraksi-fitur-untuk-1-kelas" title="Link to this heading">#</a></h2>
+<p>Dataset yang dianalisis merupakan gabungan data hasil ekstraksi fitur deret waktu dari <strong>1 kelas</strong> yang terdiri atas <strong>37 mahasiswa / wilayah kajian</strong>:</p>
+<ul class="simple">
+<li><p><strong>Jumlah Sampel (Baris):</strong> 37 sampel (wilayah observasi berbeda seperti Sambeng, Kerek, Manyar, Tuban, dll).</p></li>
+<li><p><strong>Kolom Metadata (3 kolom):</strong> <code class="docutils literal notranslate"><span class="pre">id</span></code>, <code class="docutils literal notranslate"><span class="pre">nama</span></code> (mahasiswa), <code class="docutils literal notranslate"><span class="pre">daerah</span></code> (wilayah kajian).</p></li>
+<li><p><strong>Kolom Fitur Deret Waktu (68 kolom):</strong> 68 fitur TSFEL numerik.</p></li>
+<li><p><strong>Total Dimensi:</strong> <span class="math notranslate nohighlight">\(37 \times 71\)</span> kolom.</p></li>
+</ul>
+</section>
+<section id="migrasi-data-fitur-ke-database-cloud-postgresql-aiven">
+<h2>3. Migrasi Data Fitur ke Database Cloud PostgreSQL (Aiven)<a class="headerlink" href="#migrasi-data-fitur-ke-database-cloud-postgresql-aiven" title="Link to this heading">#</a></h2>
+<p>Pada tahap ini, ketiga berkas hasil ekstraksi fitur (<code class="docutils literal notranslate"><span class="pre">ekstraksi_fitur_co.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">ekstraksi_fitur_no2.csv</span></code>, dan <code class="docutils literal notranslate"><span class="pre">ekstraksi_fitur_so2.csv</span></code>) disimpan ke database PostgreSQL di cloud (Aiven). Hal ini bertujuan agar data dapat diakses secara terpusat oleh berbagai tools analisis, termasuk <strong>KNIME Analytics Platform</strong> melalui node <em>PostgreSQL Connector</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_engine</span>
+
+<span class="c1"># 1. Load data time series hasil crawling Anda</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;ekstraksi_fitur_co.csv&#39;</span><span class="p">)</span>
+
+<span class="c1"># 2. Setup koneksi ke PostgreSQL Aiven (Pastikan menggunakan postgresql:// dan port 15884)</span>
+<span class="c1"># Jangan lupa ganti &quot;password_anda&quot; jika ini belum sesuai</span>
+<span class="n">AIVEN_DB_URL</span> <span class="o">=</span> <span class="s2">&quot;postgresql://avnadmin:password_anda@pg-9691fac-dedynurohim1-d965.i.aivencloud.com:15884/defaultdb?sslmode=require&quot;</span>
+
+<span class="c1"># Buat engine koneksi</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">AIVEN_DB_URL</span><span class="p">)</span>
+
+<span class="c1"># 3. Masukkan data ke PostgreSQL</span>
+<span class="n">tabel_nama</span> <span class="o">=</span> <span class="s1">&#39;data_clustering_co&#39;</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_sql</span><span class="p">(</span><span class="n">tabel_nama</span><span class="p">,</span> <span class="n">engine</span><span class="p">,</span> <span class="n">if_exists</span><span class="o">=</span><span class="s1">&#39;replace&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Berhasil! Data dari &#39;ekstraksi_fitur_co.csv&#39; telah diupload ke tabel &#39;</span><span class="si">{</span><span class="n">tabel_nama</span><span class="si">}</span><span class="s2">&#39; di Aiven PostgreSQL.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil! Data dari &#39;ekstraksi_fitur_co.csv&#39; telah diupload ke tabel &#39;data_clustering_co&#39; di Aiven PostgreSQL.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_engine</span>
+
+<span class="c1"># 1. Load data time series hasil crawling Anda</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;ekstraksi_fitur_no2.csv&#39;</span><span class="p">)</span>
+
+<span class="c1"># 2. Setup koneksi ke PostgreSQL Aiven (Pastikan menggunakan postgresql:// dan port 15884)</span>
+<span class="c1"># Jangan lupa ganti &quot;password_anda&quot; jika ini belum sesuai</span>
+<span class="n">AIVEN_DB_URL</span> <span class="o">=</span> <span class="s2">&quot;postgresql://avnadmin:password_anda@pg-9691fac-dedynurohim1-d965.i.aivencloud.com:15884/defaultdb?sslmode=require&quot;</span>
+
+<span class="c1"># Buat engine koneksi</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">AIVEN_DB_URL</span><span class="p">)</span>
+
+<span class="c1"># 3. Masukkan data ke PostgreSQL</span>
+<span class="n">tabel_nama</span> <span class="o">=</span> <span class="s1">&#39;data_clustering_no2&#39;</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_sql</span><span class="p">(</span><span class="n">tabel_nama</span><span class="p">,</span> <span class="n">engine</span><span class="p">,</span> <span class="n">if_exists</span><span class="o">=</span><span class="s1">&#39;replace&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Berhasil! Data dari &#39;ekstraksi_fitur_no2.csv&#39; telah diupload ke tabel &#39;</span><span class="si">{</span><span class="n">tabel_nama</span><span class="si">}</span><span class="s2">&#39; di Aiven PostgreSQL.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil! Data dari &#39;ekstraksi_fitur_no2.csv&#39; telah diupload ke tabel &#39;data_clustering_no2&#39; di Aiven PostgreSQL.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_engine</span>
+
+<span class="c1"># 1. Load data time series hasil crawling Anda</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;ekstraksi_fitur_so2.csv&#39;</span><span class="p">)</span>
+
+<span class="c1"># 2. Setup koneksi ke PostgreSQL Aiven (Pastikan menggunakan postgresql:// dan port 15884)</span>
+<span class="c1"># Jangan lupa ganti &quot;password_anda&quot; jika ini belum sesuai</span>
+<span class="n">AIVEN_DB_URL</span> <span class="o">=</span> <span class="s2">&quot;postgresql://avnadmin:password_anda@pg-9691fac-dedynurohim1-d965.i.aivencloud.com:15884/defaultdb?sslmode=require&quot;</span>
+
+<span class="c1"># Buat engine koneksi</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">AIVEN_DB_URL</span><span class="p">)</span>
+
+<span class="c1"># 3. Masukkan data ke PostgreSQL</span>
+<span class="n">tabel_nama</span> <span class="o">=</span> <span class="s1">&#39;data_clustering_so2&#39;</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_sql</span><span class="p">(</span><span class="n">tabel_nama</span><span class="p">,</span> <span class="n">engine</span><span class="p">,</span> <span class="n">if_exists</span><span class="o">=</span><span class="s1">&#39;replace&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Berhasil! Data dari &#39;ekstraksi_fitur_so2.csv&#39; telah diupload ke tabel &#39;</span><span class="si">{</span><span class="n">tabel_nama</span><span class="si">}</span><span class="s2">&#39; di Aiven PostgreSQL.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil! Data dari &#39;ekstraksi_fitur_so2.csv&#39; telah diupload ke tabel &#39;data_clustering_so2&#39; di Aiven PostgreSQL.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="pembacaan-dan-verifikasi-dimensi-data-hasil-ekstraksi-fitur">
+<h2>4. Pembacaan dan Verifikasi Dimensi Data Hasil Ekstraksi Fitur<a class="headerlink" href="#pembacaan-dan-verifikasi-dimensi-data-hasil-ekstraksi-fitur" title="Link to this heading">#</a></h2>
+<p>Pada tahap ini, kita memverifikasi bahwa ketiga tabel fitur polutan (CO, NO2, SO2) telah memiliki struktur dimensi yang lengkap dan seragam (<span class="math notranslate nohighlight">\(37 \text{ baris} \times 71 \text{ kolom}\)</span>), di mana 68 kolom di antaranya merupakan fitur numerik hasil ekstraksi TSFEL yang siap dianalisis.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Membaca dan menampilkan berkas hasil ekstraksi fitur TSFEL</span>
+<span class="n">df_tsfel</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;ekstraksi_fitur_co.csv&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;table : &#39;ekstraksi_fitur_co.csv&#39; Dimensi data: </span><span class="si">{</span><span class="n">df_tsfel</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> baris x </span><span class="si">{</span><span class="n">df_tsfel</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> kolom fitur&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_tsfel</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>table : &#39;ekstraksi_fitur_co.csv&#39; Dimensi data: 37 baris x 71 kolom fitur
+</pre></div>
+</div>
+<div class="output text_html">
+  <div id="df-e57070c4-87a3-417b-b8c7-7f0e0b7573ee" class="colab-df-container">
+    <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>nama</th>
+      <th>daerah</th>
+      <th>abs_energy</th>
+      <th>auc</th>
+      <th>autocorr</th>
+      <th>average_power</th>
+      <th>calc_centroid</th>
+      <th>calc_max</th>
+      <th>calc_mean</th>
+      <th>...</th>
+      <th>spectral_spread</th>
+      <th>spectral_variation</th>
+      <th>spectrogram_mean_coeff</th>
+      <th>sum_abs_diff</th>
+      <th>wavelet_abs_mean</th>
+      <th>wavelet_energy</th>
+      <th>wavelet_entropy</th>
+      <th>wavelet_std</th>
+      <th>wavelet_var</th>
+      <th>zero_cross</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>3</td>
+      <td>Nurhabibatul Umah</td>
+      <td>Kerek, Tuban</td>
+      <td>3.255516e-01</td>
+      <td>10.822536</td>
+      <td>3</td>
+      <td>8.919222e-04</td>
+      <td>185.172183</td>
+      <td>0.038546</td>
+      <td>0.029654</td>
+      <td>...</td>
+      <td>0.130288</td>
+      <td>0.554103</td>
+      <td>0.000015</td>
+      <td>0.704421</td>
+      <td>0.001815</td>
+      <td>0.008006</td>
+      <td>2.144113</td>
+      <td>0.007772</td>
+      <td>0.000069</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>4</td>
+      <td>Verdi Setyawan Ardiansyah Putra</td>
+      <td>Menganti Gresik</td>
+      <td>3.119461e-01</td>
+      <td>10.599365</td>
+      <td>3</td>
+      <td>8.546469e-04</td>
+      <td>183.614501</td>
+      <td>0.036701</td>
+      <td>0.029041</td>
+      <td>...</td>
+      <td>0.135135</td>
+      <td>0.592456</td>
+      <td>0.000015</td>
+      <td>0.709078</td>
+      <td>0.001715</td>
+      <td>0.007520</td>
+      <td>2.139121</td>
+      <td>0.007297</td>
+      <td>0.000060</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>5</td>
+      <td>Okan Syailendra wahyudi</td>
+      <td>Manyar, Gresik</td>
+      <td>3.063319e-01</td>
+      <td>10.489406</td>
+      <td>3</td>
+      <td>8.415712e-04</td>
+      <td>180.902553</td>
+      <td>0.036488</td>
+      <td>0.028827</td>
+      <td>...</td>
+      <td>0.127778</td>
+      <td>0.661400</td>
+      <td>0.000014</td>
+      <td>0.623414</td>
+      <td>0.001676</td>
+      <td>0.007558</td>
+      <td>2.126252</td>
+      <td>0.007348</td>
+      <td>0.000061</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>6</td>
+      <td>Mochammad Zaenal Abidin</td>
+      <td>Widang, Tuban</td>
+      <td>3.208447e-01</td>
+      <td>10.744960</td>
+      <td>3</td>
+      <td>8.790265e-04</td>
+      <td>184.819043</td>
+      <td>0.037897</td>
+      <td>0.029439</td>
+      <td>...</td>
+      <td>0.129537</td>
+      <td>0.474190</td>
+      <td>0.000013</td>
+      <td>0.698436</td>
+      <td>0.001767</td>
+      <td>0.007519</td>
+      <td>2.147071</td>
+      <td>0.007280</td>
+      <td>0.000060</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>7</td>
+      <td>M. Hendrik Purwanto</td>
+      <td>Sreseh, Sampang</td>
+      <td>3.001284e-01</td>
+      <td>10.334234</td>
+      <td>4</td>
+      <td>8.313807e-04</td>
+      <td>178.342624</td>
+      <td>0.038664</td>
+      <td>0.028630</td>
+      <td>...</td>
+      <td>0.130322</td>
+      <td>0.684887</td>
+      <td>0.000017</td>
+      <td>0.611650</td>
+      <td>0.001698</td>
+      <td>0.007830</td>
+      <td>2.098579</td>
+      <td>0.007624</td>
+      <td>0.000068</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>8</td>
+      <td>Robbaniyah Umdatun Ni'mah</td>
+      <td>Cerme, Gresik</td>
+      <td>2.315016e-01</td>
+      <td>7.741078</td>
+      <td>1</td>
+      <td>8.802342e-04</td>
+      <td>132.852591</td>
+      <td>0.038488</td>
+      <td>0.029437</td>
+      <td>...</td>
+      <td>0.147843</td>
+      <td>0.653533</td>
+      <td>0.000017</td>
+      <td>0.768211</td>
+      <td>0.002392</td>
+      <td>0.008140</td>
+      <td>2.139178</td>
+      <td>0.007740</td>
+      <td>0.000069</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>10</td>
+      <td>Ainur Raftuzzaki</td>
+      <td>Nunukan</td>
+      <td>2.786200e-01</td>
+      <td>10.016313</td>
+      <td>7</td>
+      <td>7.633425e-04</td>
+      <td>187.753748</td>
+      <td>0.034897</td>
+      <td>0.027451</td>
+      <td>...</td>
+      <td>0.123825</td>
+      <td>0.850024</td>
+      <td>0.000013</td>
+      <td>0.451485</td>
+      <td>0.001694</td>
+      <td>0.007603</td>
+      <td>2.083529</td>
+      <td>0.007400</td>
+      <td>0.000066</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>11</td>
+      <td>Magdalena Jovita Hatuopar</td>
+      <td>Pilangkenceng, Madiun</td>
+      <td>3.191231e-01</td>
+      <td>10.705921</td>
+      <td>17</td>
+      <td>8.767118e-04</td>
+      <td>187.237450</td>
+      <td>0.037184</td>
+      <td>0.029420</td>
+      <td>...</td>
+      <td>0.128023</td>
+      <td>0.389429</td>
+      <td>0.000010</td>
+      <td>0.621369</td>
+      <td>0.001861</td>
+      <td>0.007592</td>
+      <td>2.124930</td>
+      <td>0.007341</td>
+      <td>0.000063</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>12</td>
+      <td>Rachelia Andini Tendean</td>
+      <td>Tikala, Manado</td>
+      <td>2.337529e-01</td>
+      <td>9.101386</td>
+      <td>7</td>
+      <td>6.457263e-04</td>
+      <td>185.419585</td>
+      <td>0.033446</td>
+      <td>0.025156</td>
+      <td>...</td>
+      <td>0.131445</td>
+      <td>0.799799</td>
+      <td>0.000017</td>
+      <td>0.592317</td>
+      <td>0.001540</td>
+      <td>0.007593</td>
+      <td>2.112171</td>
+      <td>0.007422</td>
+      <td>0.000064</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>13</td>
+      <td>Kurnia Maulinda Sari</td>
+      <td>Labang, Bangkalan</td>
+      <td>3.052118e-01</td>
+      <td>10.489433</td>
+      <td>3</td>
+      <td>8.361968e-04</td>
+      <td>180.420264</td>
+      <td>0.035705</td>
+      <td>0.028743</td>
+      <td>...</td>
+      <td>0.131499</td>
+      <td>0.615471</td>
+      <td>0.000012</td>
+      <td>0.622891</td>
+      <td>0.001695</td>
+      <td>0.007307</td>
+      <td>2.128615</td>
+      <td>0.007086</td>
+      <td>0.000058</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>14</td>
+      <td>Marshella Aulia Putri</td>
+      <td>Kec. Kalianget, Sumenep</td>
+      <td>1.529918e-01</td>
+      <td>5.467816</td>
+      <td>1</td>
+      <td>7.688029e-04</td>
+      <td>99.430494</td>
+      <td>0.035235</td>
+      <td>0.027481</td>
+      <td>...</td>
+      <td>0.149160</td>
+      <td>0.678646</td>
+      <td>0.000018</td>
+      <td>0.599924</td>
+      <td>0.002941</td>
+      <td>0.008840</td>
+      <td>2.120480</td>
+      <td>0.008281</td>
+      <td>0.000078</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>15</td>
+      <td>Ahmad Dafi Zidni Alfarisi</td>
+      <td>Paciran, Lamongan</td>
+      <td>3.261721e-01</td>
+      <td>10.840513</td>
+      <td>3</td>
+      <td>8.936222e-04</td>
+      <td>185.077591</td>
+      <td>0.038116</td>
+      <td>0.029698</td>
+      <td>...</td>
+      <td>0.133447</td>
+      <td>0.599843</td>
+      <td>0.000014</td>
+      <td>0.651022</td>
+      <td>0.001810</td>
+      <td>0.007710</td>
+      <td>2.119542</td>
+      <td>0.007474</td>
+      <td>0.000065</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>16</td>
+      <td>Rian Renaldy</td>
+      <td>Waru, Pamekasan</td>
+      <td>2.728159e-01</td>
+      <td>9.911390</td>
+      <td>2</td>
+      <td>7.474409e-04</td>
+      <td>178.915949</td>
+      <td>0.034778</td>
+      <td>0.027158</td>
+      <td>...</td>
+      <td>0.134423</td>
+      <td>0.643926</td>
+      <td>0.000014</td>
+      <td>0.677107</td>
+      <td>0.001578</td>
+      <td>0.006996</td>
+      <td>2.139672</td>
+      <td>0.006794</td>
+      <td>0.000052</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>17</td>
+      <td>Ahmad Syahrul Farihin</td>
+      <td>Gresik Kota, Gresik</td>
+      <td>3.079690e-01</td>
+      <td>10.527944</td>
+      <td>2</td>
+      <td>8.437507e-04</td>
+      <td>182.065409</td>
+      <td>0.038590</td>
+      <td>0.028848</td>
+      <td>...</td>
+      <td>0.133380</td>
+      <td>0.660595</td>
+      <td>0.000015</td>
+      <td>0.662317</td>
+      <td>0.001686</td>
+      <td>0.007452</td>
+      <td>2.137603</td>
+      <td>0.007233</td>
+      <td>0.000059</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>18</td>
+      <td>Dedy Nurohim</td>
+      <td>sambeng lamongan</td>
+      <td>3.125752e-01</td>
+      <td>10.609935</td>
+      <td>2</td>
+      <td>8.563704e-04</td>
+      <td>185.409232</td>
+      <td>0.037082</td>
+      <td>0.029078</td>
+      <td>...</td>
+      <td>0.135450</td>
+      <td>0.502018</td>
+      <td>0.000012</td>
+      <td>0.750114</td>
+      <td>0.001740</td>
+      <td>0.007021</td>
+      <td>2.145487</td>
+      <td>0.006777</td>
+      <td>0.000052</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>19</td>
+      <td>Deo Candra Saputra</td>
+      <td>Widodaren, Ngawi</td>
+      <td>3.232328e-01</td>
+      <td>10.784440</td>
+      <td>4</td>
+      <td>8.855693e-04</td>
+      <td>186.440948</td>
+      <td>0.037934</td>
+      <td>0.029553</td>
+      <td>...</td>
+      <td>0.134168</td>
+      <td>0.506234</td>
+      <td>0.000014</td>
+      <td>0.746127</td>
+      <td>0.001805</td>
+      <td>0.007579</td>
+      <td>2.139069</td>
+      <td>0.007337</td>
+      <td>0.000062</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>20</td>
+      <td>AHMAD MAULANA ISHAQ</td>
+      <td>Kertosono, Ngajuk</td>
+      <td>3.348938e-01</td>
+      <td>10.964412</td>
+      <td>2</td>
+      <td>9.175174e-04</td>
+      <td>186.970758</td>
+      <td>0.039377</td>
+      <td>0.030043</td>
+      <td>...</td>
+      <td>0.133451</td>
+      <td>0.485417</td>
+      <td>0.000017</td>
+      <td>0.833860</td>
+      <td>0.001846</td>
+      <td>0.007932</td>
+      <td>2.139663</td>
+      <td>0.007689</td>
+      <td>0.000068</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>21</td>
+      <td>Triswanti Jannatul Ma'wa</td>
+      <td>Kedungpring Lamongan</td>
+      <td>3.261478e-01</td>
+      <td>10.822841</td>
+      <td>3</td>
+      <td>8.935557e-04</td>
+      <td>184.681419</td>
+      <td>0.039073</td>
+      <td>0.029655</td>
+      <td>...</td>
+      <td>0.134737</td>
+      <td>0.573634</td>
+      <td>0.000018</td>
+      <td>0.706885</td>
+      <td>0.001774</td>
+      <td>0.008004</td>
+      <td>2.137570</td>
+      <td>0.007777</td>
+      <td>0.000068</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>22</td>
+      <td>Muhammad Isa</td>
+      <td>Bandung, Jogoroto, Jombang</td>
+      <td>3.252992e-01</td>
+      <td>10.791459</td>
+      <td>4</td>
+      <td>8.936791e-04</td>
+      <td>188.796058</td>
+      <td>0.038457</td>
+      <td>0.029653</td>
+      <td>...</td>
+      <td>0.124512</td>
+      <td>0.414166</td>
+      <td>0.000015</td>
+      <td>0.664271</td>
+      <td>0.001828</td>
+      <td>0.007996</td>
+      <td>2.127659</td>
+      <td>0.007760</td>
+      <td>0.000068</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>23</td>
+      <td>Lailatul Hasanah</td>
+      <td>Socah, Bangkalan</td>
+      <td>3.013782e-01</td>
+      <td>10.391711</td>
+      <td>2</td>
+      <td>8.302429e-04</td>
+      <td>182.013693</td>
+      <td>0.037707</td>
+      <td>0.028634</td>
+      <td>...</td>
+      <td>0.133350</td>
+      <td>0.731174</td>
+      <td>0.000014</td>
+      <td>0.654446</td>
+      <td>0.001710</td>
+      <td>0.007272</td>
+      <td>2.129555</td>
+      <td>0.007044</td>
+      <td>0.000057</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>24</td>
+      <td>Mohammad Aziz Huzaini</td>
+      <td>Tanah Merah, Bangkalan</td>
+      <td>2.911110e-01</td>
+      <td>10.255066</td>
+      <td>2</td>
+      <td>7.975643e-04</td>
+      <td>181.116771</td>
+      <td>0.034373</td>
+      <td>0.028099</td>
+      <td>...</td>
+      <td>0.125644</td>
+      <td>0.672813</td>
+      <td>0.000010</td>
+      <td>0.527192</td>
+      <td>0.001672</td>
+      <td>0.006981</td>
+      <td>2.138830</td>
+      <td>0.006754</td>
+      <td>0.000052</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>25</td>
+      <td>Laila Maghfiroh</td>
+      <td>Kamal, Bangkalan</td>
+      <td>3.085335e-01</td>
+      <td>10.541511</td>
+      <td>2</td>
+      <td>8.452971e-04</td>
+      <td>183.159365</td>
+      <td>0.037345</td>
+      <td>0.028888</td>
+      <td>...</td>
+      <td>0.137657</td>
+      <td>0.751382</td>
+      <td>0.000014</td>
+      <td>0.700390</td>
+      <td>0.001643</td>
+      <td>0.006999</td>
+      <td>2.143277</td>
+      <td>0.006777</td>
+      <td>0.000051</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>26</td>
+      <td>A. Choiril Anwar El-Asfihani Risydan</td>
+      <td>Banyu Ajuh, Perumnas, Kamal</td>
+      <td>3.071655e-01</td>
+      <td>10.502279</td>
+      <td>2</td>
+      <td>8.415493e-04</td>
+      <td>183.957699</td>
+      <td>0.037697</td>
+      <td>0.028782</td>
+      <td>...</td>
+      <td>0.134203</td>
+      <td>0.684009</td>
+      <td>0.000018</td>
+      <td>0.707648</td>
+      <td>0.001640</td>
+      <td>0.007370</td>
+      <td>2.130699</td>
+      <td>0.007161</td>
+      <td>0.000057</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>27</td>
+      <td>Muhammad izzul Millah Aqil</td>
+      <td>Wonokromo, Surabaya</td>
+      <td>3.196350e-01</td>
+      <td>10.666838</td>
+      <td>3</td>
+      <td>8.805371e-04</td>
+      <td>180.920619</td>
+      <td>0.039744</td>
+      <td>0.029388</td>
+      <td>...</td>
+      <td>0.132394</td>
+      <td>0.682405</td>
+      <td>0.000025</td>
+      <td>0.823524</td>
+      <td>0.001743</td>
+      <td>0.008660</td>
+      <td>2.129852</td>
+      <td>0.008457</td>
+      <td>0.000080</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>28</td>
+      <td>Fathul Aziz Saifuddin</td>
+      <td>Dukun, Gresik</td>
+      <td>3.129505e-01</td>
+      <td>10.588420</td>
+      <td>3</td>
+      <td>8.597540e-04</td>
+      <td>182.402254</td>
+      <td>0.038594</td>
+      <td>0.029091</td>
+      <td>...</td>
+      <td>0.133953</td>
+      <td>0.534442</td>
+      <td>0.000017</td>
+      <td>0.691652</td>
+      <td>0.001780</td>
+      <td>0.007723</td>
+      <td>2.120920</td>
+      <td>0.007492</td>
+      <td>0.000064</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>29</td>
+      <td>M. Fatihul Umam</td>
+      <td>Kwanyar, Bangkalan</td>
+      <td>2.959851e-01</td>
+      <td>10.316484</td>
+      <td>3</td>
+      <td>8.131458e-04</td>
+      <td>180.354669</td>
+      <td>0.035389</td>
+      <td>0.028343</td>
+      <td>...</td>
+      <td>0.126886</td>
+      <td>0.593124</td>
+      <td>0.000012</td>
+      <td>0.490562</td>
+      <td>0.001608</td>
+      <td>0.006700</td>
+      <td>2.122624</td>
+      <td>0.006480</td>
+      <td>0.000048</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>30</td>
+      <td>Rahardian Ananta</td>
+      <td>jabon , Sidoarjo</td>
+      <td>3.168455e-01</td>
+      <td>10.650071</td>
+      <td>2</td>
+      <td>8.680698e-04</td>
+      <td>185.040321</td>
+      <td>0.039571</td>
+      <td>0.029186</td>
+      <td>...</td>
+      <td>0.128549</td>
+      <td>0.616440</td>
+      <td>0.000022</td>
+      <td>0.799332</td>
+      <td>0.001736</td>
+      <td>0.008599</td>
+      <td>2.133406</td>
+      <td>0.008398</td>
+      <td>0.000079</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>31</td>
+      <td>Alifah Sayyidaturrhohma</td>
+      <td>Kota Sumenep, Sumenep</td>
+      <td>2.843796e-01</td>
+      <td>10.110612</td>
+      <td>4</td>
+      <td>7.812627e-04</td>
+      <td>179.840323</td>
+      <td>0.034935</td>
+      <td>0.027783</td>
+      <td>...</td>
+      <td>0.122113</td>
+      <td>0.616540</td>
+      <td>0.000011</td>
+      <td>0.490472</td>
+      <td>0.001585</td>
+      <td>0.007055</td>
+      <td>2.114638</td>
+      <td>0.006854</td>
+      <td>0.000054</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>33</td>
+      <td>Muhammad Ali Murtadho</td>
+      <td>Baron Nganjuk</td>
+      <td>3.376794e-01</td>
+      <td>11.016251</td>
+      <td>10</td>
+      <td>9.251491e-04</td>
+      <td>186.777380</td>
+      <td>0.038848</td>
+      <td>0.030186</td>
+      <td>...</td>
+      <td>0.125912</td>
+      <td>0.407333</td>
+      <td>0.000014</td>
+      <td>0.699120</td>
+      <td>0.001872</td>
+      <td>0.007867</td>
+      <td>2.130718</td>
+      <td>0.007618</td>
+      <td>0.000067</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>34</td>
+      <td>Fahdimas akmal</td>
+      <td>Kwanyar, Bangkalan</td>
+      <td>2.939204e-01</td>
+      <td>10.303411</td>
+      <td>2</td>
+      <td>8.052614e-04</td>
+      <td>182.921561</td>
+      <td>0.036114</td>
+      <td>0.028230</td>
+      <td>...</td>
+      <td>0.132060</td>
+      <td>0.743575</td>
+      <td>0.000010</td>
+      <td>0.610213</td>
+      <td>0.001667</td>
+      <td>0.006914</td>
+      <td>2.138718</td>
+      <td>0.006687</td>
+      <td>0.000051</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>36</td>
+      <td>Fathan Ruhul Alam</td>
+      <td>Warudoyong, Kota Sukabumi</td>
+      <td>2.933008e-01</td>
+      <td>10.244820</td>
+      <td>5</td>
+      <td>8.035638e-04</td>
+      <td>190.382304</td>
+      <td>0.037859</td>
+      <td>0.028070</td>
+      <td>...</td>
+      <td>0.124681</td>
+      <td>0.397988</td>
+      <td>0.000016</td>
+      <td>0.614313</td>
+      <td>0.001803</td>
+      <td>0.008337</td>
+      <td>2.132056</td>
+      <td>0.008114</td>
+      <td>0.000075</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>38</td>
+      <td>Rifqi Fairurrafi</td>
+      <td>Kec. Bangkalan, Kab. Bangkalan</td>
+      <td>3.023862e-01</td>
+      <td>10.425224</td>
+      <td>3</td>
+      <td>8.284553e-04</td>
+      <td>183.453056</td>
+      <td>0.038157</td>
+      <td>0.028573</td>
+      <td>...</td>
+      <td>0.131582</td>
+      <td>0.770086</td>
+      <td>0.000016</td>
+      <td>0.656274</td>
+      <td>0.001738</td>
+      <td>0.008362</td>
+      <td>2.123551</td>
+      <td>0.008158</td>
+      <td>0.000076</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>39</td>
+      <td>Alghifari Amar Mukhasyafah</td>
+      <td>Wonoayu</td>
+      <td>3.503511e-01</td>
+      <td>11.240225</td>
+      <td>2</td>
+      <td>9.625029e-04</td>
+      <td>186.500825</td>
+      <td>0.036798</td>
+      <td>0.030876</td>
+      <td>...</td>
+      <td>0.137811</td>
+      <td>0.708761</td>
+      <td>0.000011</td>
+      <td>0.669492</td>
+      <td>0.001839</td>
+      <td>0.007399</td>
+      <td>2.127082</td>
+      <td>0.007147</td>
+      <td>0.000060</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>40</td>
+      <td>Moh Rafie Nazar J</td>
+      <td>Kecamatan Bangkalan,Bangkalan</td>
+      <td>2.995262e-01</td>
+      <td>10.417299</td>
+      <td>2</td>
+      <td>8.183776e-04</td>
+      <td>182.489990</td>
+      <td>0.035113</td>
+      <td>0.028467</td>
+      <td>...</td>
+      <td>0.125449</td>
+      <td>0.683929</td>
+      <td>0.000010</td>
+      <td>0.569706</td>
+      <td>0.001663</td>
+      <td>0.006965</td>
+      <td>2.133411</td>
+      <td>0.006741</td>
+      <td>0.000052</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>41</td>
+      <td>Muhammad Zaidan Nabil Rafi</td>
+      <td>Kamal, Bangkalan</td>
+      <td>4.318886e+00</td>
+      <td>148.018366</td>
+      <td>27</td>
+      <td>8.407409e-04</td>
+      <td>2590.429647</td>
+      <td>0.037697</td>
+      <td>0.028814</td>
+      <td>...</td>
+      <td>0.113649</td>
+      <td>0.736331</td>
+      <td>0.000008</td>
+      <td>0.692103</td>
+      <td>0.000122</td>
+      <td>0.003836</td>
+      <td>2.002787</td>
+      <td>0.003834</td>
+      <td>0.000019</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>42</td>
+      <td>Riska Nana Nuril Fadilah</td>
+      <td>Asemrowo, Surabaya</td>
+      <td>3.225592e-01</td>
+      <td>10.772052</td>
+      <td>3</td>
+      <td>8.837239e-04</td>
+      <td>185.459392</td>
+      <td>0.037757</td>
+      <td>0.029511</td>
+      <td>...</td>
+      <td>0.126149</td>
+      <td>0.655360</td>
+      <td>0.000018</td>
+      <td>0.653318</td>
+      <td>0.001747</td>
+      <td>0.008364</td>
+      <td>2.116711</td>
+      <td>0.008158</td>
+      <td>0.000077</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>44</td>
+      <td>Dewi Geizya</td>
+      <td>Kamal, Banyuajuh</td>
+      <td>4.647580e+08</td>
+      <td>379752.227500</td>
+      <td>5</td>
+      <td>1.273310e+06</td>
+      <td>173.116316</td>
+      <td>2132.111250</td>
+      <td>1039.284092</td>
+      <td>...</td>
+      <td>0.146530</td>
+      <td>0.568854</td>
+      <td>264153.172514</td>
+      <td>81370.587500</td>
+      <td>39.317106</td>
+      <td>565.337452</td>
+      <td>2.158466</td>
+      <td>563.600124</td>
+      <td>335647.279383</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+<p>37 rows × 71 columns</p>
+</div>
+    <div class="colab-df-buttons">
+
+  <div class="colab-df-container">
+    <button class="colab-df-convert" onclick="convertToInteractive('df-e57070c4-87a3-417b-b8c7-7f0e0b7573ee')"
+            title="Convert this dataframe to an interactive table."
+            style="display:none;">
+
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960">
+    <path d="M120-120v-720h720v720H120Zm60-500h600v-160H180v160Zm220 220h160v-160H400v160Zm0 220h160v-160H400v160ZM180-400h160v-160H180v160Zm440 0h160v-160H620v160ZM180-180h160v-160H180v160Zm440 0h160v-160H620v160Z"/>
+  </svg>
+    </button>
+
+  <style>
+    .colab-df-container {
+      display:flex;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    .colab-df-buttons div {
+      margin-bottom: 4px;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+    <script>
+      const buttonEl =
+        document.querySelector('#df-e57070c4-87a3-417b-b8c7-7f0e0b7573ee button.colab-df-convert');
+      buttonEl.style.display =
+        google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+      async function convertToInteractive(key) {
+        const element = document.querySelector('#df-e57070c4-87a3-417b-b8c7-7f0e0b7573ee');
+        const dataTable =
+          await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                    [key], {});
+        if (!dataTable) return;
+
+        const docLinkHtml = 'Like what you see? Visit the ' +
+          '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+          + ' to learn more about interactive tables.';
+        element.innerHTML = '';
+        dataTable['output_type'] = 'display_data';
+        await google.colab.output.renderOutput(dataTable, element);
+        const docLink = document.createElement('div');
+        docLink.innerHTML = docLinkHtml;
+        element.appendChild(docLink);
+      }
+    </script>
+  </div>
+
+
+  <div id="id_c15ebf93-454c-4ae0-8350-c8fd54a645de">
+    <style>
+      .colab-df-generate {
+        background-color: #E8F0FE;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: none;
+        fill: #1967D2;
+        height: 32px;
+        padding: 0 0 0 0;
+        width: 32px;
+      }
+
+      .colab-df-generate:hover {
+        background-color: #E2EBFA;
+        box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+        fill: #174EA6;
+      }
+
+      [theme=dark] .colab-df-generate {
+        background-color: #3B4455;
+        fill: #D2E3FC;
+      }
+
+      [theme=dark] .colab-df-generate:hover {
+        background-color: #434B5C;
+        box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+        filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+        fill: #FFFFFF;
+      }
+    </style>
+    <button class="colab-df-generate" onclick="generateWithVariable('df_tsfel')"
+            title="Generate code using this dataframe."
+            style="display:none;">
+
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+       width="24px">
+    <path d="M7,19H8.4L18.45,9,17,7.55,7,17.6ZM5,21V16.75L18.45,3.32a2,2,0,0,1,2.83,0l1.4,1.43a1.91,1.91,0,0,1,.58,1.4,1.91,1.91,0,0,1-.58,1.4L9.25,21ZM18.45,9,17,7.55Zm-12,3A5.31,5.31,0,0,0,4.9,8.1,5.31,5.31,0,0,0,1,6.5,5.31,5.31,0,0,0,4.9,4.9,5.31,5.31,0,0,0,6.5,1,5.31,5.31,0,0,0,8.1,4.9,5.31,5.31,0,0,0,12,6.5,5.46,5.46,0,0,0,6.5,12Z"/>
+  </svg>
+    </button>
+    <script>
+      (() => {
+      const buttonEl =
+        document.querySelector('#id_c15ebf93-454c-4ae0-8350-c8fd54a645de button.colab-df-generate');
+      buttonEl.style.display =
+        google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+      buttonEl.onclick = () => {
+        google.colab.notebook.generateWithVariable('df_tsfel');
+      }
+      })();
+    </script>
+  </div>
+
+    </div>
+  </div>
+</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Membaca dan menampilkan berkas hasil ekstraksi fitur TSFEL</span>
+<span class="n">df_tsfel</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;ekstraksi_fitur_no2.csv&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;table : &#39;ekstraksi_fitur_no2.csv&#39; Dimensi data: </span><span class="si">{</span><span class="n">df_tsfel</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> baris x </span><span class="si">{</span><span class="n">df_tsfel</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> kolom fitur&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_tsfel</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>table : &#39;ekstraksi_fitur_no2.csv&#39; Dimensi data: 37 baris x 71 kolom fitur
+</pre></div>
+</div>
+<div class="output text_html">
+  <div id="df-f05c0ae3-678c-44d4-8900-e4d7caddef82" class="colab-df-container">
+    <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>nama</th>
+      <th>daerah</th>
+      <th>abs_energy</th>
+      <th>auc</th>
+      <th>autocorr</th>
+      <th>average_power</th>
+      <th>calc_centroid</th>
+      <th>calc_max</th>
+      <th>calc_mean</th>
+      <th>...</th>
+      <th>spectral_spread</th>
+      <th>spectral_variation</th>
+      <th>spectrogram_mean_coeff</th>
+      <th>sum_abs_diff</th>
+      <th>wavelet_abs_mean</th>
+      <th>wavelet_energy</th>
+      <th>wavelet_entropy</th>
+      <th>wavelet_std</th>
+      <th>wavelet_var</th>
+      <th>zero_cross</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>7</td>
+      <td>Okan Syailendra wahyudi</td>
+      <td>Manyar</td>
+      <td>1.933040e-06</td>
+      <td>0.023990</td>
+      <td>7</td>
+      <td>5.310551e-09</td>
+      <td>186.075084</td>
+      <td>0.000168</td>
+      <td>0.000066</td>
+      <td>...</td>
+      <td>0.147818</td>
+      <td>0.336845</td>
+      <td>1.288098e-09</td>
+      <td>0.005077</td>
+      <td>3.527742e-06</td>
+      <td>0.000043</td>
+      <td>2.147398</td>
+      <td>0.000043</td>
+      <td>1.940374e-09</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>10</td>
+      <td>Triswanti Jannatul Ma'wa</td>
+      <td>Kedungpring Lamongan</td>
+      <td>3.702058e-07</td>
+      <td>0.010905</td>
+      <td>8</td>
+      <td>1.014262e-09</td>
+      <td>194.285209</td>
+      <td>0.000059</td>
+      <td>0.000030</td>
+      <td>...</td>
+      <td>0.147428</td>
+      <td>0.319585</td>
+      <td>1.366945e-10</td>
+      <td>0.001801</td>
+      <td>1.783531e-06</td>
+      <td>0.000016</td>
+      <td>2.123802</td>
+      <td>0.000016</td>
+      <td>2.814972e-10</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>12</td>
+      <td>Laila Maghfiroh</td>
+      <td>Kamal, Bangkalan</td>
+      <td>7.363589e-07</td>
+      <td>0.015059</td>
+      <td>11</td>
+      <td>2.017422e-09</td>
+      <td>166.039562</td>
+      <td>0.000086</td>
+      <td>0.000041</td>
+      <td>...</td>
+      <td>0.144113</td>
+      <td>0.282633</td>
+      <td>4.347435e-10</td>
+      <td>0.002744</td>
+      <td>1.433485e-06</td>
+      <td>0.000023</td>
+      <td>2.131037</td>
+      <td>0.000023</td>
+      <td>6.029032e-10</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>13</td>
+      <td>Dedy Nurohim</td>
+      <td>sambeng lamongan</td>
+      <td>3.854020e-07</td>
+      <td>0.011228</td>
+      <td>6</td>
+      <td>1.055896e-09</td>
+      <td>196.838820</td>
+      <td>0.000062</td>
+      <td>0.000031</td>
+      <td>...</td>
+      <td>0.156054</td>
+      <td>0.275151</td>
+      <td>1.258376e-10</td>
+      <td>0.002168</td>
+      <td>1.890919e-06</td>
+      <td>0.000013</td>
+      <td>2.154113</td>
+      <td>0.000013</td>
+      <td>1.879498e-10</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>14</td>
+      <td>Ahmad Syahrul Farihin</td>
+      <td>Gresik Kota, Gresik</td>
+      <td>1.523980e-06</td>
+      <td>0.022417</td>
+      <td>3</td>
+      <td>4.175288e-09</td>
+      <td>184.039735</td>
+      <td>0.000124</td>
+      <td>0.000061</td>
+      <td>...</td>
+      <td>0.154967</td>
+      <td>0.685525</td>
+      <td>7.180607e-10</td>
+      <td>0.004380</td>
+      <td>2.944096e-06</td>
+      <td>0.000031</td>
+      <td>2.145496</td>
+      <td>0.000031</td>
+      <td>1.040073e-09</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>16</td>
+      <td>Rian Renaldy</td>
+      <td>Waru, Pamekasan</td>
+      <td>1.123197e-07</td>
+      <td>0.005901</td>
+      <td>5</td>
+      <td>3.077252e-10</td>
+      <td>168.844890</td>
+      <td>0.000033</td>
+      <td>0.000016</td>
+      <td>...</td>
+      <td>0.148818</td>
+      <td>0.422768</td>
+      <td>7.722140e-11</td>
+      <td>0.001353</td>
+      <td>6.737109e-07</td>
+      <td>0.000010</td>
+      <td>2.142401</td>
+      <td>0.000010</td>
+      <td>1.046791e-10</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>18</td>
+      <td>Moh Rafie Nazar J</td>
+      <td>Bangkalan Kota,Bangkalan</td>
+      <td>3.203641e-07</td>
+      <td>0.010196</td>
+      <td>3</td>
+      <td>8.849837e-10</td>
+      <td>184.972111</td>
+      <td>0.000057</td>
+      <td>0.000028</td>
+      <td>...</td>
+      <td>0.145301</td>
+      <td>0.729096</td>
+      <td>1.667061e-10</td>
+      <td>0.001859</td>
+      <td>1.326193e-06</td>
+      <td>0.000016</td>
+      <td>2.141427</td>
+      <td>0.000016</td>
+      <td>2.876259e-10</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>21</td>
+      <td>Ainur Raftuzzaki</td>
+      <td>Nunukan</td>
+      <td>2.363730e-08</td>
+      <td>0.002589</td>
+      <td>2</td>
+      <td>6.475970e-11</td>
+      <td>200.320300</td>
+      <td>0.000015</td>
+      <td>0.000007</td>
+      <td>...</td>
+      <td>0.155160</td>
+      <td>0.564399</td>
+      <td>2.510400e-11</td>
+      <td>0.000937</td>
+      <td>3.498942e-07</td>
+      <td>0.000005</td>
+      <td>2.172274</td>
+      <td>0.000005</td>
+      <td>3.113730e-11</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>25</td>
+      <td>Muhammad Zaidan Nabil Rafi</td>
+      <td>Kamal, Bangkalan</td>
+      <td>1.883242e-06</td>
+      <td>0.023446</td>
+      <td>1</td>
+      <td>5.741593e-09</td>
+      <td>174.318724</td>
+      <td>0.000143</td>
+      <td>0.000072</td>
+      <td>...</td>
+      <td>0.163398</td>
+      <td>0.487746</td>
+      <td>9.295308e-10</td>
+      <td>0.006949</td>
+      <td>5.610511e-06</td>
+      <td>0.000034</td>
+      <td>2.169564</td>
+      <td>0.000034</td>
+      <td>1.189397e-09</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>27</td>
+      <td>Robbaniyah Umdatun Ni'mah</td>
+      <td>Cerme, Gresik</td>
+      <td>7.517448e-07</td>
+      <td>0.012171</td>
+      <td>3</td>
+      <td>3.254306e-09</td>
+      <td>118.290125</td>
+      <td>0.000114</td>
+      <td>0.000053</td>
+      <td>...</td>
+      <td>0.153038</td>
+      <td>0.435391</td>
+      <td>6.793645e-10</td>
+      <td>0.003585</td>
+      <td>5.065708e-06</td>
+      <td>0.000028</td>
+      <td>2.180839</td>
+      <td>0.000027</td>
+      <td>7.646483e-10</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>30</td>
+      <td>Magdalena Jovita Hatuopar</td>
+      <td>Pilangkenceng, Madiun</td>
+      <td>2.523118e-07</td>
+      <td>0.009190</td>
+      <td>2</td>
+      <td>6.912653e-10</td>
+      <td>202.684141</td>
+      <td>0.000047</td>
+      <td>0.000025</td>
+      <td>...</td>
+      <td>0.147950</td>
+      <td>0.494503</td>
+      <td>8.950990e-11</td>
+      <td>0.001764</td>
+      <td>1.645979e-06</td>
+      <td>0.000011</td>
+      <td>2.170957</td>
+      <td>0.000011</td>
+      <td>1.287794e-10</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>31</td>
+      <td>Alifah Sayyidaturrhohma</td>
+      <td>Kota Sumenep, Sumenep</td>
+      <td>1.150018e-07</td>
+      <td>0.005569</td>
+      <td>11</td>
+      <td>3.150733e-10</td>
+      <td>177.783259</td>
+      <td>0.000034</td>
+      <td>0.000015</td>
+      <td>...</td>
+      <td>0.150666</td>
+      <td>0.367537</td>
+      <td>1.238716e-10</td>
+      <td>0.001579</td>
+      <td>6.457759e-07</td>
+      <td>0.000013</td>
+      <td>2.116317</td>
+      <td>0.000012</td>
+      <td>1.761000e-10</td>
+      <td>26</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>32</td>
+      <td>Riska Nana Nuril Fadilah</td>
+      <td>Asemrowo, Surabaya</td>
+      <td>1.156529e-06</td>
+      <td>0.019740</td>
+      <td>3</td>
+      <td>3.168571e-09</td>
+      <td>179.032501</td>
+      <td>0.000101</td>
+      <td>0.000054</td>
+      <td>...</td>
+      <td>0.147031</td>
+      <td>0.742052</td>
+      <td>3.523650e-10</td>
+      <td>0.002903</td>
+      <td>2.612707e-06</td>
+      <td>0.000023</td>
+      <td>2.150466</td>
+      <td>0.000023</td>
+      <td>5.682609e-10</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>33</td>
+      <td>M. Hendrik Purwanto</td>
+      <td>Sreseh, Sampang</td>
+      <td>2.437783e-07</td>
+      <td>0.008625</td>
+      <td>9</td>
+      <td>6.752861e-10</td>
+      <td>163.948262</td>
+      <td>0.000048</td>
+      <td>0.000024</td>
+      <td>...</td>
+      <td>0.156583</td>
+      <td>0.333931</td>
+      <td>1.262585e-10</td>
+      <td>0.001980</td>
+      <td>1.135575e-06</td>
+      <td>0.000013</td>
+      <td>2.132146</td>
+      <td>0.000013</td>
+      <td>1.971502e-10</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>34</td>
+      <td>Alghifari Amar Mukhasyafah</td>
+      <td>Wonoayu</td>
+      <td>5.201456e-07</td>
+      <td>0.013160</td>
+      <td>2</td>
+      <td>1.425056e-09</td>
+      <td>182.736501</td>
+      <td>0.000067</td>
+      <td>0.000036</td>
+      <td>...</td>
+      <td>0.148802</td>
+      <td>0.805706</td>
+      <td>2.169588e-10</td>
+      <td>0.002709</td>
+      <td>1.878860e-06</td>
+      <td>0.000016</td>
+      <td>2.177249</td>
+      <td>0.000016</td>
+      <td>2.545294e-10</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>41</td>
+      <td>Muhammad izzul Millah Aqil</td>
+      <td>Wonokromo, Surabaya</td>
+      <td>6.164625e-07</td>
+      <td>0.014360</td>
+      <td>3</td>
+      <td>1.702935e-09</td>
+      <td>176.868838</td>
+      <td>0.000073</td>
+      <td>0.000040</td>
+      <td>...</td>
+      <td>0.147389</td>
+      <td>0.580443</td>
+      <td>2.291877e-10</td>
+      <td>0.002188</td>
+      <td>1.905643e-06</td>
+      <td>0.000018</td>
+      <td>2.132421</td>
+      <td>0.000018</td>
+      <td>3.472509e-10</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>43</td>
+      <td>A.Choiril Anwar El-Asfihani Risydan</td>
+      <td>Banyu Ajuh, Perumnas, Kamal</td>
+      <td>8.004484e-07</td>
+      <td>0.015740</td>
+      <td>11</td>
+      <td>2.193009e-09</td>
+      <td>166.627475</td>
+      <td>0.000083</td>
+      <td>0.000043</td>
+      <td>...</td>
+      <td>0.142590</td>
+      <td>0.247473</td>
+      <td>4.389420e-10</td>
+      <td>0.002689</td>
+      <td>1.497544e-06</td>
+      <td>0.000025</td>
+      <td>2.118205</td>
+      <td>0.000025</td>
+      <td>6.999157e-10</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>44</td>
+      <td>Verdi Setyawan Ardiansyah Putra</td>
+      <td>Menganti Gresik</td>
+      <td>9.056374e-07</td>
+      <td>0.016844</td>
+      <td>3</td>
+      <td>2.481198e-09</td>
+      <td>189.660361</td>
+      <td>0.000103</td>
+      <td>0.000046</td>
+      <td>...</td>
+      <td>0.140038</td>
+      <td>0.351018</td>
+      <td>4.891453e-10</td>
+      <td>0.003202</td>
+      <td>2.977587e-06</td>
+      <td>0.000029</td>
+      <td>2.140530</td>
+      <td>0.000029</td>
+      <td>8.979776e-10</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>45</td>
+      <td>Kurnia Maulinda Sari</td>
+      <td>Labang, Bangkalan</td>
+      <td>4.164347e-07</td>
+      <td>0.011241</td>
+      <td>12</td>
+      <td>1.140917e-09</td>
+      <td>167.970284</td>
+      <td>0.000064</td>
+      <td>0.000031</td>
+      <td>...</td>
+      <td>0.146734</td>
+      <td>0.288082</td>
+      <td>2.510451e-10</td>
+      <td>0.002152</td>
+      <td>1.233459e-06</td>
+      <td>0.000019</td>
+      <td>2.122575</td>
+      <td>0.000019</td>
+      <td>3.811326e-10</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>46</td>
+      <td>Marshella Aulia Putri</td>
+      <td>Kec. Kalianget, Sumenep</td>
+      <td>5.678566e-08</td>
+      <td>0.003066</td>
+      <td>1</td>
+      <td>2.912084e-10</td>
+      <td>99.075443</td>
+      <td>0.000031</td>
+      <td>0.000016</td>
+      <td>...</td>
+      <td>0.157594</td>
+      <td>0.603580</td>
+      <td>8.140650e-11</td>
+      <td>0.001217</td>
+      <td>1.507749e-06</td>
+      <td>0.000009</td>
+      <td>2.164788</td>
+      <td>0.000009</td>
+      <td>9.022510e-11</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>47</td>
+      <td>Rifqi Fairurrafi</td>
+      <td>Kec. Bangkalan, Kab. Bangkalan</td>
+      <td>3.115303e-07</td>
+      <td>0.010021</td>
+      <td>5</td>
+      <td>8.535076e-10</td>
+      <td>198.052332</td>
+      <td>0.000055</td>
+      <td>0.000027</td>
+      <td>...</td>
+      <td>0.136531</td>
+      <td>0.578449</td>
+      <td>1.597040e-10</td>
+      <td>0.001350</td>
+      <td>1.245531e-06</td>
+      <td>0.000017</td>
+      <td>2.103148</td>
+      <td>0.000017</td>
+      <td>3.357186e-10</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>48</td>
+      <td>Nurhabibatul Umah</td>
+      <td>Kerek, Tuban</td>
+      <td>7.682415e-07</td>
+      <td>0.015739</td>
+      <td>7</td>
+      <td>2.104771e-09</td>
+      <td>195.079436</td>
+      <td>0.000088</td>
+      <td>0.000043</td>
+      <td>...</td>
+      <td>0.147760</td>
+      <td>0.302308</td>
+      <td>3.122096e-10</td>
+      <td>0.002606</td>
+      <td>2.790354e-06</td>
+      <td>0.000023</td>
+      <td>2.136660</td>
+      <td>0.000023</td>
+      <td>5.644993e-10</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>49</td>
+      <td>Mochammad Zaenal Abidin</td>
+      <td>Widang, Tuban</td>
+      <td>3.989307e-07</td>
+      <td>0.011463</td>
+      <td>4</td>
+      <td>1.092961e-09</td>
+      <td>200.948783</td>
+      <td>0.000059</td>
+      <td>0.000031</td>
+      <td>...</td>
+      <td>0.151381</td>
+      <td>0.372225</td>
+      <td>1.464626e-10</td>
+      <td>0.002252</td>
+      <td>2.032054e-06</td>
+      <td>0.000015</td>
+      <td>2.152183</td>
+      <td>0.000015</td>
+      <td>2.282557e-10</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>51</td>
+      <td>Rachelia Andini Tendean</td>
+      <td>Tikala, Manado</td>
+      <td>3.100675e-08</td>
+      <td>0.002889</td>
+      <td>5</td>
+      <td>8.565400e-11</td>
+      <td>171.939086</td>
+      <td>0.000020</td>
+      <td>0.000008</td>
+      <td>...</td>
+      <td>0.141632</td>
+      <td>0.425519</td>
+      <td>3.931010e-11</td>
+      <td>0.000703</td>
+      <td>5.333866e-07</td>
+      <td>0.000008</td>
+      <td>2.121934</td>
+      <td>0.000008</td>
+      <td>7.518350e-11</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>52</td>
+      <td>Ahmad Dafi Zidni Alfarisi</td>
+      <td>Paciran, Lamongan</td>
+      <td>3.246208e-07</td>
+      <td>0.010392</td>
+      <td>3</td>
+      <td>8.893720e-10</td>
+      <td>199.381425</td>
+      <td>0.000051</td>
+      <td>0.000028</td>
+      <td>...</td>
+      <td>0.148982</td>
+      <td>0.405628</td>
+      <td>1.082967e-10</td>
+      <td>0.001960</td>
+      <td>1.959772e-06</td>
+      <td>0.000014</td>
+      <td>2.159364</td>
+      <td>0.000014</td>
+      <td>2.179091e-10</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>53</td>
+      <td>Deo Candra Saputra</td>
+      <td>Widodaren, Ngawi</td>
+      <td>2.173853e-07</td>
+      <td>0.008632</td>
+      <td>2</td>
+      <td>5.955760e-10</td>
+      <td>196.997143</td>
+      <td>0.000038</td>
+      <td>0.000024</td>
+      <td>...</td>
+      <td>0.152316</td>
+      <td>0.642335</td>
+      <td>5.870490e-11</td>
+      <td>0.001716</td>
+      <td>1.426866e-06</td>
+      <td>0.000009</td>
+      <td>2.181052</td>
+      <td>0.000009</td>
+      <td>8.221530e-11</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>54</td>
+      <td>Lailatul Hasanah</td>
+      <td>Socah, Bangkalan</td>
+      <td>3.831971e-07</td>
+      <td>0.011036</td>
+      <td>4</td>
+      <td>1.055639e-09</td>
+      <td>176.897290</td>
+      <td>0.000061</td>
+      <td>0.000030</td>
+      <td>...</td>
+      <td>0.139322</td>
+      <td>0.618987</td>
+      <td>2.279938e-10</td>
+      <td>0.001878</td>
+      <td>1.445651e-06</td>
+      <td>0.000020</td>
+      <td>2.135497</td>
+      <td>0.000020</td>
+      <td>4.163696e-10</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>55</td>
+      <td>Mohammad Aziz Huzaini</td>
+      <td>Tanah Merah, Bangkalan</td>
+      <td>2.608035e-07</td>
+      <td>0.009258</td>
+      <td>4</td>
+      <td>7.145301e-10</td>
+      <td>170.256154</td>
+      <td>0.000047</td>
+      <td>0.000025</td>
+      <td>...</td>
+      <td>0.145286</td>
+      <td>0.362940</td>
+      <td>9.636300e-11</td>
+      <td>0.001437</td>
+      <td>1.110816e-06</td>
+      <td>0.000012</td>
+      <td>2.140520</td>
+      <td>0.000012</td>
+      <td>1.625590e-10</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>56</td>
+      <td>Fathul Aziz Saifuddin</td>
+      <td>Dukun, Gresik</td>
+      <td>3.581219e-07</td>
+      <td>0.010690</td>
+      <td>3</td>
+      <td>9.838513e-10</td>
+      <td>202.855759</td>
+      <td>0.000063</td>
+      <td>0.000029</td>
+      <td>...</td>
+      <td>0.139943</td>
+      <td>0.344302</td>
+      <td>1.612152e-10</td>
+      <td>0.002004</td>
+      <td>2.207089e-06</td>
+      <td>0.000017</td>
+      <td>2.150886</td>
+      <td>0.000017</td>
+      <td>3.160192e-10</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>57</td>
+      <td>M. Fatihul Umam</td>
+      <td>Kwanyar, Bangkalan</td>
+      <td>3.561887e-07</td>
+      <td>0.010139</td>
+      <td>13</td>
+      <td>9.785404e-10</td>
+      <td>173.038786</td>
+      <td>0.000065</td>
+      <td>0.000028</td>
+      <td>...</td>
+      <td>0.153090</td>
+      <td>0.262819</td>
+      <td>2.946177e-10</td>
+      <td>0.002209</td>
+      <td>1.068555e-06</td>
+      <td>0.000018</td>
+      <td>2.126274</td>
+      <td>0.000018</td>
+      <td>3.696059e-10</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>58</td>
+      <td>Rahardian Ananta</td>
+      <td>jabon , Sidoarjo</td>
+      <td>4.139319e-07</td>
+      <td>0.011663</td>
+      <td>2</td>
+      <td>1.134060e-09</td>
+      <td>183.306407</td>
+      <td>0.000059</td>
+      <td>0.000032</td>
+      <td>...</td>
+      <td>0.153321</td>
+      <td>0.549837</td>
+      <td>1.821784e-10</td>
+      <td>0.002634</td>
+      <td>1.390470e-06</td>
+      <td>0.000015</td>
+      <td>2.164464</td>
+      <td>0.000014</td>
+      <td>2.188306e-10</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>59</td>
+      <td>Muhammad Ali Murtadho</td>
+      <td>Baron Nganjuk</td>
+      <td>3.327524e-07</td>
+      <td>0.010370</td>
+      <td>17</td>
+      <td>9.116502e-10</td>
+      <td>203.671392</td>
+      <td>0.000055</td>
+      <td>0.000028</td>
+      <td>...</td>
+      <td>0.150384</td>
+      <td>0.264122</td>
+      <td>1.212041e-10</td>
+      <td>0.001666</td>
+      <td>1.835603e-06</td>
+      <td>0.000014</td>
+      <td>2.123943</td>
+      <td>0.000014</td>
+      <td>2.245286e-10</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>60</td>
+      <td>Fahdimas akmal</td>
+      <td>Kwanyar, Bangkalan</td>
+      <td>2.928263e-07</td>
+      <td>0.009567</td>
+      <td>6</td>
+      <td>8.022638e-10</td>
+      <td>169.327184</td>
+      <td>0.000049</td>
+      <td>0.000026</td>
+      <td>...</td>
+      <td>0.140541</td>
+      <td>0.318989</td>
+      <td>1.690510e-10</td>
+      <td>0.001822</td>
+      <td>1.035272e-06</td>
+      <td>0.000016</td>
+      <td>2.138903</td>
+      <td>0.000015</td>
+      <td>2.623433e-10</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>61</td>
+      <td>AHMAD MAULANA ISHAQ</td>
+      <td>Kertosono, Ngajuk</td>
+      <td>3.274080e-07</td>
+      <td>0.010406</td>
+      <td>14</td>
+      <td>8.970081e-10</td>
+      <td>208.736934</td>
+      <td>0.000054</td>
+      <td>0.000029</td>
+      <td>...</td>
+      <td>0.155808</td>
+      <td>0.301513</td>
+      <td>9.036680e-11</td>
+      <td>0.001919</td>
+      <td>1.900563e-06</td>
+      <td>0.000013</td>
+      <td>2.138775</td>
+      <td>0.000013</td>
+      <td>1.790103e-10</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>62</td>
+      <td>Fathan Ruhul Alam</td>
+      <td>Warudoyong, Kota Sukabumi</td>
+      <td>5.329787e-07</td>
+      <td>0.012644</td>
+      <td>29</td>
+      <td>1.460216e-09</td>
+      <td>213.869221</td>
+      <td>0.000069</td>
+      <td>0.000035</td>
+      <td>...</td>
+      <td>0.122699</td>
+      <td>0.329630</td>
+      <td>2.129741e-10</td>
+      <td>0.000927</td>
+      <td>1.542606e-06</td>
+      <td>0.000018</td>
+      <td>2.050830</td>
+      <td>0.000018</td>
+      <td>3.710672e-10</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>64</td>
+      <td>Muhammad Isa</td>
+      <td>Bandung, Jogoroto, Jombang</td>
+      <td>4.313780e-07</td>
+      <td>0.011805</td>
+      <td>11</td>
+      <td>1.188369e-09</td>
+      <td>199.155501</td>
+      <td>0.000062</td>
+      <td>0.000033</td>
+      <td>...</td>
+      <td>0.143571</td>
+      <td>0.304942</td>
+      <td>1.483407e-10</td>
+      <td>0.001639</td>
+      <td>2.009101e-06</td>
+      <td>0.000016</td>
+      <td>2.127770</td>
+      <td>0.000016</td>
+      <td>2.716751e-10</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>66</td>
+      <td>Dewi Geizya</td>
+      <td>Kamal, Banyuajuh</td>
+      <td>4.759127e+05</td>
+      <td>12292.050000</td>
+      <td>28</td>
+      <td>1.303870e+03</td>
+      <td>150.371068</td>
+      <td>71.111250</td>
+      <td>33.632391</td>
+      <td>...</td>
+      <td>0.144514</td>
+      <td>0.363240</td>
+      <td>1.623944e+02</td>
+      <td>2205.397500</td>
+      <td>1.243701e+00</td>
+      <td>14.758384</td>
+      <td>2.154385</td>
+      <td>14.690343</td>
+      <td>2.312548e+02</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+<p>37 rows × 71 columns</p>
+</div>
+    <div class="colab-df-buttons">
+
+  <div class="colab-df-container">
+    <button class="colab-df-convert" onclick="convertToInteractive('df-f05c0ae3-678c-44d4-8900-e4d7caddef82')"
+            title="Convert this dataframe to an interactive table."
+            style="display:none;">
+
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960">
+    <path d="M120-120v-720h720v720H120Zm60-500h600v-160H180v160Zm220 220h160v-160H400v160Zm0 220h160v-160H400v160ZM180-400h160v-160H180v160Zm440 0h160v-160H620v160ZM180-180h160v-160H180v160Zm440 0h160v-160H620v160Z"/>
+  </svg>
+    </button>
+
+  <style>
+    .colab-df-container {
+      display:flex;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    .colab-df-buttons div {
+      margin-bottom: 4px;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+    <script>
+      const buttonEl =
+        document.querySelector('#df-f05c0ae3-678c-44d4-8900-e4d7caddef82 button.colab-df-convert');
+      buttonEl.style.display =
+        google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+      async function convertToInteractive(key) {
+        const element = document.querySelector('#df-f05c0ae3-678c-44d4-8900-e4d7caddef82');
+        const dataTable =
+          await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                    [key], {});
+        if (!dataTable) return;
+
+        const docLinkHtml = 'Like what you see? Visit the ' +
+          '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+          + ' to learn more about interactive tables.';
+        element.innerHTML = '';
+        dataTable['output_type'] = 'display_data';
+        await google.colab.output.renderOutput(dataTable, element);
+        const docLink = document.createElement('div');
+        docLink.innerHTML = docLinkHtml;
+        element.appendChild(docLink);
+      }
+    </script>
+  </div>
+
+
+  <div id="id_3556355c-426d-4532-bc57-57c9e6eafe55">
+    <style>
+      .colab-df-generate {
+        background-color: #E8F0FE;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: none;
+        fill: #1967D2;
+        height: 32px;
+        padding: 0 0 0 0;
+        width: 32px;
+      }
+
+      .colab-df-generate:hover {
+        background-color: #E2EBFA;
+        box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+        fill: #174EA6;
+      }
+
+      [theme=dark] .colab-df-generate {
+        background-color: #3B4455;
+        fill: #D2E3FC;
+      }
+
+      [theme=dark] .colab-df-generate:hover {
+        background-color: #434B5C;
+        box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+        filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+        fill: #FFFFFF;
+      }
+    </style>
+    <button class="colab-df-generate" onclick="generateWithVariable('df_tsfel')"
+            title="Generate code using this dataframe."
+            style="display:none;">
+
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+       width="24px">
+    <path d="M7,19H8.4L18.45,9,17,7.55,7,17.6ZM5,21V16.75L18.45,3.32a2,2,0,0,1,2.83,0l1.4,1.43a1.91,1.91,0,0,1,.58,1.4,1.91,1.91,0,0,1-.58,1.4L9.25,21ZM18.45,9,17,7.55Zm-12,3A5.31,5.31,0,0,0,4.9,8.1,5.31,5.31,0,0,0,1,6.5,5.31,5.31,0,0,0,4.9,4.9,5.31,5.31,0,0,0,6.5,1,5.31,5.31,0,0,0,8.1,4.9,5.31,5.31,0,0,0,12,6.5,5.46,5.46,0,0,0,6.5,12Z"/>
+  </svg>
+    </button>
+    <script>
+      (() => {
+      const buttonEl =
+        document.querySelector('#id_3556355c-426d-4532-bc57-57c9e6eafe55 button.colab-df-generate');
+      buttonEl.style.display =
+        google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+      buttonEl.onclick = () => {
+        google.colab.notebook.generateWithVariable('df_tsfel');
+      }
+      })();
+    </script>
+  </div>
+
+    </div>
+  </div>
+</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Membaca dan menampilkan berkas hasil ekstraksi fitur TSFEL</span>
+<span class="n">df_tsfel</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;ekstraksi_fitur_so2.csv&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;table : &#39;ekstraksi_fitur_so2.csv&#39; Dimensi data: </span><span class="si">{</span><span class="n">df_tsfel</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> baris x </span><span class="si">{</span><span class="n">df_tsfel</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> kolom fitur&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_tsfel</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>table : &#39;ekstraksi_fitur_so2.csv&#39; Dimensi data: 37 baris x 71 kolom fitur
+</pre></div>
+</div>
+<div class="output text_html">
+  <div id="df-fc6f83de-7969-460d-bac2-eed50699d998" class="colab-df-container">
+    <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>nama</th>
+      <th>daerah</th>
+      <th>abs_energy</th>
+      <th>auc</th>
+      <th>autocorr</th>
+      <th>average_power</th>
+      <th>calc_centroid</th>
+      <th>calc_max</th>
+      <th>calc_mean</th>
+      <th>...</th>
+      <th>spectral_spread</th>
+      <th>spectral_variation</th>
+      <th>spectrogram_mean_coeff</th>
+      <th>sum_abs_diff</th>
+      <th>wavelet_abs_mean</th>
+      <th>wavelet_energy</th>
+      <th>wavelet_entropy</th>
+      <th>wavelet_std</th>
+      <th>wavelet_var</th>
+      <th>zero_cross</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2</td>
+      <td>Nurhabibatul Umah</td>
+      <td>Kerek, Tuban</td>
+      <td>4.612991e-06</td>
+      <td>0.028719</td>
+      <td>2</td>
+      <td>1.263833e-08</td>
+      <td>209.877355</td>
+      <td>0.000309</td>
+      <td>3.317126e-05</td>
+      <td>...</td>
+      <td>0.148927</td>
+      <td>0.209776</td>
+      <td>1.899262e-08</td>
+      <td>0.027288</td>
+      <td>8.060801e-07</td>
+      <td>0.000153</td>
+      <td>2.160229</td>
+      <td>0.000153</td>
+      <td>2.464593e-08</td>
+      <td>93</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>3</td>
+      <td>Verdi Setyawan Ardiansyah Putra</td>
+      <td>Menganti Gresik</td>
+      <td>1.091218e-05</td>
+      <td>0.042161</td>
+      <td>2</td>
+      <td>2.989639e-08</td>
+      <td>172.148705</td>
+      <td>0.000461</td>
+      <td>8.686927e-05</td>
+      <td>...</td>
+      <td>0.154508</td>
+      <td>0.292423</td>
+      <td>4.194986e-08</td>
+      <td>0.038801</td>
+      <td>6.563252e-06</td>
+      <td>0.000204</td>
+      <td>2.157516</td>
+      <td>0.000204</td>
+      <td>4.519175e-08</td>
+      <td>100</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>4</td>
+      <td>Okan Syailendra wahyudi</td>
+      <td>Manyar, Gresik</td>
+      <td>2.477941e-05</td>
+      <td>0.063998</td>
+      <td>1</td>
+      <td>6.807531e-08</td>
+      <td>204.258058</td>
+      <td>0.000793</td>
+      <td>1.113751e-04</td>
+      <td>...</td>
+      <td>0.153556</td>
+      <td>0.278411</td>
+      <td>9.647455e-08</td>
+      <td>0.064800</td>
+      <td>6.723475e-06</td>
+      <td>0.000310</td>
+      <td>2.168640</td>
+      <td>0.000310</td>
+      <td>1.002558e-07</td>
+      <td>98</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>5</td>
+      <td>Mochammad Zaenal Abidin</td>
+      <td>Widang, Tuban</td>
+      <td>3.845977e-06</td>
+      <td>0.026307</td>
+      <td>2</td>
+      <td>1.053692e-08</td>
+      <td>186.794715</td>
+      <td>0.000274</td>
+      <td>2.567220e-05</td>
+      <td>...</td>
+      <td>0.147246</td>
+      <td>0.172626</td>
+      <td>1.702950e-08</td>
+      <td>0.025822</td>
+      <td>3.133062e-06</td>
+      <td>0.000142</td>
+      <td>2.153694</td>
+      <td>0.000142</td>
+      <td>2.183313e-08</td>
+      <td>107</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>6</td>
+      <td>M. Hendrik Purwanto</td>
+      <td>Sreseh, Sampang</td>
+      <td>3.383721e-06</td>
+      <td>0.022927</td>
+      <td>2</td>
+      <td>9.373189e-09</td>
+      <td>210.032798</td>
+      <td>0.000293</td>
+      <td>2.111224e-05</td>
+      <td>...</td>
+      <td>0.147471</td>
+      <td>0.220521</td>
+      <td>1.625267e-08</td>
+      <td>0.026505</td>
+      <td>1.106266e-06</td>
+      <td>0.000132</td>
+      <td>2.167505</td>
+      <td>0.000132</td>
+      <td>1.856150e-08</td>
+      <td>108</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>7</td>
+      <td>Robbaniyah Umdatun Ni'mah</td>
+      <td>Cerme, Gresik</td>
+      <td>3.198463e-07</td>
+      <td>0.006406</td>
+      <td>1</td>
+      <td>8.811193e-10</td>
+      <td>205.784079</td>
+      <td>0.000086</td>
+      <td>1.175118e-05</td>
+      <td>...</td>
+      <td>0.154676</td>
+      <td>0.233806</td>
+      <td>1.265747e-09</td>
+      <td>0.010152</td>
+      <td>9.849967e-07</td>
+      <td>0.000030</td>
+      <td>2.191516</td>
+      <td>0.000030</td>
+      <td>8.844974e-10</td>
+      <td>168</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>9</td>
+      <td>Ainur Raftuzzaki</td>
+      <td>Nunukan</td>
+      <td>7.229314e-07</td>
+      <td>0.010306</td>
+      <td>1</td>
+      <td>1.980634e-09</td>
+      <td>180.522256</td>
+      <td>0.000107</td>
+      <td>-2.049584e-06</td>
+      <td>...</td>
+      <td>0.145901</td>
+      <td>0.204832</td>
+      <td>3.709163e-09</td>
+      <td>0.014261</td>
+      <td>5.053866e-07</td>
+      <td>0.000056</td>
+      <td>2.185740</td>
+      <td>0.000056</td>
+      <td>3.197403e-09</td>
+      <td>122</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>10</td>
+      <td>Magdalena Jovita Hatuopar</td>
+      <td>Pilangkenceng, Madiun</td>
+      <td>3.986450e-06</td>
+      <td>0.025926</td>
+      <td>1</td>
+      <td>1.095178e-08</td>
+      <td>183.041373</td>
+      <td>0.000304</td>
+      <td>6.493568e-05</td>
+      <td>...</td>
+      <td>0.151660</td>
+      <td>0.318823</td>
+      <td>1.162739e-08</td>
+      <td>0.026299</td>
+      <td>5.375518e-06</td>
+      <td>0.000093</td>
+      <td>2.188757</td>
+      <td>0.000093</td>
+      <td>8.791744e-09</td>
+      <td>95</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>11</td>
+      <td>Rachelia Andini Tendean</td>
+      <td>Tikala, Manado</td>
+      <td>3.801074e-06</td>
+      <td>0.025848</td>
+      <td>2</td>
+      <td>1.050020e-08</td>
+      <td>199.981451</td>
+      <td>0.000304</td>
+      <td>-1.006920e-05</td>
+      <td>...</td>
+      <td>0.144522</td>
+      <td>0.258207</td>
+      <td>1.832777e-08</td>
+      <td>0.022556</td>
+      <td>8.380800e-07</td>
+      <td>0.000153</td>
+      <td>2.150468</td>
+      <td>0.000153</td>
+      <td>2.499851e-08</td>
+      <td>81</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>12</td>
+      <td>Marshella Aulia Putri</td>
+      <td>Kec. Kalianget, Sumenep</td>
+      <td>3.993830e-06</td>
+      <td>0.018879</td>
+      <td>1</td>
+      <td>1.685160e-08</td>
+      <td>115.260448</td>
+      <td>0.000328</td>
+      <td>1.845555e-05</td>
+      <td>...</td>
+      <td>0.150961</td>
+      <td>0.243976</td>
+      <td>3.262437e-08</td>
+      <td>0.029970</td>
+      <td>4.297109e-06</td>
+      <td>0.000144</td>
+      <td>2.192455</td>
+      <td>0.000144</td>
+      <td>2.089430e-08</td>
+      <td>110</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>14</td>
+      <td>Kurnia Maulinda Sari</td>
+      <td>Labang, Bangkalan</td>
+      <td>1.173485e-05</td>
+      <td>0.045603</td>
+      <td>2</td>
+      <td>3.215027e-08</td>
+      <td>195.004076</td>
+      <td>0.000469</td>
+      <td>7.482144e-05</td>
+      <td>...</td>
+      <td>0.147654</td>
+      <td>0.250874</td>
+      <td>4.847556e-08</td>
+      <td>0.041836</td>
+      <td>4.934752e-06</td>
+      <td>0.000230</td>
+      <td>2.176044</td>
+      <td>0.000230</td>
+      <td>5.456222e-08</td>
+      <td>87</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>15</td>
+      <td>Ahmad Dafi Zidni Alfarisi</td>
+      <td>Paciran, Lamongan</td>
+      <td>6.200904e-06</td>
+      <td>0.031866</td>
+      <td>2</td>
+      <td>1.698878e-08</td>
+      <td>181.064579</td>
+      <td>0.000351</td>
+      <td>3.310070e-05</td>
+      <td>...</td>
+      <td>0.145950</td>
+      <td>0.232877</td>
+      <td>2.943524e-08</td>
+      <td>0.039437</td>
+      <td>2.931142e-06</td>
+      <td>0.000171</td>
+      <td>2.182718</td>
+      <td>0.000171</td>
+      <td>3.007924e-08</td>
+      <td>127</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>16</td>
+      <td>Rian Renaldy</td>
+      <td>Waru, Pamekasan</td>
+      <td>3.375006e-06</td>
+      <td>0.025229</td>
+      <td>3</td>
+      <td>9.246593e-09</td>
+      <td>184.642957</td>
+      <td>0.000261</td>
+      <td>1.128270e-05</td>
+      <td>...</td>
+      <td>0.147753</td>
+      <td>0.159843</td>
+      <td>1.514829e-08</td>
+      <td>0.020659</td>
+      <td>3.775648e-07</td>
+      <td>0.000138</td>
+      <td>2.166454</td>
+      <td>0.000138</td>
+      <td>1.987629e-08</td>
+      <td>95</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>17</td>
+      <td>Ahmad Syahrul Farihin</td>
+      <td>Gresik Kota, Gresik</td>
+      <td>3.044531e-05</td>
+      <td>0.072986</td>
+      <td>2</td>
+      <td>8.341181e-08</td>
+      <td>198.745858</td>
+      <td>0.000835</td>
+      <td>1.420103e-04</td>
+      <td>...</td>
+      <td>0.154393</td>
+      <td>0.332211</td>
+      <td>1.054722e-07</td>
+      <td>0.069161</td>
+      <td>9.115386e-06</td>
+      <td>0.000352</td>
+      <td>2.165275</td>
+      <td>0.000352</td>
+      <td>1.302620e-07</td>
+      <td>99</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>18</td>
+      <td>Dedy Nurohim</td>
+      <td>sambeng lamongan</td>
+      <td>8.128337e-06</td>
+      <td>0.036866</td>
+      <td>2</td>
+      <td>2.226942e-08</td>
+      <td>196.061741</td>
+      <td>0.000428</td>
+      <td>6.598801e-05</td>
+      <td>...</td>
+      <td>0.149757</td>
+      <td>0.200599</td>
+      <td>2.850010e-08</td>
+      <td>0.035419</td>
+      <td>5.753064e-06</td>
+      <td>0.000174</td>
+      <td>2.185460</td>
+      <td>0.000174</td>
+      <td>3.091007e-08</td>
+      <td>98</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>19</td>
+      <td>Deo Candra Saputra</td>
+      <td>Widodaren, Ngawi</td>
+      <td>2.420978e-06</td>
+      <td>0.019639</td>
+      <td>1</td>
+      <td>6.632817e-09</td>
+      <td>204.828650</td>
+      <td>0.000240</td>
+      <td>2.176730e-05</td>
+      <td>...</td>
+      <td>0.147906</td>
+      <td>0.227951</td>
+      <td>1.039525e-08</td>
+      <td>0.025164</td>
+      <td>3.663169e-06</td>
+      <td>0.000098</td>
+      <td>2.188077</td>
+      <td>0.000098</td>
+      <td>9.716554e-09</td>
+      <td>124</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>20</td>
+      <td>AHMAD MAULANA ISHAQ</td>
+      <td>Kertosono, Ngajuk</td>
+      <td>6.831673e-06</td>
+      <td>0.034089</td>
+      <td>2</td>
+      <td>1.871691e-08</td>
+      <td>194.991248</td>
+      <td>0.000392</td>
+      <td>6.850811e-05</td>
+      <td>...</td>
+      <td>0.148184</td>
+      <td>0.248858</td>
+      <td>2.328398e-08</td>
+      <td>0.031830</td>
+      <td>6.816747e-06</td>
+      <td>0.000148</td>
+      <td>2.184552</td>
+      <td>0.000148</td>
+      <td>2.232986e-08</td>
+      <td>93</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>21</td>
+      <td>Triswanti Jannatul Ma'wa</td>
+      <td>Kedungpring Lamongan</td>
+      <td>9.948612e-06</td>
+      <td>0.040629</td>
+      <td>2</td>
+      <td>2.725647e-08</td>
+      <td>219.452157</td>
+      <td>0.000548</td>
+      <td>5.866265e-05</td>
+      <td>...</td>
+      <td>0.146712</td>
+      <td>0.217979</td>
+      <td>4.179144e-08</td>
+      <td>0.039747</td>
+      <td>2.967013e-06</td>
+      <td>0.000212</td>
+      <td>2.175391</td>
+      <td>0.000212</td>
+      <td>4.629732e-08</td>
+      <td>86</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>22</td>
+      <td>Muhammad Isa</td>
+      <td>Bandung, Jogoroto, Jombang</td>
+      <td>1.588013e-05</td>
+      <td>0.053998</td>
+      <td>5</td>
+      <td>4.362673e-08</td>
+      <td>204.587522</td>
+      <td>0.000532</td>
+      <td>6.561274e-05</td>
+      <td>...</td>
+      <td>0.150304</td>
+      <td>0.220157</td>
+      <td>5.102437e-08</td>
+      <td>0.042105</td>
+      <td>3.182412e-06</td>
+      <td>0.000264</td>
+      <td>2.155280</td>
+      <td>0.000264</td>
+      <td>7.468421e-08</td>
+      <td>78</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>23</td>
+      <td>Lailatul Hasanah</td>
+      <td>Socah, Bangkalan</td>
+      <td>1.041666e-05</td>
+      <td>0.040233</td>
+      <td>2</td>
+      <td>2.869604e-08</td>
+      <td>183.525244</td>
+      <td>0.000502</td>
+      <td>4.698339e-05</td>
+      <td>...</td>
+      <td>0.151949</td>
+      <td>0.220124</td>
+      <td>4.875010e-08</td>
+      <td>0.044092</td>
+      <td>1.758334e-06</td>
+      <td>0.000238</td>
+      <td>2.171349</td>
+      <td>0.000238</td>
+      <td>5.884629e-08</td>
+      <td>105</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>24</td>
+      <td>Mohammad Aziz Huzaini</td>
+      <td>Tanah Merah, Bangkalan</td>
+      <td>9.503999e-06</td>
+      <td>0.050930</td>
+      <td>3</td>
+      <td>2.603835e-08</td>
+      <td>196.353496</td>
+      <td>0.000364</td>
+      <td>1.394221e-04</td>
+      <td>...</td>
+      <td>0.142720</td>
+      <td>0.559084</td>
+      <td>1.142124e-08</td>
+      <td>0.013802</td>
+      <td>7.348108e-06</td>
+      <td>0.000146</td>
+      <td>2.134211</td>
+      <td>0.000146</td>
+      <td>2.318051e-08</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>25</td>
+      <td>Laila Maghfiroh</td>
+      <td>Kamal, Bangkalan</td>
+      <td>1.617796e-05</td>
+      <td>0.050067</td>
+      <td>1</td>
+      <td>4.432317e-08</td>
+      <td>217.924230</td>
+      <td>0.000671</td>
+      <td>4.874497e-05</td>
+      <td>...</td>
+      <td>0.148473</td>
+      <td>0.223343</td>
+      <td>7.078299e-08</td>
+      <td>0.057047</td>
+      <td>6.567907e-06</td>
+      <td>0.000252</td>
+      <td>2.184757</td>
+      <td>0.000251</td>
+      <td>6.449958e-08</td>
+      <td>112</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>26</td>
+      <td>A. Choiril Anwar El-Asfihani Risydan</td>
+      <td>Banyu Ajuh, Perumnas, Kamal</td>
+      <td>2.187551e-05</td>
+      <td>0.058003</td>
+      <td>1</td>
+      <td>5.993289e-08</td>
+      <td>217.981235</td>
+      <td>0.000817</td>
+      <td>5.892443e-05</td>
+      <td>...</td>
+      <td>0.147475</td>
+      <td>0.173110</td>
+      <td>9.514308e-08</td>
+      <td>0.066120</td>
+      <td>5.826260e-06</td>
+      <td>0.000295</td>
+      <td>2.180249</td>
+      <td>0.000295</td>
+      <td>8.845243e-08</td>
+      <td>108</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>27</td>
+      <td>Muhammad izzul Millah Aqil</td>
+      <td>Wonokromo, Surabaya</td>
+      <td>1.470618e-05</td>
+      <td>0.048351</td>
+      <td>2</td>
+      <td>4.213805e-08</td>
+      <td>195.536631</td>
+      <td>0.000546</td>
+      <td>1.508124e-05</td>
+      <td>...</td>
+      <td>0.149985</td>
+      <td>0.166748</td>
+      <td>7.851218e-08</td>
+      <td>0.048224</td>
+      <td>7.033241e-06</td>
+      <td>0.000282</td>
+      <td>2.168242</td>
+      <td>0.000282</td>
+      <td>8.262654e-08</td>
+      <td>96</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>28</td>
+      <td>Fathul Aziz Saifuddin</td>
+      <td>Dukun, Gresik</td>
+      <td>8.447316e-06</td>
+      <td>0.038811</td>
+      <td>2</td>
+      <td>2.320691e-08</td>
+      <td>206.206722</td>
+      <td>0.000419</td>
+      <td>4.163241e-05</td>
+      <td>...</td>
+      <td>0.142119</td>
+      <td>0.269920</td>
+      <td>3.613930e-08</td>
+      <td>0.036125</td>
+      <td>3.468154e-06</td>
+      <td>0.000206</td>
+      <td>2.167157</td>
+      <td>0.000206</td>
+      <td>4.447452e-08</td>
+      <td>94</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>29</td>
+      <td>M. Fatihul Umam</td>
+      <td>Kwanyar, Bangkalan</td>
+      <td>1.892324e-05</td>
+      <td>0.058176</td>
+      <td>2</td>
+      <td>5.198692e-08</td>
+      <td>201.287422</td>
+      <td>0.000637</td>
+      <td>3.250285e-05</td>
+      <td>...</td>
+      <td>0.146254</td>
+      <td>0.154005</td>
+      <td>8.342241e-08</td>
+      <td>0.055033</td>
+      <td>1.101795e-06</td>
+      <td>0.000328</td>
+      <td>2.154088</td>
+      <td>0.000328</td>
+      <td>1.141906e-07</td>
+      <td>103</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>30</td>
+      <td>Rahardian Ananta</td>
+      <td>jabon , Sidoarjo</td>
+      <td>2.145880e-05</td>
+      <td>0.062635</td>
+      <td>2</td>
+      <td>5.879124e-08</td>
+      <td>214.852439</td>
+      <td>0.000722</td>
+      <td>1.457911e-04</td>
+      <td>...</td>
+      <td>0.152202</td>
+      <td>0.320951</td>
+      <td>6.223079e-08</td>
+      <td>0.054644</td>
+      <td>7.977404e-06</td>
+      <td>0.000242</td>
+      <td>2.181715</td>
+      <td>0.000242</td>
+      <td>5.969658e-08</td>
+      <td>83</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>31</td>
+      <td>Alifah Sayyidaturrhohma</td>
+      <td>Kota Sumenep, Sumenep</td>
+      <td>7.124488e-06</td>
+      <td>0.034984</td>
+      <td>2</td>
+      <td>1.957277e-08</td>
+      <td>183.411310</td>
+      <td>0.000427</td>
+      <td>6.786552e-07</td>
+      <td>...</td>
+      <td>0.149793</td>
+      <td>0.178284</td>
+      <td>3.709723e-08</td>
+      <td>0.034174</td>
+      <td>8.329411e-07</td>
+      <td>0.000189</td>
+      <td>2.162479</td>
+      <td>0.000189</td>
+      <td>3.730359e-08</td>
+      <td>106</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>33</td>
+      <td>Muhammad Ali Murtadho</td>
+      <td>Baron Nganjuk</td>
+      <td>8.979466e-06</td>
+      <td>0.038561</td>
+      <td>2</td>
+      <td>2.460128e-08</td>
+      <td>182.977864</td>
+      <td>0.000418</td>
+      <td>7.236448e-05</td>
+      <td>...</td>
+      <td>0.145814</td>
+      <td>0.203833</td>
+      <td>3.138938e-08</td>
+      <td>0.033109</td>
+      <td>9.000962e-06</td>
+      <td>0.000192</td>
+      <td>2.175886</td>
+      <td>0.000191</td>
+      <td>3.775423e-08</td>
+      <td>89</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>34</td>
+      <td>Fahdimas akmal</td>
+      <td>Kwanyar, Bangkalan</td>
+      <td>5.695828e-06</td>
+      <td>0.031149</td>
+      <td>2</td>
+      <td>1.560501e-08</td>
+      <td>217.161164</td>
+      <td>0.000348</td>
+      <td>3.974196e-05</td>
+      <td>...</td>
+      <td>0.147797</td>
+      <td>0.158201</td>
+      <td>2.367751e-08</td>
+      <td>0.035051</td>
+      <td>3.251168e-06</td>
+      <td>0.000151</td>
+      <td>2.186346</td>
+      <td>0.000151</td>
+      <td>2.309538e-08</td>
+      <td>108</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>36</td>
+      <td>Fathan Ruhul Alam</td>
+      <td>Warudoyong, Kota Sukabumi</td>
+      <td>1.239113e-05</td>
+      <td>0.049975</td>
+      <td>5</td>
+      <td>3.394830e-08</td>
+      <td>162.160263</td>
+      <td>0.000488</td>
+      <td>2.257933e-05</td>
+      <td>...</td>
+      <td>0.146973</td>
+      <td>0.123893</td>
+      <td>6.648524e-08</td>
+      <td>0.027626</td>
+      <td>6.465528e-07</td>
+      <td>0.000342</td>
+      <td>2.088016</td>
+      <td>0.000342</td>
+      <td>1.369387e-07</td>
+      <td>66</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>38</td>
+      <td>Rifqi Fairurrafi</td>
+      <td>Kec. Bangkalan, Kab. Bangkalan</td>
+      <td>1.557919e-05</td>
+      <td>0.054242</td>
+      <td>3</td>
+      <td>4.268270e-08</td>
+      <td>193.870879</td>
+      <td>0.000597</td>
+      <td>8.148367e-05</td>
+      <td>...</td>
+      <td>0.142237</td>
+      <td>0.231065</td>
+      <td>7.146588e-08</td>
+      <td>0.036730</td>
+      <td>2.645580e-06</td>
+      <td>0.000343</td>
+      <td>2.140147</td>
+      <td>0.000343</td>
+      <td>1.287582e-07</td>
+      <td>72</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>39</td>
+      <td>Alghifari Amar Mukhasyafah</td>
+      <td>Wonoayu</td>
+      <td>9.410109e-06</td>
+      <td>0.051720</td>
+      <td>2</td>
+      <td>2.585195e-08</td>
+      <td>187.468497</td>
+      <td>0.000353</td>
+      <td>1.410138e-04</td>
+      <td>...</td>
+      <td>0.155434</td>
+      <td>0.695570</td>
+      <td>1.159880e-08</td>
+      <td>0.020174</td>
+      <td>9.011376e-06</td>
+      <td>0.000109</td>
+      <td>2.169047</td>
+      <td>0.000109</td>
+      <td>1.245629e-08</td>
+      <td>40</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>40</td>
+      <td>Moh Rafie Nazar J</td>
+      <td>Kecamatan Bangkalan,Bangkalan</td>
+      <td>2.785334e-06</td>
+      <td>0.021217</td>
+      <td>1</td>
+      <td>7.610201e-09</td>
+      <td>208.345579</td>
+      <td>0.000258</td>
+      <td>3.597424e-05</td>
+      <td>...</td>
+      <td>0.148174</td>
+      <td>0.258639</td>
+      <td>1.148992e-08</td>
+      <td>0.024639</td>
+      <td>1.958481e-06</td>
+      <td>0.000106</td>
+      <td>2.183561</td>
+      <td>0.000106</td>
+      <td>1.162336e-08</td>
+      <td>117</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>42</td>
+      <td>Muhammad Zaidan Nabil Rafi</td>
+      <td>Kamal, Bangkalan</td>
+      <td>2.303165e-04</td>
+      <td>0.804649</td>
+      <td>15</td>
+      <td>4.485229e-08</td>
+      <td>2962.437852</td>
+      <td>0.000738</td>
+      <td>7.694179e-05</td>
+      <td>...</td>
+      <td>0.132405</td>
+      <td>0.155205</td>
+      <td>4.288738e-08</td>
+      <td>0.047016</td>
+      <td>4.699188e-07</td>
+      <td>0.000268</td>
+      <td>2.010270</td>
+      <td>0.000268</td>
+      <td>9.150067e-08</td>
+      <td>83</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>43</td>
+      <td>Riska Nana Nuril Fadilah</td>
+      <td>Asemrowo, Surabaya</td>
+      <td>2.393210e-05</td>
+      <td>0.061124</td>
+      <td>1</td>
+      <td>6.818263e-08</td>
+      <td>179.695814</td>
+      <td>0.000696</td>
+      <td>7.401892e-05</td>
+      <td>...</td>
+      <td>0.153189</td>
+      <td>0.251567</td>
+      <td>1.044897e-07</td>
+      <td>0.067301</td>
+      <td>6.737735e-07</td>
+      <td>0.000328</td>
+      <td>2.165538</td>
+      <td>0.000328</td>
+      <td>1.126956e-07</td>
+      <td>105</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>45</td>
+      <td>Dewi Geizya</td>
+      <td>Kamal, Banyuajuh</td>
+      <td>1.346274e+05</td>
+      <td>6419.478750</td>
+      <td>16</td>
+      <td>3.688422e+02</td>
+      <td>211.634272</td>
+      <td>39.463750</td>
+      <td>1.756613e+01</td>
+      <td>...</td>
+      <td>0.137527</td>
+      <td>0.517331</td>
+      <td>8.859294e+01</td>
+      <td>1114.092500</td>
+      <td>7.237567e-01</td>
+      <td>9.869025</td>
+      <td>2.135695</td>
+      <td>9.838850</td>
+      <td>1.107113e+02</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+<p>37 rows × 71 columns</p>
+</div>
+    <div class="colab-df-buttons">
+
+  <div class="colab-df-container">
+    <button class="colab-df-convert" onclick="convertToInteractive('df-fc6f83de-7969-460d-bac2-eed50699d998')"
+            title="Convert this dataframe to an interactive table."
+            style="display:none;">
+
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960">
+    <path d="M120-120v-720h720v720H120Zm60-500h600v-160H180v160Zm220 220h160v-160H400v160Zm0 220h160v-160H400v160ZM180-400h160v-160H180v160Zm440 0h160v-160H620v160ZM180-180h160v-160H180v160Zm440 0h160v-160H620v160Z"/>
+  </svg>
+    </button>
+
+  <style>
+    .colab-df-container {
+      display:flex;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    .colab-df-buttons div {
+      margin-bottom: 4px;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+    <script>
+      const buttonEl =
+        document.querySelector('#df-fc6f83de-7969-460d-bac2-eed50699d998 button.colab-df-convert');
+      buttonEl.style.display =
+        google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+      async function convertToInteractive(key) {
+        const element = document.querySelector('#df-fc6f83de-7969-460d-bac2-eed50699d998');
+        const dataTable =
+          await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                    [key], {});
+        if (!dataTable) return;
+
+        const docLinkHtml = 'Like what you see? Visit the ' +
+          '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+          + ' to learn more about interactive tables.';
+        element.innerHTML = '';
+        dataTable['output_type'] = 'display_data';
+        await google.colab.output.renderOutput(dataTable, element);
+        const docLink = document.createElement('div');
+        docLink.innerHTML = docLinkHtml;
+        element.appendChild(docLink);
+      }
+    </script>
+  </div>
+
+
+  <div id="id_515a72eb-6df7-4dcd-8c7f-273da07d311f">
+    <style>
+      .colab-df-generate {
+        background-color: #E8F0FE;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: none;
+        fill: #1967D2;
+        height: 32px;
+        padding: 0 0 0 0;
+        width: 32px;
+      }
+
+      .colab-df-generate:hover {
+        background-color: #E2EBFA;
+        box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+        fill: #174EA6;
+      }
+
+      [theme=dark] .colab-df-generate {
+        background-color: #3B4455;
+        fill: #D2E3FC;
+      }
+
+      [theme=dark] .colab-df-generate:hover {
+        background-color: #434B5C;
+        box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+        filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+        fill: #FFFFFF;
+      }
+    </style>
+    <button class="colab-df-generate" onclick="generateWithVariable('df_tsfel')"
+            title="Generate code using this dataframe."
+            style="display:none;">
+
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+       width="24px">
+    <path d="M7,19H8.4L18.45,9,17,7.55,7,17.6ZM5,21V16.75L18.45,3.32a2,2,0,0,1,2.83,0l1.4,1.43a1.91,1.91,0,0,1,.58,1.4,1.91,1.91,0,0,1-.58,1.4L9.25,21ZM18.45,9,17,7.55Zm-12,3A5.31,5.31,0,0,0,4.9,8.1,5.31,5.31,0,0,0,1,6.5,5.31,5.31,0,0,0,4.9,4.9,5.31,5.31,0,0,0,6.5,1,5.31,5.31,0,0,0,8.1,4.9,5.31,5.31,0,0,0,12,6.5,5.46,5.46,0,0,0,6.5,12Z"/>
+  </svg>
+    </button>
+    <script>
+      (() => {
+      const buttonEl =
+        document.querySelector('#id_515a72eb-6df7-4dcd-8c7f-273da07d311f button.colab-df-generate');
+      buttonEl.style.display =
+        google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+      buttonEl.onclick = () => {
+        google.colab.notebook.generateWithVariable('df_tsfel');
+      }
+      })();
+    </script>
+  </div>
+
+    </div>
+  </div>
+</div></div>
+</div>
+</section>
+<section id="metodologi-reduksi-dimensi-menggunakan-pca-principal-component-analysis">
+<h2>5. Metodologi Reduksi Dimensi Menggunakan PCA (Principal Component Analysis)<a class="headerlink" href="#metodologi-reduksi-dimensi-menggunakan-pca-principal-component-analysis" title="Link to this heading">#</a></h2>
+<section id="mengapa-reduksi-dimensi-dilakukan-menjadi-37-komponen">
+<h3>Mengapa Reduksi Dimensi Dilakukan Menjadi 37 Komponen?<a class="headerlink" href="#mengapa-reduksi-dimensi-dilakukan-menjadi-37-komponen" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Batas Teori Aljabar Linier (<em>Matrix Rank</em>):</strong></p>
+<ul class="simple">
+<li><p>Matriks data fitur kita memiliki ukuran <span class="math notranslate nohighlight">\(N = 37\)</span> baris (sampel mahasiswa) dan <span class="math notranslate nohighlight">\(P = 68\)</span> kolom (fitur).</p></li>
+<li><p>Secara matematis, rank maksimal dari matriks kovarians data adalah:
+$<span class="math notranslate nohighlight">\(\text{Rank Maksimum} = \min(N, P) = \min(37, 68) = 37\)</span>$</p></li>
+<li><p>Artinya, meskipun secara nominal terdapat 68 fitur, seluruh titik data 37 sampel tersebut sesungguhnya berada dalam subruang linier berdimensi maksimal 37.</p></li>
+</ul>
+</li>
+<li><p><strong>Preservasi 100% Variansi (<em>Cumulative Explained Variance</em>):</strong></p>
+<ul class="simple">
+<li><p>Dengan mereduksi dimensi dari 68 fitur menjadi <strong>37 komponen utama (PC1 s.d. PC37)</strong>, model mempertahankan <strong>100.00% informasi variansi data asli</strong> tanpa ada informasi yang hilang.</p></li>
+</ul>
+</li>
+<li><p><strong>Penyederhanaan ke Ruang 2D (PC1 &amp; PC2):</strong></p>
+<ul class="simple">
+<li><p>Berdasarkan hasil perhitungan variansi:</p>
+<ul>
+<li><p><strong>Polutan CO:</strong> PC1 dan PC2 merangkum <strong>77.63%</strong> variansi data.</p></li>
+<li><p><strong>Polutan NO2:</strong> PC1 dan PC2 merangkum <strong>68.58%</strong> variansi data.</p></li>
+<li><p><strong>Polutan SO2:</strong> PC1 dan PC2 merangkum <strong>77.46%</strong> variansi data.</p></li>
+</ul>
+</li>
+<li><p>Hal ini membuktikan bahwa proyeksi 2D (PC1 vs PC2) sudah sangat representatif untuk visualisasi <em>Scatter Plot</em> tanpa mengalami <em>curse of dimensionality</em>.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<hr class="docutils" />
+<section id="analisis-penentuan-jumlah-cluster-terbaik-pada-k-means-clustering">
+<h2>6. Analisis Penentuan Jumlah Cluster Terbaik pada K-Means Clustering<a class="headerlink" href="#analisis-penentuan-jumlah-cluster-terbaik-pada-k-means-clustering" title="Link to this heading">#</a></h2>
+<p>Untuk menentukan jumlah klaster optimal (<span class="math notranslate nohighlight">\(k\)</span>), dua metode evaluasi kuantitatif digunakan:</p>
+<ol class="arabic simple">
+<li><p><strong>Metode Elbow (Inertia / WCSS - Within-Cluster Sum of Squares):</strong>
+Mengukur derajat kepadatan internal klaster. Titik “siku” (<em>elbow</em>) menunjukkan titik di mana penambahan klaster baru tidak lagi memberikan penurunan inertia yang signifikan.</p></li>
+<li><p><strong>Metode Silhouette Score:</strong>
+Mengukur seberapa mirip suatu objek dengan klasternya sendiri dibandingkan dengan klaster tetangga. Rentang nilai antara <span class="math notranslate nohighlight">\(-1\)</span> hingga <span class="math notranslate nohighlight">\(+1\)</span>. Nilai di atas <span class="math notranslate nohighlight">\(0.70\)</span> mengindikasikan pemisahan klaster yang sangat kuat (<em>strong clustering structure</em>).</p></li>
+</ol>
+<section id="rangkuman-hasil-evaluasi-klaster-k-2-s-d-k-7">
+<h3>Rangkuman Hasil Evaluasi Klaster (<span class="math notranslate nohighlight">\(k=2\)</span> s.d. <span class="math notranslate nohighlight">\(k=7\)</span>):<a class="headerlink" href="#rangkuman-hasil-evaluasi-klaster-k-2-s-d-k-7" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Polutan</p></th>
+<th class="head text-center"><p>Nilai <span class="math notranslate nohighlight">\(k\)</span></p></th>
+<th class="head text-center"><p>Silhouette Score</p></th>
+<th class="head text-center"><p>Davies-Bouldin Index</p></th>
+<th class="head text-center"><p>Inertia (WCSS)</p></th>
+<th class="head text-left"><p>Status Evaluasi</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>CO</strong></p></td>
+<td class="text-center"><p><strong><span class="math notranslate nohighlight">\(k=2\)</span></strong></p></td>
+<td class="text-center"><p><strong>0.7955</strong></p></td>
+<td class="text-center"><p><strong>0.1247</strong></p></td>
+<td class="text-center"><p>1123.80</p></td>
+<td class="text-left"><p><strong>Optimal Tertinggi (Sangat Kuat)</strong></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p></p></td>
+<td class="text-center"><p><strong><span class="math notranslate nohighlight">\(k=3\)</span></strong></p></td>
+<td class="text-center"><p><strong>0.6970</strong></p></td>
+<td class="text-center"><p><strong>0.1591</strong></p></td>
+<td class="text-center"><p>660.21</p></td>
+<td class="text-left"><p><strong>Alternatif Terbaik (3 Kategori)</strong></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(k=4\)</span></p></td>
+<td class="text-center"><p>0.3425</p></td>
+<td class="text-center"><p>0.6945</p></td>
+<td class="text-center"><p>509.37</p></td>
+<td class="text-left"><p>Kualitas turun tajam</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(k=5\)</span></p></td>
+<td class="text-center"><p>0.1845</p></td>
+<td class="text-center"><p>0.9275</p></td>
+<td class="text-center"><p>413.89</p></td>
+<td class="text-left"><p>Terjadi over-clustering</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>NO2</strong></p></td>
+<td class="text-center"><p><strong><span class="math notranslate nohighlight">\(k=2\)</span></strong></p></td>
+<td class="text-center"><p><strong>0.7455</strong></p></td>
+<td class="text-center"><p><strong>0.1631</strong></p></td>
+<td class="text-center"><p>1326.58</p></td>
+<td class="text-left"><p><strong>Optimal Tertinggi (Sangat Kuat)</strong></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(k=3\)</span></p></td>
+<td class="text-center"><p>0.1907</p></td>
+<td class="text-center"><p>1.1257</p></td>
+<td class="text-center"><p>1001.28</p></td>
+<td class="text-left"><p>Kualitas rendah</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(k=4\)</span></p></td>
+<td class="text-center"><p>0.2045</p></td>
+<td class="text-center"><p>0.9997</p></td>
+<td class="text-center"><p>811.80</p></td>
+<td class="text-left"><p>Klaster tumpang tindih</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>SO2</strong></p></td>
+<td class="text-center"><p><strong><span class="math notranslate nohighlight">\(k=2\)</span></strong></p></td>
+<td class="text-center"><p><strong>0.7894</strong></p></td>
+<td class="text-center"><p><strong>0.1279</strong></p></td>
+<td class="text-center"><p>1210.46</p></td>
+<td class="text-left"><p><strong>Optimal Tertinggi (Sangat Kuat)</strong></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p></p></td>
+<td class="text-center"><p><strong><span class="math notranslate nohighlight">\(k=3\)</span></strong></p></td>
+<td class="text-center"><p><strong>0.7085</strong></p></td>
+<td class="text-center"><p><strong>0.1513</strong></p></td>
+<td class="text-center"><p>691.64</p></td>
+<td class="text-left"><p><strong>Alternatif Terbaik (3 Kategori)</strong></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(k=4\)</span></p></td>
+<td class="text-center"><p>0.3921</p></td>
+<td class="text-center"><p>0.5334</p></td>
+<td class="text-center"><p>525.29</p></td>
+<td class="text-left"><p>Kualitas turun tajam</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="jawaban-pertanyaan-tugas">
+<h3>Jawaban Pertanyaan Tugas:<a class="headerlink" href="#jawaban-pertanyaan-tugas" title="Link to this heading">#</a></h3>
+<section id="dari-hasil-reduksi-dimensi-pca-1-pca-37-berapa-baiknya-cluster">
+<h4>1. Dari hasil reduksi dimensi PCA 1 – PCA 37 berapa baiknya cluster?<a class="headerlink" href="#dari-hasil-reduksi-dimensi-pca-1-pca-37-berapa-baiknya-cluster" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Jumlah cluster terbaik secara matematis adalah <span class="math notranslate nohighlight">\(k = 2\)</span></strong> dengan nilai Silhouette Score yang sangat tinggi (<strong>CO: 0.7955, NO2: 0.7455, SO2: 0.7894</strong>). Pemisahan ini membagi wilayah secara tegas menjadi 2 kelompok profil emisi (misalnya wilayah dengan aktivitas polusi tinggi vs rendah).</p></li>
+<li><p><strong>Alternatif praktis terbaik untuk CO dan SO2 adalah <span class="math notranslate nohighlight">\(k = 3\)</span></strong> (Silhouette <span class="math notranslate nohighlight">\(\approx 0.70\)</span>), yang membagi kualitas lingkungan menjadi 3 tingkatan logis: <strong>Rendah, Sedang, dan Tinggi</strong>.</p></li>
+</ul>
+</section>
+<section id="berapa-baiknya-data-ini-di-cluster">
+<h4>2. Berapa baiknya data ini di-cluster?<a class="headerlink" href="#berapa-baiknya-data-ini-di-cluster" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Data ini <strong>sangat baik untuk di-cluster pada <span class="math notranslate nohighlight">\(k=2\)</span> atau <span class="math notranslate nohighlight">\(k=3\)</span></strong>, terbukti dengan Silhouette Score di atas ambang <span class="math notranslate nohighlight">\(0.70\)</span> (<em>strong structure</em>).</p></li>
+<li><p>Penggunaan <span class="math notranslate nohighlight">\(k \ge 4\)</span> <strong>tidak direkomendasikan</strong> karena skor Silhouette anjlok ke bawah <span class="math notranslate nohighlight">\(0.40\)</span>, menandakan terjadinya fragmentasi berlebih (<em>over-clustering</em>) mengingat ukuran sampel sebanyak 37 data.</p></li>
+</ul>
+</section>
+<section id="bagaimana-hasilnya-jika-dilakukan-pada-68-fitur-asli-secara-langsung">
+<h4>3. Bagaimana hasilnya jika dilakukan pada 68 fitur asli secara langsung?<a class="headerlink" href="#bagaimana-hasilnya-jika-dilakukan-pada-68-fitur-asli-secara-langsung" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Nilai Silhouette Score dan inertia pada 68 fitur asli <strong>identik</strong> dengan hasil pada 37 komponen PCA. Hal ini terjadi karena reduksi PCA ke 37 komponen merupakan transformasi ortogonal penuh yang mempertahankan 100% variansi dan jarak Euclidean antar-data.</p></li>
+<li><p><strong>Keunggulan reduksi dimensi PCA:</strong> Menyediakan sumbu komponen utama (PC1 &amp; PC2) yang dapat langsung dipetakan ke dalam <strong>Scatter Plot 2D</strong> pada KNIME maupun Python tanpa kehilangan pola esensial data.</p></li>
+</ul>
+</section>
+</section>
+</section>
+<hr class="docutils" />
+<section id="panduan-implementasi-pada-tools-knime-analytics-platform">
+<h2>7. Panduan Implementasi pada Tools KNIME Analytics Platform<a class="headerlink" href="#panduan-implementasi-pada-tools-knime-analytics-platform" title="Link to this heading">#</a></h2>
+<p>Sesuai diagram node workflow KNIME (<em>PostgreSQL Connector → DB Table Selector → DB Reader → PCA → k-Means → Scatter Plot</em>), berikut konfigurasi tiap node:</p>
+<ol class="arabic simple">
+<li><p><strong>PostgreSQL Connector:</strong></p>
+<ul class="simple">
+<li><p>Masukkan <em>Hostname</em> Aiven, <em>Port</em> <code class="docutils literal notranslate"><span class="pre">15884</span></code>, <em>Database</em> <code class="docutils literal notranslate"><span class="pre">defaultdb</span></code>, serta <em>Username</em> dan <em>Password</em>.</p></li>
+</ul>
+</li>
+<li><p><strong>DB Table Selector:</strong></p>
+<ul class="simple">
+<li><p>Pilih tabel target (<code class="docutils literal notranslate"><span class="pre">data_clustering_co</span></code>, <code class="docutils literal notranslate"><span class="pre">data_clustering_no2</span></code>, atau <code class="docutils literal notranslate"><span class="pre">data_clustering_so2</span></code>).</p></li>
+</ul>
+</li>
+<li><p><strong>DB Reader:</strong></p>
+<ul class="simple">
+<li><p>Eksekusi pembacaan data ke dalam memori tabel KNIME.</p></li>
+</ul>
+</li>
+<li><p><strong>PCA Node:</strong></p>
+<ul class="simple">
+<li><p>Pindahkan kolom non-numerik (<code class="docutils literal notranslate"><span class="pre">id</span></code>, <code class="docutils literal notranslate"><span class="pre">nama</span></code>, <code class="docutils literal notranslate"><span class="pre">daerah</span></code>) ke kotak <em>Exclude</em>.</p></li>
+<li><p>Masukkan seluruh 68 kolom fitur numerik ke kotak <em>Include</em>.</p></li>
+<li><p>Pada pengaturan dimensi target, pilih <strong>37 Dimensions</strong> (atau pertahankan <em>100% Variance</em>).</p></li>
+</ul>
+</li>
+<li><p><strong>k-Means Node:</strong></p>
+<ul class="simple">
+<li><p>Masukkan parameter <strong><span class="math notranslate nohighlight">\(k = 2\)</span></strong> (atau <strong><span class="math notranslate nohighlight">\(k = 3\)</span></strong>).</p></li>
+<li><p>Centang opsi <em>Normalize input variables</em> agar skala fitur seragam.</p></li>
+</ul>
+</li>
+<li><p><strong>Scatter Plot Node:</strong></p>
+<ul class="simple">
+<li><p>Konfigurasikan sumbu horizontal <span class="math notranslate nohighlight">\(X = \text{PCA 1}\)</span> dan sumbu vertikal <span class="math notranslate nohighlight">\(Y = \text{PCA 2}\)</span>.</p></li>
+<li><p>Atur warna titik berdasarkan kolom hasil pengelompokan <strong>Cluster</strong>.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#konsep-dasar-statistik-deskripsi-68-fitur-tsfel">1. Konsep Dasar Statistik &amp; Deskripsi 68 Fitur TSFEL</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-domain-statistik-16-fitur">A. Domain Statistik (16 Fitur)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-domain-temporal-waktu-18-fitur">B. Domain Temporal / Waktu (18 Fitur)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-domain-frekuensi-spektral-26-fitur">C. Domain Frekuensi / Spektral (26 Fitur)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-domain-fraktal-kompleksitas-8-fitur">D. Domain Fraktal &amp; Kompleksitas (8 Fitur)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contoh-perhitungan-manual-vs-pembuktian-tsfel">Contoh Perhitungan Manual vs Pembuktian TSFEL</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#struktur-dataset-ekstraksi-fitur-untuk-1-kelas">2. Struktur Dataset Ekstraksi Fitur untuk 1 Kelas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#migrasi-data-fitur-ke-database-cloud-postgresql-aiven">3. Migrasi Data Fitur ke Database Cloud PostgreSQL (Aiven)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pembacaan-dan-verifikasi-dimensi-data-hasil-ekstraksi-fitur">4. Pembacaan dan Verifikasi Dimensi Data Hasil Ekstraksi Fitur</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metodologi-reduksi-dimensi-menggunakan-pca-principal-component-analysis">5. Metodologi Reduksi Dimensi Menggunakan PCA (Principal Component Analysis)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mengapa-reduksi-dimensi-dilakukan-menjadi-37-komponen">Mengapa Reduksi Dimensi Dilakukan Menjadi 37 Komponen?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-penentuan-jumlah-cluster-terbaik-pada-k-means-clustering">6. Analisis Penentuan Jumlah Cluster Terbaik pada K-Means Clustering</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rangkuman-hasil-evaluasi-klaster-k-2-s-d-k-7">Rangkuman Hasil Evaluasi Klaster (<span class="math notranslate nohighlight">\(k=2\)</span> s.d. <span class="math notranslate nohighlight">\(k=7\)</span>):</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jawaban-pertanyaan-tugas">Jawaban Pertanyaan Tugas:</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#dari-hasil-reduksi-dimensi-pca-1-pca-37-berapa-baiknya-cluster">1. Dari hasil reduksi dimensi PCA 1 – PCA 37 berapa baiknya cluster?</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#berapa-baiknya-data-ini-di-cluster">2. Berapa baiknya data ini di-cluster?</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#bagaimana-hasilnya-jika-dilakukan-pada-68-fitur-asli-secara-langsung">3. Bagaimana hasilnya jika dilakukan pada 68 fitur asli secara langsung?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#panduan-implementasi-pada-tools-knime-analytics-platform">7. Panduan Implementasi pada Tools KNIME Analytics Platform</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dedy Nurohim
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
