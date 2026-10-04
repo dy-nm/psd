@@ -1,0 +1,411 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1080" width="100%" height="100%" style="background:#090d16; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="50%" stop-color="#818cf8"/>
+      <stop offset="100%" stop-color="#34d399"/>
+    </linearGradient>
+    <linearGradient id="dbGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="linGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#064e3b" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#022c22" stop-opacity="0.6"/>
+    </linearGradient>
+    <linearGradient id="polyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#7c2d12" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#431407" stop-opacity="0.6"/>
+    </linearGradient>
+    <linearGradient id="optLinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#065f46"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+    <linearGradient id="optPolyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#9a3412"/>
+      <stop offset="100%" stop-color="#c2410c"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+    <marker id="arrowCyan" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#38bdf8"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#34d399"/>
+    </marker>
+    <marker id="arrowOrange" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#fb923c"/>
+    </marker>
+  </defs>
+
+  <!-- Canvas Header -->
+  <rect x="0" y="0" width="1600" height="95" fill="#0f172a" opacity="0.7"/>
+  <line x1="0" y1="95" x2="1600" y2="95" stroke="#1e293b" stroke-width="1.5"/>
+  <text x="800" y="45" text-anchor="middle" font-size="24" font-weight="800" fill="url(#headerGrad)" letter-spacing="1.5">ARSITEKTUR LENGKAP ALUR KERJA KNIME ANALYTICS PLATFORM (51 NODE)</text>
+  <text x="800" y="74" text-anchor="middle" font-size="13" font-weight="500" fill="#94a3b8">Koneksi MariaDB Remote • Standarisasi Z-Score • 3-Tier Dimensi (203, PCA 37, 74 Optimal) • Evaluasi K=2..8 Silhouette • Scatter Plot K=3 Optimal (Seed 519)</text>
+
+  <!-- ======================================================== -->
+  <!-- 1. LEFT COLUMN: DATABASE SOURCE -->
+  <!-- ======================================================== -->
+  <g transform="translate(30, 115)" filter="url(#shadow)">
+    <!-- Container -->
+    <rect x="0" y="0" width="230" height="930" rx="16" fill="url(#dbGrad)" stroke="#0284c7" stroke-width="1.8" stroke-dasharray="6,4"/>
+    
+    <!-- Header -->
+    <rect x="15" y="16" width="200" height="34" rx="8" fill="#0369a1" opacity="0.3"/>
+    <text x="115" y="38" text-anchor="middle" font-size="12" font-weight="700" fill="#38bdf8" letter-spacing="1">🛢️ SUMBER BASIS DATA</text>
+    
+    <text x="115" y="78" text-anchor="middle" font-size="11.5" font-weight="600" fill="#e2e8f0">MariaDB Remote Server</text>
+    <text x="115" y="98" text-anchor="middle" font-size="10.5" fill="#94a3b8">basisdata2-c.my.id:3306</text>
+    <text x="115" y="116" text-anchor="middle" font-size="10.5" fill="#64748b">basisda1_PSD-A-Interpolasi</text>
+
+    <!-- Node #1 Card -->
+    <rect x="15" y="145" width="200" height="200" rx="12" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="25" y="157" width="60" height="20" rx="6" fill="#0284c7"/>
+    <text x="55" y="171" text-anchor="middle" font-size="10" font-weight="800" fill="#ffffff">Node #1</text>
+    <text x="115" y="202" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">MySQL Connector</text>
+    
+    <rect x="25" y="218" width="180" height="1" fill="#334155"/>
+    <text x="115" y="238" text-anchor="middle" font-size="10" fill="#94a3b8">• Driver: MariaDB / MySQL</text>
+    <text x="115" y="255" text-anchor="middle" font-size="10" fill="#94a3b8">• Otentikasi: Terenkripsi V2</text>
+    <text x="115" y="272" text-anchor="middle" font-size="10" fill="#94a3b8">• Delimiter: Identifier Backtick (`)</text>
+    <text x="115" y="289" text-anchor="middle" font-size="10" fill="#94a3b8">• Status: Executed (Hijau)</text>
+
+    <rect x="35" y="306" width="160" height="24" rx="12" fill="#0f766e" opacity="0.3" stroke="#14b8a6" stroke-width="1"/>
+    <text x="115" y="322" text-anchor="middle" font-size="10" font-weight="600" fill="#2dd4bf">Port Keluar: DB Session</text>
+
+    <!-- Branching Explanations -->
+    <path d="M 115 355 L 115 540" stroke="#38bdf8" stroke-width="2" stroke-dasharray="4,4"/>
+    <circle cx="115" cy="540" r="4" fill="#38bdf8"/>
+
+    <rect x="15" y="560" width="200" height="340" rx="12" fill="#111827" stroke="#1f2937" stroke-width="1"/>
+    <text x="115" y="588" text-anchor="middle" font-size="11" font-weight="700" fill="#cbd5e1">Struktur 2 Cabang Paralel</text>
+    
+    <rect x="25" y="605" width="180" height="120" rx="8" fill="#064e3b" opacity="0.25" stroke="#059669" stroke-width="1"/>
+    <text x="115" y="628" text-anchor="middle" font-size="10.5" font-weight="700" fill="#34d399">🌿 Cabang 1: Linier</text>
+    <text x="115" y="648" text-anchor="middle" font-size="9.5" fill="#94a3b8">Tabel ekstraksi_fitur_linear</text>
+    <text x="115" y="666" text-anchor="middle" font-size="9.5" fill="#a7f3d0">37 Baris x 204 Kolom</text>
+    <text x="115" y="684" text-anchor="middle" font-size="9.5" fill="#94a3b8">Node #2 s/d Node #26</text>
+    <text x="115" y="702" text-anchor="middle" font-size="9.5" font-weight="600" fill="#6ee7b7">(Total 25 Node)</text>
+
+    <rect x="25" y="740" width="180" height="120" rx="8" fill="#7c2d12" opacity="0.25" stroke="#ea580c" stroke-width="1"/>
+    <text x="115" y="763" text-anchor="middle" font-size="10.5" font-weight="700" fill="#fb923c">🍁 Cabang 2: Polinomial</text>
+    <text x="115" y="783" text-anchor="middle" font-size="9.5" fill="#94a3b8">Tabel ekstraksi_fitur_polynomial</text>
+    <text x="115" y="801" text-anchor="middle" font-size="9.5" fill="#fed7aa">37 Baris x 204 Kolom</text>
+    <text x="115" y="819" text-anchor="middle" font-size="9.5" fill="#94a3b8">Node #27 s/d Node #51</text>
+    <text x="115" y="837" text-anchor="middle" font-size="9.5" font-weight="600" fill="#fdba74">(Total 25 Node)</text>
+  </g>
+
+  <!-- Connectors from DB to Branches -->
+  <path d="M 260 380 C 280 380, 280 320, 300 320" fill="none" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrowCyan)"/>
+  <path d="M 260 380 C 280 380, 280 770, 300 770" fill="none" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrowCyan)"/>
+
+  <!-- ======================================================== -->
+  <!-- 2. TOP CONTAINER: CABANG 1 (FITUR LINIER) -->
+  <!-- ======================================================== -->
+  <g transform="translate(305, 115)" filter="url(#shadow)">
+    <!-- Container Box -->
+    <rect x="0" y="0" width="1265" height="450" rx="16" fill="url(#linGrad)" stroke="#10b981" stroke-width="1.8"/>
+    
+    <!-- Title Bar -->
+    <rect x="0" y="0" width="1265" height="42" rx="16" fill="#064e3b" opacity="0.8"/>
+    <text x="25" y="27" font-size="14" font-weight="800" fill="#34d399" letter-spacing="1">🌿 CABANG 1: ANALISIS FITUR LINIER (ekstraksi_fitur_linear)</text>
+    <text x="1240" y="27" text-anchor="end" font-size="11" font-weight="600" fill="#a7f3d0">37 Observasi Wilayah • 204 Fitur Deret Waktu • 25 Node (#2 - #26)</text>
+
+    <!-- Sub-Stage 1: Ingestion & Normalization -->
+    <rect x="20" y="55" width="220" height="375" rx="12" fill="#0f172a" stroke="#1e293b" stroke-width="1.2"/>
+    <text x="130" y="80" text-anchor="middle" font-size="11" font-weight="700" fill="#94a3b8">TAHAP 1: INGESTI &amp; NORMALISASI</text>
+
+    <!-- Node #2 -->
+    <rect x="35" y="95" width="190" height="65" rx="8" fill="#1e293b" stroke="#334155"/>
+    <rect x="43" y="103" width="50" height="16" rx="4" fill="#059669"/>
+    <text x="68" y="115" text-anchor="middle" font-size="9" font-weight="800" fill="#ffffff">Node #2</text>
+    <text x="130" y="132" text-anchor="middle" font-size="11.5" font-weight="700" fill="#ffffff">DB Table Selector</text>
+    <text x="130" y="148" text-anchor="middle" font-size="9" fill="#94a3b8">ekstraksi_fitur_linear</text>
+
+    <!-- Arrow down -->
+    <line x1="130" y1="160" x2="130" y2="180" stroke="#34d399" stroke-width="2" marker-end="url(#arrowGreen)"/>
+
+    <!-- Node #3 -->
+    <rect x="35" y="185" width="190" height="65" rx="8" fill="#1e293b" stroke="#334155"/>
+    <rect x="43" y="193" width="50" height="16" rx="4" fill="#059669"/>
+    <text x="68" y="205" text-anchor="middle" font-size="9" font-weight="800" fill="#ffffff">Node #3</text>
+    <text x="130" y="222" text-anchor="middle" font-size="11.5" font-weight="700" fill="#ffffff">DB Reader</text>
+    <text x="130" y="238" text-anchor="middle" font-size="9" fill="#94a3b8">37 baris x 204 kolom</text>
+
+    <!-- Arrow down -->
+    <line x1="130" y1="250" x2="130" y2="270" stroke="#34d399" stroke-width="2" marker-end="url(#arrowGreen)"/>
+
+    <!-- Node #4 -->
+    <rect x="35" y="275" width="190" height="75" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="1.4"/>
+    <rect x="43" y="283" width="50" height="16" rx="4" fill="#047857"/>
+    <text x="68" y="295" text-anchor="middle" font-size="9" font-weight="800" fill="#ffffff">Node #4</text>
+    <text x="130" y="312" text-anchor="middle" font-size="11.5" font-weight="700" fill="#ffffff">Normalizer (PMML)</text>
+    <text x="130" y="328" text-anchor="middle" font-size="9.5" font-weight="600" fill="#34d399">Gaussian Z-Score Scaling</text>
+    <text x="130" y="342" text-anchor="middle" font-size="8.5" fill="#64748b">Mean = 0, Std = 1 (mode = 2)</text>
+
+    <!-- Split Arrows from Node #4 to 3 Tiers -->
+    <path d="M 240 312 C 260 312, 260 115, 275 115" fill="none" stroke="#34d399" stroke-width="2" marker-end="url(#arrowGreen)"/>
+    <path d="M 240 312 C 260 312, 260 215, 275 215" fill="none" stroke="#34d399" stroke-width="2" marker-end="url(#arrowGreen)"/>
+    <path d="M 240 312 C 260 312, 260 330, 275 330" fill="none" stroke="#34d399" stroke-width="2.5" marker-end="url(#arrowGreen)"/>
+
+    <!-- Tier 1: 203 Fitur (Top) -->
+    <rect x="280" y="65" width="410" height="90" rx="10" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+    <text x="295" y="86" font-size="10.5" font-weight="700" fill="#94a3b8">TIER 1: 203 FITUR NON-KONSTAN (PENUH)</text>
+    <!-- Node #5, #6, #7 in a horizontal row -->
+    <g transform="translate(290, 95)">
+      <rect x="0" y="0" width="115" height="48" rx="6" fill="#1e293b" stroke="#475569"/>
+      <text x="57" y="16" text-anchor="middle" font-size="8.5" font-weight="700" fill="#059669">#5 Column Filter</text>
+      <text x="57" y="34" text-anchor="middle" font-size="8" fill="#94a3b8">203 Fitur</text>
+      <line x1="115" y1="24" x2="135" y2="24" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+      <rect x="135" y="0" width="115" height="48" rx="6" fill="#1e293b" stroke="#475569"/>
+      <text x="192" y="16" text-anchor="middle" font-size="8.5" font-weight="700" fill="#059669">#6 k-Means</text>
+      <text x="192" y="34" text-anchor="middle" font-size="8" fill="#94a3b8">K = 3</text>
+      <line x1="250" y1="24" x2="270" y2="24" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+      <rect x="270" y="0" width="120" height="48" rx="6" fill="#1e293b" stroke="#475569"/>
+      <text x="330" y="16" text-anchor="middle" font-size="8.5" font-weight="700" fill="#059669">#7 Silhouette Coeff</text>
+      <text x="330" y="34" text-anchor="middle" font-size="8" fill="#94a3b8">Score: 0.5847</text>
+    </g>
+
+    <!-- Tier 2: PCA 37 (Middle) -->
+    <rect x="280" y="165" width="410" height="90" rx="10" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+    <text x="295" y="186" font-size="10.5" font-weight="700" fill="#94a3b8">TIER 2: PCA 37 KOMPONEN UTAMA (100% VARIANSI)</text>
+    <g transform="translate(290, 195)">
+      <rect x="0" y="0" width="115" height="48" rx="6" fill="#1e293b" stroke="#475569"/>
+      <text x="57" y="16" text-anchor="middle" font-size="8.5" font-weight="700" fill="#059669">#8 PCA</text>
+      <text x="57" y="34" text-anchor="middle" font-size="8" fill="#94a3b8">37 Komponen</text>
+      <line x1="115" y1="24" x2="135" y2="24" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+      <rect x="135" y="0" width="115" height="48" rx="6" fill="#1e293b" stroke="#475569"/>
+      <text x="192" y="16" text-anchor="middle" font-size="8.5" font-weight="700" fill="#059669">#9 k-Means</text>
+      <text x="192" y="34" text-anchor="middle" font-size="8" fill="#94a3b8">K = 3</text>
+      <line x1="250" y1="24" x2="270" y2="24" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+      <rect x="270" y="0" width="120" height="48" rx="6" fill="#1e293b" stroke="#475569"/>
+      <text x="330" y="16" text-anchor="middle" font-size="8.5" font-weight="700" fill="#059669">#10 Silhouette Coeff</text>
+      <text x="330" y="34" text-anchor="middle" font-size="8" fill="#94a3b8">Score: 0.5847</text>
+    </g>
+
+    <!-- Tier 3: 74 Fitur Optimal (Bottom & Right) -->
+    <rect x="280" y="265" width="965" height="165" rx="12" fill="#022c22" stroke="#10b981" stroke-width="1.6"/>
+    <rect x="290" y="273" width="230" height="22" rx="6" fill="#059669"/>
+    <text x="405" y="288" text-anchor="middle" font-size="10" font-weight="800" fill="#ffffff">TIER 3 [OPTIMAL]: 74 FITUR + DAERAH</text>
+    <text x="535" y="288" font-size="10" font-weight="600" fill="#a7f3d0">Node #11 (Column Filter: 74 Fitur Variansi Tertinggi + Kolom daerah)</text>
+
+    <!-- Evaluation Sub-branches K=2, 4, 5, 6, 7, 8 (Top row of Tier 3) -->
+    <g transform="translate(295, 305)">
+      <!-- K=2 (#12, #13) -->
+      <rect x="0" y="0" width="105" height="45" rx="6" fill="#0f172a" stroke="#334155"/>
+      <text x="52" y="16" text-anchor="middle" font-size="9" font-weight="700" fill="#94a3b8">k=2 (#12,#13)</text>
+      <text x="52" y="32" text-anchor="middle" font-size="8" fill="#64748b">Sil: 0.6094</text>
+
+      <!-- K=4 (#17, #18) -->
+      <rect x="115" y="0" width="105" height="45" rx="6" fill="#0f172a" stroke="#334155"/>
+      <text x="167" y="16" text-anchor="middle" font-size="9" font-weight="700" fill="#94a3b8">k=4 (#17,#18)</text>
+      <text x="167" y="32" text-anchor="middle" font-size="8" fill="#64748b">Sil: 0.6025</text>
+
+      <!-- K=5 (#19, #20) -->
+      <rect x="230" y="0" width="105" height="45" rx="6" fill="#0f172a" stroke="#334155"/>
+      <text x="282" y="16" text-anchor="middle" font-size="9" font-weight="700" fill="#94a3b8">k=5 (#19,#20)</text>
+      <text x="282" y="32" text-anchor="middle" font-size="8" fill="#64748b">Sil: 0.5367</text>
+
+      <!-- K=6 (#21, #22) -->
+      <rect x="345" y="0" width="105" height="45" rx="6" fill="#0f172a" stroke="#334155"/>
+      <text x="397" y="16" text-anchor="middle" font-size="9" font-weight="700" fill="#94a3b8">k=6 (#21,#22)</text>
+      <text x="397" y="32" text-anchor="middle" font-size="8" fill="#64748b">Sil: 0.5282</text>
+
+      <!-- K=7 (#23, #24) -->
+      <rect x="460" y="0" width="105" height="45" rx="6" fill="#0f172a" stroke="#334155"/>
+      <text x="512" y="16" text-anchor="middle" font-size="9" font-weight="700" fill="#94a3b8">k=7 (#23,#24)</text>
+      <text x="512" y="32" text-anchor="middle" font-size="8" fill="#64748b">Sil: 0.4485</text>
+
+      <!-- K=8 (#25, #26) -->
+      <rect x="575" y="0" width="105" height="45" rx="6" fill="#0f172a" stroke="#334155"/>
+      <text x="627" y="16" text-anchor="middle" font-size="9" font-weight="700" fill="#94a3b8">k=8 (#25,#26)</text>
+      <text x="627" y="32" text-anchor="middle" font-size="8" fill="#64748b">Sil: 0.4357</text>
+    </g>
+
+    <!-- OPTIMAL K=3 SPECIAL HIGHLIGHT CONTAINER (Bottom row of Tier 3) -->
+    <g transform="translate(295, 360)">
+      <rect x="0" y="0" width="935" height="60" rx="8" fill="url(#optLinGrad)" stroke="#34d399" stroke-width="1.8" filter="url(#glow)"/>
+      <rect x="10" y="10" width="230" height="40" rx="6" fill="#064e3b" stroke="#34d399"/>
+      <text x="125" y="26" text-anchor="middle" font-size="10.5" font-weight="800" fill="#ffffff">Node #14: k-Means (k=3 OPTIMAL)</text>
+      <text x="125" y="42" text-anchor="middle" font-size="9" font-weight="600" fill="#a7f3d0">Seed Dikalibrasi = 519 (Centroid 32, 4, 10)</text>
+
+      <line x1="240" y1="30" x2="270" y2="30" stroke="#34d399" stroke-width="2" marker-end="url(#arrowGreen)"/>
+
+      <rect x="270" y="10" width="200" height="40" rx="6" fill="#064e3b" stroke="#34d399"/>
+      <text x="370" y="26" text-anchor="middle" font-size="10.5" font-weight="800" fill="#ffffff">Node #15: Silhouette Coefficient</text>
+      <text x="370" y="42" text-anchor="middle" font-size="9" font-weight="700" fill="#fef08a">Score Tertinggi: 0.6558</text>
+
+      <line x1="470" y1="30" x2="500" y2="30" stroke="#34d399" stroke-width="2" marker-end="url(#arrowGreen)"/>
+
+      <rect x="500" y="10" width="230" height="40" rx="6" fill="#0f766e" stroke="#2dd4bf" stroke-width="1.5"/>
+      <text x="615" y="26" text-anchor="middle" font-size="11" font-weight="800" fill="#ffffff">Node #16: Scatter Plot</text>
+      <text x="615" y="42" text-anchor="middle" font-size="9.5" font-weight="700" fill="#a7f3d0">Sumbu X: daerah | Sumbu Y: Cluster</text>
+
+      <rect x="745" y="12" width="180" height="36" rx="6" fill="#022c22" stroke="#34d399"/>
+      <text x="835" y="27" text-anchor="middle" font-size="9" font-weight="700" fill="#34d399">⭐ HASIL KONVERGENSI:</text>
+      <text x="835" y="40" text-anchor="middle" font-size="8.5" fill="#e2e8f0">Kamal &amp; Jabon Outlier (35, 1, 1)</text>
+    </g>
+  </g>
+
+  <!-- ======================================================== -->
+  <!-- 3. BOTTOM CONTAINER: CABANG 2 (FITUR POLINOMIAL) -->
+  <!-- ======================================================== -->
+  <g transform="translate(305, 595)" filter="url(#shadow)">
+    <!-- Container Box -->
+    <rect x="0" y="0" width="1265" height="450" rx="16" fill="url(#polyGrad)" stroke="#f97316" stroke-width="1.8"/>
+    
+    <!-- Title Bar -->
+    <rect x="0" y="0" width="1265" height="42" rx="16" fill="#7c2d12" opacity="0.8"/>
+    <text x="25" y="27" font-size="14" font-weight="800" fill="#fb923c" letter-spacing="1">🍁 CABANG 2: ANALISIS FITUR POLINOMIAL (ekstraksi_fitur_polynomial)</text>
+    <text x="1240" y="27" text-anchor="end" font-size="11" font-weight="600" fill="#fed7aa">37 Observasi Wilayah • 204 Fitur Deret Waktu • 25 Node (#27 - #51)</text>
+
+    <!-- Sub-Stage 1: Ingestion & Normalization -->
+    <rect x="20" y="55" width="220" height="375" rx="12" fill="#0f172a" stroke="#1e293b" stroke-width="1.2"/>
+    <text x="130" y="80" text-anchor="middle" font-size="11" font-weight="700" fill="#94a3b8">TAHAP 1: INGESTI &amp; NORMALISASI</text>
+
+    <!-- Node #27 -->
+    <rect x="35" y="95" width="190" height="65" rx="8" fill="#1e293b" stroke="#334155"/>
+    <rect x="43" y="103" width="55" height="16" rx="4" fill="#c2410c"/>
+    <text x="70" y="115" text-anchor="middle" font-size="9" font-weight="800" fill="#ffffff">Node #27</text>
+    <text x="130" y="132" text-anchor="middle" font-size="11.5" font-weight="700" fill="#ffffff">DB Table Selector</text>
+    <text x="130" y="148" text-anchor="middle" font-size="9" fill="#94a3b8">ekstraksi_fitur_polynomial</text>
+
+    <!-- Arrow down -->
+    <line x1="130" y1="160" x2="130" y2="180" stroke="#fb923c" stroke-width="2" marker-end="url(#arrowOrange)"/>
+
+    <!-- Node #28 -->
+    <rect x="35" y="185" width="190" height="65" rx="8" fill="#1e293b" stroke="#334155"/>
+    <rect x="43" y="193" width="55" height="16" rx="4" fill="#c2410c"/>
+    <text x="70" y="205" text-anchor="middle" font-size="9" font-weight="800" fill="#ffffff">Node #28</text>
+    <text x="130" y="222" text-anchor="middle" font-size="11.5" font-weight="700" fill="#ffffff">DB Reader</text>
+    <text x="130" y="238" text-anchor="middle" font-size="9" fill="#94a3b8">37 baris x 204 kolom</text>
+
+    <!-- Arrow down -->
+    <line x1="130" y1="250" x2="130" y2="270" stroke="#fb923c" stroke-width="2" marker-end="url(#arrowOrange)"/>
+
+    <!-- Node #29 -->
+    <rect x="35" y="275" width="190" height="75" rx="8" fill="#1e293b" stroke="#f97316" stroke-width="1.4"/>
+    <rect x="43" y="283" width="55" height="16" rx="4" fill="#ea580c"/>
+    <text x="70" y="295" text-anchor="middle" font-size="9" font-weight="800" fill="#ffffff">Node #29</text>
+    <text x="130" y="312" text-anchor="middle" font-size="11.5" font-weight="700" fill="#ffffff">Normalizer (PMML)</text>
+    <text x="130" y="328" text-anchor="middle" font-size="9.5" font-weight="600" fill="#fb923c">Gaussian Z-Score Scaling</text>
+    <text x="130" y="342" text-anchor="middle" font-size="8.5" fill="#64748b">Mean = 0, Std = 1 (mode = 2)</text>
+
+    <!-- Split Arrows from Node #29 to 3 Tiers -->
+    <path d="M 240 312 C 260 312, 260 115, 275 115" fill="none" stroke="#fb923c" stroke-width="2" marker-end="url(#arrowOrange)"/>
+    <path d="M 240 312 C 260 312, 260 215, 275 215" fill="none" stroke="#fb923c" stroke-width="2" marker-end="url(#arrowOrange)"/>
+    <path d="M 240 312 C 260 312, 260 330, 275 330" fill="none" stroke="#fb923c" stroke-width="2.5" marker-end="url(#arrowOrange)"/>
+
+    <!-- Tier 1: 203 Fitur (Top) -->
+    <rect x="280" y="65" width="410" height="90" rx="10" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+    <text x="295" y="86" font-size="10.5" font-weight="700" fill="#94a3b8">TIER 1: 203 FITUR NON-KONSTAN (PENUH)</text>
+    <g transform="translate(290, 95)">
+      <rect x="0" y="0" width="115" height="48" rx="6" fill="#1e293b" stroke="#475569"/>
+      <text x="57" y="16" text-anchor="middle" font-size="8.5" font-weight="700" fill="#ea580c">#30 Column Filter</text>
+      <text x="57" y="34" text-anchor="middle" font-size="8" fill="#94a3b8">203 Fitur</text>
+      <line x1="115" y1="24" x2="135" y2="24" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+
+      <rect x="135" y="0" width="115" height="48" rx="6" fill="#1e293b" stroke="#475569"/>
+      <text x="192" y="16" text-anchor="middle" font-size="8.5" font-weight="700" fill="#ea580c">#31 k-Means</text>
+      <text x="192" y="34" text-anchor="middle" font-size="8" fill="#94a3b8">K = 3</text>
+      <line x1="250" y1="24" x2="270" y2="24" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+
+      <rect x="270" y="0" width="120" height="48" rx="6" fill="#1e293b" stroke="#475569"/>
+      <text x="330" y="16" text-anchor="middle" font-size="8.5" font-weight="700" fill="#ea580c">#32 Silhouette Coeff</text>
+      <text x="330" y="34" text-anchor="middle" font-size="8" fill="#94a3b8">Score: 0.5847</text>
+    </g>
+
+    <!-- Tier 2: PCA 37 (Middle) -->
+    <rect x="280" y="165" width="410" height="90" rx="10" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+    <text x="295" y="186" font-size="10.5" font-weight="700" fill="#94a3b8">TIER 2: PCA 37 KOMPONEN UTAMA (100% VARIANSI)</text>
+    <g transform="translate(290, 195)">
+      <rect x="0" y="0" width="115" height="48" rx="6" fill="#1e293b" stroke="#475569"/>
+      <text x="57" y="16" text-anchor="middle" font-size="8.5" font-weight="700" fill="#ea580c">#33 PCA</text>
+      <text x="57" y="34" text-anchor="middle" font-size="8" fill="#94a3b8">37 Komponen</text>
+      <line x1="115" y1="24" x2="135" y2="24" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+
+      <rect x="135" y="0" width="115" height="48" rx="6" fill="#1e293b" stroke="#475569"/>
+      <text x="192" y="16" text-anchor="middle" font-size="8.5" font-weight="700" fill="#ea580c">#34 k-Means</text>
+      <text x="192" y="34" text-anchor="middle" font-size="8" fill="#94a3b8">K = 3</text>
+      <line x1="250" y1="24" x2="270" y2="24" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+
+      <rect x="270" y="0" width="120" height="48" rx="6" fill="#1e293b" stroke="#475569"/>
+      <text x="330" y="16" text-anchor="middle" font-size="8.5" font-weight="700" fill="#ea580c">#35 Silhouette Coeff</text>
+      <text x="330" y="34" text-anchor="middle" font-size="8" fill="#94a3b8">Score: 0.5847</text>
+    </g>
+
+    <!-- Tier 3: 74 Fitur Optimal Poly (Bottom & Right) -->
+    <rect x="280" y="265" width="965" height="165" rx="12" fill="#431407" stroke="#f97316" stroke-width="1.6"/>
+    <rect x="290" y="273" width="230" height="22" rx="6" fill="#c2410c"/>
+    <text x="405" y="288" text-anchor="middle" font-size="10" font-weight="800" fill="#ffffff">TIER 3 [OPTIMAL]: 74 FITUR + DAERAH</text>
+    <text x="535" y="288" font-size="10" font-weight="600" fill="#fed7aa">Node #36 (Column Filter: 74 Fitur Variansi Tertinggi + Kolom daerah)</text>
+
+    <!-- Evaluation Sub-branches K=2, 4, 5, 6, 7, 8 (Top row of Tier 3) -->
+    <g transform="translate(295, 305)">
+      <!-- K=2 (#37, #38) -->
+      <rect x="0" y="0" width="105" height="45" rx="6" fill="#0f172a" stroke="#334155"/>
+      <text x="52" y="16" text-anchor="middle" font-size="9" font-weight="700" fill="#94a3b8">k=2 (#37,#38)</text>
+      <text x="52" y="32" text-anchor="middle" font-size="8" fill="#64748b">Sil: 0.6094</text>
+
+      <!-- K=4 (#42, #43) -->
+      <rect x="115" y="0" width="105" height="45" rx="6" fill="#0f172a" stroke="#334155"/>
+      <text x="167" y="16" text-anchor="middle" font-size="9" font-weight="700" fill="#94a3b8">k=4 (#42,#43)</text>
+      <text x="167" y="32" text-anchor="middle" font-size="8" fill="#64748b">Sil: 0.6025</text>
+
+      <!-- K=5 (#44, #45) -->
+      <rect x="230" y="0" width="105" height="45" rx="6" fill="#0f172a" stroke="#334155"/>
+      <text x="282" y="16" text-anchor="middle" font-size="9" font-weight="700" fill="#94a3b8">k=5 (#44,#45)</text>
+      <text x="282" y="32" text-anchor="middle" font-size="8" fill="#64748b">Sil: 0.5367</text>
+
+      <!-- K=6 (#46, #47) -->
+      <rect x="345" y="0" width="105" height="45" rx="6" fill="#0f172a" stroke="#334155"/>
+      <text x="397" y="16" text-anchor="middle" font-size="9" font-weight="700" fill="#94a3b8">k=6 (#46,#47)</text>
+      <text x="397" y="32" text-anchor="middle" font-size="8" fill="#64748b">Sil: 0.5282</text>
+
+      <!-- K=7 (#48, #49) -->
+      <rect x="460" y="0" width="105" height="45" rx="6" fill="#0f172a" stroke="#334155"/>
+      <text x="512" y="16" text-anchor="middle" font-size="9" font-weight="700" fill="#94a3b8">k=7 (#48,#49)</text>
+      <text x="512" y="32" text-anchor="middle" font-size="8" fill="#64748b">Sil: 0.4485</text>
+
+      <!-- K=8 (#50, #51) -->
+      <rect x="575" y="0" width="105" height="45" rx="6" fill="#0f172a" stroke="#334155"/>
+      <text x="627" y="16" text-anchor="middle" font-size="9" font-weight="700" fill="#94a3b8">k=8 (#50,#51)</text>
+      <text x="627" y="32" text-anchor="middle" font-size="8" fill="#64748b">Sil: 0.4357</text>
+    </g>
+
+    <!-- OPTIMAL K=3 SPECIAL HIGHLIGHT CONTAINER (Bottom row of Tier 3) -->
+    <g transform="translate(295, 360)">
+      <rect x="0" y="0" width="935" height="60" rx="8" fill="url(#optPolyGrad)" stroke="#fb923c" stroke-width="1.8" filter="url(#glow)"/>
+      <rect x="10" y="10" width="230" height="40" rx="6" fill="#7c2d12" stroke="#fb923c"/>
+      <text x="125" y="26" text-anchor="middle" font-size="10.5" font-weight="800" fill="#ffffff">Node #39: k-Means (k=3 OPTIMAL)</text>
+      <text x="125" y="42" text-anchor="middle" font-size="9" font-weight="600" fill="#fed7aa">Seed Dikalibrasi = 519 (Centroid 32, 4, 10)</text>
+
+      <line x1="240" y1="30" x2="270" y2="30" stroke="#fb923c" stroke-width="2" marker-end="url(#arrowOrange)"/>
+
+      <rect x="270" y="10" width="200" height="40" rx="6" fill="#7c2d12" stroke="#fb923c"/>
+      <text x="370" y="26" text-anchor="middle" font-size="10.5" font-weight="800" fill="#ffffff">Node #40: Silhouette Coefficient</text>
+      <text x="370" y="42" text-anchor="middle" font-size="9" font-weight="700" fill="#fef08a">Score Tertinggi: 0.6558</text>
+
+      <line x1="470" y1="30" x2="500" y2="30" stroke="#fb923c" stroke-width="2" marker-end="url(#arrowOrange)"/>
+
+      <rect x="500" y="10" width="230" height="40" rx="6" fill="#9a3412" stroke="#fdba74" stroke-width="1.5"/>
+      <text x="615" y="26" text-anchor="middle" font-size="11" font-weight="800" fill="#ffffff">Node #41: Scatter Plot</text>
+      <text x="615" y="42" text-anchor="middle" font-size="9.5" font-weight="700" fill="#fed7aa">Sumbu X: daerah | Sumbu Y: Cluster</text>
+
+      <rect x="745" y="12" width="180" height="36" rx="6" fill="#431407" stroke="#fb923c"/>
+      <text x="835" y="27" text-anchor="middle" font-size="9" font-weight="700" fill="#fb923c">⭐ HASIL KONVERGENSI:</text>
+      <text x="835" y="40" text-anchor="middle" font-size="8.5" fill="#e2e8f0">Kamal &amp; Jabon Outlier (35, 1, 1)</text>
+    </g>
+  </g>
+</svg>

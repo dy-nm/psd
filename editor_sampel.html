@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor Interaktif Petak Sampel Sawah Sambeng</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif; }
+        body { display: flex; flex-direction: column; height: 100vh; background: #0f172a; color: #f8fafc; overflow: hidden; }
+        
+        /* HEADER */
+        #header {
+            padding: 10px 18px;
+            background: #1e293b;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            z-index: 1000;
+        }
+        .title h1 { font-size: 17px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 8px; }
+        .title p { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+        
+        .stats {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            font-size: 12px;
+            background: #0f172a;
+            padding: 6px 14px;
+            border-radius: 6px;
+            border: 1px solid #334155;
+        }
+        .stat-item { display: flex; align-items: center; gap: 6px; }
+        .badge {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+        .badge-sawah { background: #22c55e; border: 1px solid #16a34a; }
+        .badge-nonsawah { background: #ef4444; border: 1px solid #dc2626; }
+        .badge-aoi { background: #f59e0b; border: 1px dashed #d97706; }
+        
+        .actions { display: flex; gap: 8px; align-items: center; }
+        .btn {
+            padding: 7px 13px;
+            border-radius: 6px;
+            border: none;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .btn-primary { background: #0284c7; color: white; }
+        .btn-primary:hover { background: #0369a1; }
+        .btn-success { background: #16a34a; color: white; box-shadow: 0 2px 6px rgba(22,163,74,0.4); }
+        .btn-success:hover { background: #15803d; }
+        .btn-secondary { background: #334155; color: #f8fafc; }
+        .btn-secondary:hover { background: #475569; }
+        .btn-outline-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+            border: 1px solid #f59e0b;
+        }
+        .btn-outline-warning:hover {
+            background: #f59e0b;
+            color: #0f172a;
+        }
+        
+        /* MAIN WORKSPACE */
+        #main { display: flex; flex: 1; overflow: hidden; position: relative; }
+        #map { flex: 1; height: 100%; z-index: 1; }
+        
+        /* SIDEBAR */
+        #sidebar {
+            width: 380px;
+            background: #1e293b;
+            border-left: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 10;
+        }
+        .sidebar-header {
+            padding: 12px 14px;
+            border-bottom: 1px solid #334155;
+            background: #0f172a;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        /* ACTIVE EDIT PANEL */
+        .edit-panel {
+            background: #0f172a;
+            border: 1px solid #38bdf8;
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            animation: fadeIn 0.2s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .edit-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            color: #38bdf8;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 6px;
+        }
+        .btn-close-edit {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 2px 6px;
+        }
+        .btn-close-edit:hover { color: white; }
+        
+        .edit-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .class-selector {
+            display: flex;
+            gap: 8px;
+        }
+        .radio-btn {
+            flex: 1;
+            padding: 6px 10px;
+            border-radius: 5px;
+            border: 1px solid #334155;
+            background: #1e293b;
+            color: #cbd5e1;
+            font-size: 11.5px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.15s;
+        }
+        .radio-btn.active-sawah {
+            background: #16a34a;
+            color: white;
+            border-color: #22c55e;
+            box-shadow: 0 2px 6px rgba(22,163,74,0.3);
+        }
+        .radio-btn.active-nonsawah {
+            background: #dc2626;
+            color: white;
+            border-color: #ef4444;
+            box-shadow: 0 2px 6px rgba(220,38,38,0.3);
+        }
+        
+        .edit-select, .edit-input {
+            width: 100%;
+            padding: 7px 10px;
+            border-radius: 5px;
+            border: 1px solid #334155;
+            background: #1e293b;
+            color: #f8fafc;
+            font-size: 12px;
+            outline: none;
+        }
+        .edit-select:focus, .edit-input:focus { border-color: #38bdf8; }
+        
+        .coords-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10.5px;
+            color: #64748b;
+            font-family: monospace;
+            background: #1e293b;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        
+        /* QUICK PRESET TAGS */
+        .preset-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 4px;
+        }
+        .tag-btn {
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #94a3b8;
+            font-size: 10.5px;
+            padding: 3px 7px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .tag-btn:hover {
+            background: #334155;
+            color: white;
+            border-color: #38bdf8;
+        }
+        
+        /* SEARCH & FILTER */
+        .search-box {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #334155;
+            background: #1e293b;
+            color: #f8fafc;
+            font-size: 12px;
+            outline: none;
+        }
+        .search-box:focus { border-color: #38bdf8; }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 6px;
+        }
+        .filter-btn {
+            flex: 1;
+            padding: 5px 8px;
+            border-radius: 4px;
+            border: 1px solid #334155;
+            background: #1e293b;
+            color: #94a3b8;
+            font-size: 11px;
+            cursor: pointer;
+        }
+        .filter-btn.active {
+            background: #38bdf8;
+            color: #0f172a;
+            font-weight: 600;
+            border-color: #38bdf8;
+        }
+        
+        /* POINT LIST */
+        .point-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .point-card {
+            background: #0f172a;
+            padding: 9px 12px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            border: 1px solid #334155;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .point-card:hover {
+            background: #1e293b;
+            border-color: #38bdf8;
+            transform: translateX(2px);
+        }
+        .point-card.active-card {
+            background: #1e293b;
+            border-color: #38bdf8;
+            box-shadow: 0 0 8px rgba(56,189,248,0.3);
+        }
+        .point-info { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+        .point-title { font-weight: 600; display: flex; align-items: center; gap: 6px; font-size: 12px; }
+        .point-desc {
+            font-size: 11px;
+            color: #94a3b8;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .point-coords { font-size: 10px; color: #64748b; font-family: monospace; display: flex; gap: 6px; align-items: center; }
+        
+        .badge-warning-outside {
+            background: #78350f;
+            color: #fef3c7;
+            font-size: 9.5px;
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-family: sans-serif;
+            border: 1px solid #f59e0b;
+        }
+        
+        .card-actions {
+            display: flex;
+            gap: 5px;
+            margin-left: 8px;
+        }
+        .btn-card-action {
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #cbd5e1;
+            padding: 4px 7px;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        .btn-card-action:hover { background: #334155; color: white; border-color: #38bdf8; }
+        
+        /* CUSTOM PIN */
+        .custom-pin {
+            cursor: grab;
+            transition: transform 0.1s;
+        }
+        .custom-pin:active {
+            cursor: grabbing;
+            transform: scale(1.3);
+        }
+        
+        /* NOTIFICATION TOAST */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(15, 23, 42, 0.94);
+            border: 1px solid #38bdf8;
+            color: white;
+            padding: 9px 18px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 500;
+            z-index: 2000;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .toast.show { opacity: 1; }
+
+        /* POPUP CUSTOM STYLING */
+        .leaflet-popup-content-wrapper {
+            background: #0f172a;
+            color: #f8fafc;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 4px;
+        }
+        .leaflet-popup-tip {
+            background: #0f172a;
+        }
+        .leaflet-popup-content {
+            margin: 10px 12px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <div class="title">
+            <h1>🌾 Editor Interaktif Petak Sampel Sawah Sambeng</h1>
+            <p>Geser titik kotak di dalam garis batas kuning Kecamatan Sambeng, dan ubah keterangan kelas tutupan lahan</p>
+        </div>
+        <div class="stats">
+            <div class="stat-item" title="Batas Administratif Kecamatan Sambeng">
+                <span class="badge badge-aoi"></span>
+                <span style="color: #f59e0b; font-weight: 600;">Batas Sambeng Aktif</span>
+            </div>
+            <div class="stat-item">
+                <span class="badge badge-sawah"></span>
+                <span>Sawah: <strong id="cnt-sawah" style="color: #4ade80;">0</strong></span>
+            </div>
+            <div class="stat-item">
+                <span class="badge badge-nonsawah"></span>
+                <span>Bukan Sawah: <strong id="cnt-nonsawah" style="color: #f87171;">0</strong></span>
+            </div>
+            <div class="stat-item">
+                <span style="color: #94a3b8;">Total: <strong id="cnt-total" style="color: white;">0</strong></span>
+            </div>
+        </div>
+        <div class="actions">
+            <button class="btn btn-outline-warning" onclick="toggleBoundaryZoom()" title="Pusatkan peta ke seluruh batas wilayah Kecamatan Sambeng">🗺️ Fokus Batas Sambeng</button>
+            <input type="file" id="file-uploader" accept=".geojson,.json" style="display:none;" onchange="handleFileUpload(event)">
+            <button class="btn btn-secondary" onclick="document.getElementById('file-uploader').click()" title="Buka file GeoJSON yang pernah disimpan sebelumnya">📂 Unggah GeoJSON</button>
+            <button class="btn btn-secondary" onclick="resetToInitial()">🔄 Reset Default</button>
+            <button class="btn btn-success" onclick="downloadGeoJSON()">💾 Download GeoJSON</button>
+        </div>
+    </div>
+
+    <div id="main">
+        <div id="map"></div>
+        <div id="sidebar">
+            <div class="sidebar-header">
+                <!-- ACTIVE EDIT PANEL -->
+                <div id="active-edit-panel" class="edit-panel" style="display: none;">
+                    <div class="edit-panel-header">
+                        <span>✏️ <strong>Edit Petak #<span id="panel-id">--</span></strong></span>
+                        <button class="btn-close-edit" onclick="closeEditPanel()" title="Tutup">✕</button>
+                    </div>
+                    
+                    <label class="edit-label">Kelas Tutupan Lahan:</label>
+                    <div class="class-selector">
+                        <button type="button" id="btn-cls-sawah" class="radio-btn" onclick="selectClass(1)">🌾 Sawah (Kelas 1)</button>
+                        <button type="button" id="btn-cls-nonsawah" class="radio-btn" onclick="selectClass(0)">🏡 Bukan Sawah (Kelas 0)</button>
+                    </div>
+
+                    <label class="edit-label" style="margin-top: 4px;">Pilih Kategori Cepat (Preset):</label>
+                    <div class="preset-tags" id="preset-container">
+                        <!-- Presets injected dynamically -->
+                    </div>
+
+                    <label class="edit-label" style="margin-top: 4px;">Keterangan / Tipe Detail (Bebas Ketik):</label>
+                    <input type="text" id="panel-tipe-input" class="edit-input" placeholder="Contoh: Kali Lamong, Hutan Grenjengan, dsb." oninput="onPanelTipeChange()">
+
+                    <div class="coords-info">
+                        <span>Lat: <strong id="panel-lat">0.00000</strong></span>
+                        <span>Lon: <strong id="panel-lon">0.00000</strong></span>
+                    </div>
+
+                    <button class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 4px;" onclick="saveActiveEdit()">
+                        ✓ Selesai & Simpan Perubahan
+                    </button>
+                </div>
+
+                <!-- SEARCH & FILTER -->
+                <input type="text" id="search-input" class="search-box" placeholder="🔍 Cari ID / keterangan (cth: Kali Lamong, Hutan, 42)..." oninput="handleSearch()">
+                <div class="filter-buttons">
+                    <button id="flt-all" class="filter-btn active" onclick="setFilter('all')">Semua (100)</button>
+                    <button id="flt-sawah" class="filter-btn" onclick="setFilter('sawah')">🌾 Sawah</button>
+                    <button id="flt-nonsawah" class="filter-btn" onclick="setFilter('nonsawah')">🏡 Bukan Sawah</button>
+                </div>
+            </div>
+
+            <!-- SCROLLABLE LIST OF POINTS -->
+            <div id="point-list" class="point-list"></div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">
+        <span id="toast-text">Notifikasi</span>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        const DEFAULT_EMBEDDED_GEOJSON = {
+"type": "FeatureCollection",
+"name": "sampel_sawah_sambeng",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 1, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #01" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.31274, -7.31981 ], [ 112.31274, -7.31891 ], [ 112.31184, -7.31891 ], [ 112.31184, -7.31981 ], [ 112.31274, -7.31981 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 2, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #02" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.26293, -7.26221 ], [ 112.26293, -7.26131 ], [ 112.26203, -7.26131 ], [ 112.26203, -7.26221 ], [ 112.26293, -7.26221 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 3, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #03" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.31158, -7.27082 ], [ 112.31158, -7.26992 ], [ 112.31068, -7.26992 ], [ 112.31068, -7.27082 ], [ 112.31158, -7.27082 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 4, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #04" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.30957, -7.28389 ], [ 112.30957, -7.28299 ], [ 112.30867, -7.28299 ], [ 112.30867, -7.28389 ], [ 112.30957, -7.28389 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 5, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #05" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.30151, -7.26904 ], [ 112.30151, -7.26814 ], [ 112.30061, -7.26814 ], [ 112.30061, -7.26904 ], [ 112.30151, -7.26904 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 6, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #06" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.2851, -7.25152 ], [ 112.2851, -7.25062 ], [ 112.2842, -7.25062 ], [ 112.2842, -7.25152 ], [ 112.2851, -7.25152 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 7, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #07" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.31389, -7.27528 ], [ 112.31389, -7.27438 ], [ 112.31299, -7.27438 ], [ 112.31299, -7.27528 ], [ 112.31389, -7.27528 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 8, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #08" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.30842, -7.25835 ], [ 112.30842, -7.25745 ], [ 112.30752, -7.25745 ], [ 112.30752, -7.25835 ], [ 112.30842, -7.25835 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 9, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #09" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.29748, -7.25301 ], [ 112.29748, -7.25211 ], [ 112.29658, -7.25211 ], [ 112.29658, -7.25301 ], [ 112.29748, -7.25301 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 10, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #10" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.22291, -7.2922 ], [ 112.22291, -7.2913 ], [ 112.22201, -7.2913 ], [ 112.22201, -7.2922 ], [ 112.22291, -7.2922 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 11, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #11" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.26955, -7.29487 ], [ 112.26955, -7.29397 ], [ 112.26865, -7.29397 ], [ 112.26865, -7.29487 ], [ 112.26955, -7.29487 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 12, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #12" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.23068, -7.31774 ], [ 112.23068, -7.31684 ], [ 112.22978, -7.31684 ], [ 112.22978, -7.31774 ], [ 112.23068, -7.31774 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 13, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #13" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.28164, -7.29309 ], [ 112.28164, -7.29219 ], [ 112.28074, -7.29219 ], [ 112.28074, -7.29309 ], [ 112.28164, -7.29309 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 14, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #14" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.29143, -7.29398 ], [ 112.29143, -7.29308 ], [ 112.29053, -7.29308 ], [ 112.29053, -7.29398 ], [ 112.29143, -7.29398 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 15, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #15" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.28855, -7.3023 ], [ 112.28855, -7.3014 ], [ 112.28765, -7.3014 ], [ 112.28765, -7.3023 ], [ 112.28855, -7.3023 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 16, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #16" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.30295, -7.22658 ], [ 112.30295, -7.22568 ], [ 112.30205, -7.22568 ], [ 112.30205, -7.22658 ], [ 112.30295, -7.22658 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 17, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #17" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.31561, -7.29903 ], [ 112.31561, -7.29813 ], [ 112.31471, -7.29813 ], [ 112.31471, -7.29903 ], [ 112.31561, -7.29903 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 18, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #18" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.254, -7.28893 ], [ 112.254, -7.28803 ], [ 112.2531, -7.28803 ], [ 112.2531, -7.28893 ], [ 112.254, -7.28893 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 19, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #19" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.27905, -7.26132 ], [ 112.27905, -7.26042 ], [ 112.27815, -7.26042 ], [ 112.27815, -7.26132 ], [ 112.27905, -7.26132 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 20, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #20" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.31705, -7.31714 ], [ 112.31705, -7.31624 ], [ 112.31615, -7.31624 ], [ 112.31615, -7.31714 ], [ 112.31705, -7.31714 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 21, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #21" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.28308, -7.27053 ], [ 112.28308, -7.26963 ], [ 112.28218, -7.26963 ], [ 112.28218, -7.27053 ], [ 112.28308, -7.27053 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 22, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #22" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.29633, -7.23727 ], [ 112.29633, -7.23637 ], [ 112.29543, -7.23637 ], [ 112.29543, -7.23727 ], [ 112.29633, -7.23727 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 23, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #23" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.31907, -7.32278 ], [ 112.31907, -7.32188 ], [ 112.31817, -7.32188 ], [ 112.31817, -7.32278 ], [ 112.31907, -7.32278 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 24, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #24" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.32713, -7.28121 ], [ 112.32713, -7.28031 ], [ 112.32623, -7.28031 ], [ 112.32623, -7.28121 ], [ 112.32713, -7.28121 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 25, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #25" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.30064, -7.29933 ], [ 112.30064, -7.29843 ], [ 112.29974, -7.29843 ], [ 112.29974, -7.29933 ], [ 112.30064, -7.29933 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 26, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #26" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.29402, -7.30705 ], [ 112.29402, -7.30615 ], [ 112.29312, -7.30615 ], [ 112.29312, -7.30705 ], [ 112.29402, -7.30705 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 27, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #27" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.30122, -7.24707 ], [ 112.30122, -7.24617 ], [ 112.30032, -7.24617 ], [ 112.30032, -7.24707 ], [ 112.30122, -7.24707 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 28, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #28" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.31158, -7.23519 ], [ 112.31158, -7.23429 ], [ 112.31068, -7.23429 ], [ 112.31068, -7.23519 ], [ 112.31158, -7.23519 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 29, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #29" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.31705, -7.24855 ], [ 112.31705, -7.24765 ], [ 112.31615, -7.24765 ], [ 112.31615, -7.24855 ], [ 112.31705, -7.24855 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 30, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #30" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.25343, -7.28121 ], [ 112.25343, -7.28031 ], [ 112.25253, -7.28031 ], [ 112.25253, -7.28121 ], [ 112.25343, -7.28121 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 31, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #31" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.30842, -7.2533 ], [ 112.30842, -7.2524 ], [ 112.30752, -7.2524 ], [ 112.30752, -7.2533 ], [ 112.30842, -7.2533 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 32, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #32" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.2779, -7.29725 ], [ 112.2779, -7.29635 ], [ 112.277, -7.29635 ], [ 112.277, -7.29725 ], [ 112.2779, -7.29725 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 33, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #33" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.30467, -7.28418 ], [ 112.30467, -7.28328 ], [ 112.30377, -7.28328 ], [ 112.30377, -7.28418 ], [ 112.30467, -7.28418 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 34, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #34" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.26149, -7.2726 ], [ 112.26149, -7.2717 ], [ 112.26059, -7.2717 ], [ 112.26059, -7.2726 ], [ 112.26149, -7.2726 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 35, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #35" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.32483, -7.27706 ], [ 112.32483, -7.27616 ], [ 112.32393, -7.27616 ], [ 112.32393, -7.27706 ], [ 112.32483, -7.27706 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 36, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #36" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.32569, -7.31061 ], [ 112.32569, -7.30971 ], [ 112.32479, -7.30971 ], [ 112.32479, -7.31061 ], [ 112.32569, -7.31061 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 37, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #37" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.32512, -7.28923 ], [ 112.32512, -7.28833 ], [ 112.32422, -7.28833 ], [ 112.32422, -7.28923 ], [ 112.32512, -7.28923 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 38, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #38" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.24076, -7.26043 ], [ 112.24076, -7.25953 ], [ 112.23986, -7.25953 ], [ 112.23986, -7.26043 ], [ 112.24076, -7.26043 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 39, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #39" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.28107, -7.28211 ], [ 112.28107, -7.28121 ], [ 112.28017, -7.28121 ], [ 112.28017, -7.28211 ], [ 112.28107, -7.28211 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 40, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #40" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.26782, -7.24944 ], [ 112.26782, -7.24854 ], [ 112.26692, -7.24854 ], [ 112.26692, -7.24944 ], [ 112.26782, -7.24944 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 41, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #41" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.25343, -7.25212 ], [ 112.25343, -7.25122 ], [ 112.25253, -7.25122 ], [ 112.25253, -7.25212 ], [ 112.25343, -7.25212 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 42, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #42" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.23471, -7.2824 ], [ 112.23471, -7.2815 ], [ 112.23381, -7.2815 ], [ 112.23381, -7.2824 ], [ 112.23471, -7.2824 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 43, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #43" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.26207, -7.28092 ], [ 112.26207, -7.28002 ], [ 112.26117, -7.28002 ], [ 112.26117, -7.28092 ], [ 112.26207, -7.28092 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 44, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #44" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.31619, -7.26874 ], [ 112.31619, -7.26784 ], [ 112.31529, -7.26784 ], [ 112.31529, -7.26874 ], [ 112.31619, -7.26874 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 45, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #45" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.2874, -7.24172 ], [ 112.2874, -7.24082 ], [ 112.2865, -7.24082 ], [ 112.2865, -7.24172 ], [ 112.2874, -7.24172 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 46, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #46" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.32224, -7.31477 ], [ 112.32224, -7.31387 ], [ 112.32134, -7.31387 ], [ 112.32134, -7.31477 ], [ 112.32224, -7.31477 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 47, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #47" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.30611, -7.27646 ], [ 112.30611, -7.27556 ], [ 112.30521, -7.27556 ], [ 112.30521, -7.27646 ], [ 112.30611, -7.27646 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 48, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #48" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.2992, -7.2637 ], [ 112.2992, -7.2628 ], [ 112.2983, -7.2628 ], [ 112.2983, -7.2637 ], [ 112.2992, -7.2637 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 49, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #49" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.25947, -7.26726 ], [ 112.25947, -7.26636 ], [ 112.25857, -7.26636 ], [ 112.25857, -7.26726 ], [ 112.25947, -7.26726 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 50, "class": 1, "label": "Sawah", "tipe": "Petak Sawah #50" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.32051, -7.26399 ], [ 112.32051, -7.26309 ], [ 112.31961, -7.26309 ], [ 112.31961, -7.26399 ], [ 112.32051, -7.26399 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 51, "class": 0, "label": "Bukan Sawah", "tipe": "Pemukiman Warga #01" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.22982, -7.32486 ], [ 112.22982, -7.32396 ], [ 112.22892, -7.32396 ], [ 112.22892, -7.32486 ], [ 112.22982, -7.32486 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 52, "class": 0, "label": "Bukan Sawah", "tipe": "Pemukiman Warga #02" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.26552, -7.34179 ], [ 112.26552, -7.34089 ], [ 112.26462, -7.34089 ], [ 112.26462, -7.34179 ], [ 112.26552, -7.34179 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 53, "class": 0, "label": "Bukan Sawah", "tipe": "Pemukiman Warga #03" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.24018, -7.33199 ], [ 112.24018, -7.33109 ], [ 112.23928, -7.33109 ], [ 112.23928, -7.33199 ], [ 112.24018, -7.33199 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 54, "class": 0, "label": "Bukan Sawah", "tipe": "Pemukiman Warga #04" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.26638, -7.29339 ], [ 112.26638, -7.29249 ], [ 112.26548, -7.29249 ], [ 112.26548, -7.29339 ], [ 112.26638, -7.29339 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 55, "class": 0, "label": "Bukan Sawah", "tipe": "Pemukiman Warga #05" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.23529, -7.31298 ], [ 112.23529, -7.31208 ], [ 112.23439, -7.31208 ], [ 112.23439, -7.31298 ], [ 112.23529, -7.31298 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 56, "class": 0, "label": "Bukan Sawah", "tipe": "Pemukiman Warga #06" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.22896, -7.31417 ], [ 112.22896, -7.31327 ], [ 112.22806, -7.31327 ], [ 112.22806, -7.31417 ], [ 112.22896, -7.31417 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 57, "class": 0, "label": "Bukan Sawah", "tipe": "Pemukiman Warga #07" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.2209, -7.31744 ], [ 112.2209, -7.31654 ], [ 112.22, -7.31654 ], [ 112.22, -7.31744 ], [ 112.2209, -7.31744 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 58, "class": 0, "label": "Bukan Sawah", "tipe": "Pemukiman Warga #08" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.3064, -7.34327 ], [ 112.3064, -7.34237 ], [ 112.3055, -7.34237 ], [ 112.3055, -7.34327 ], [ 112.3064, -7.34327 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 59, "class": 0, "label": "Bukan Sawah", "tipe": "Pemukiman Warga #09" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.21917, -7.30408 ], [ 112.21917, -7.30318 ], [ 112.21827, -7.30318 ], [ 112.21827, -7.30408 ], [ 112.21917, -7.30408 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 60, "class": 0, "label": "Bukan Sawah", "tipe": "Pemukiman Warga #10" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.26811, -7.33318 ], [ 112.26811, -7.33228 ], [ 112.26721, -7.33228 ], [ 112.26721, -7.33318 ], [ 112.26811, -7.33318 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 61, "class": 0, "label": "Bukan Sawah", "tipe": "Pemukiman Warga #11" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.22291, -7.3112 ], [ 112.22291, -7.3103 ], [ 112.22201, -7.3103 ], [ 112.22201, -7.3112 ], [ 112.22291, -7.3112 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 62, "class": 0, "label": "Bukan Sawah", "tipe": "Pemukiman Warga #12" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.29575, -7.34565 ], [ 112.29575, -7.34475 ], [ 112.29485, -7.34475 ], [ 112.29485, -7.34565 ], [ 112.29575, -7.34565 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 63, "class": 0, "label": "Bukan Sawah", "tipe": "Pemukiman Warga #13" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.24364, -7.3403 ], [ 112.24364, -7.3394 ], [ 112.24274, -7.3394 ], [ 112.24274, -7.3403 ], [ 112.24364, -7.3403 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 64, "class": 0, "label": "Bukan Sawah", "tipe": "Pemukiman Warga #14" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.22953, -7.33258 ], [ 112.22953, -7.33168 ], [ 112.22863, -7.33168 ], [ 112.22863, -7.33258 ], [ 112.22953, -7.33258 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 65, "class": 0, "label": "Bukan Sawah", "tipe": "Pemukiman Warga #15" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.24738, -7.32546 ], [ 112.24738, -7.32456 ], [ 112.24648, -7.32456 ], [ 112.24648, -7.32546 ], [ 112.24738, -7.32546 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 66, "class": 0, "label": "Bukan Sawah", "tipe": "Pemukiman Warga #16" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.27588, -7.31388 ], [ 112.27588, -7.31298 ], [ 112.27498, -7.31298 ], [ 112.27498, -7.31388 ], [ 112.27588, -7.31388 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 67, "class": 0, "label": "Bukan Sawah", "tipe": "Pemukiman Warga #17" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.28423, -7.34089 ], [ 112.28423, -7.33999 ], [ 112.28333, -7.33999 ], [ 112.28333, -7.34089 ], [ 112.28423, -7.34089 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 68, "class": 0, "label": "Bukan Sawah", "tipe": "Pemukiman Warga #18" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.27732, -7.28953 ], [ 112.27732, -7.28863 ], [ 112.27642, -7.28863 ], [ 112.27642, -7.28953 ], [ 112.27732, -7.28953 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 69, "class": 0, "label": "Bukan Sawah", "tipe": "Pemukiman Warga #19" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.27013, -7.27854 ], [ 112.27013, -7.27764 ], [ 112.26923, -7.27764 ], [ 112.26923, -7.27854 ], [ 112.27013, -7.27854 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 70, "class": 0, "label": "Bukan Sawah", "tipe": "Pemukiman Warga #20" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.27185, -7.31536 ], [ 112.27185, -7.31446 ], [ 112.27095, -7.31446 ], [ 112.27095, -7.31536 ], [ 112.27185, -7.31536 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 71, "class": 0, "label": "Bukan Sawah", "tipe": "Pemukiman Warga #21" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.24969, -7.31981 ], [ 112.24969, -7.31891 ], [ 112.24879, -7.31891 ], [ 112.24879, -7.31981 ], [ 112.24969, -7.31981 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 72, "class": 0, "label": "Bukan Sawah", "tipe": "Pemukiman Warga #22" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.27329, -7.34565 ], [ 112.27329, -7.34475 ], [ 112.27239, -7.34475 ], [ 112.27239, -7.34565 ], [ 112.27329, -7.34565 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 73, "class": 0, "label": "Bukan Sawah", "tipe": "Pemukiman Warga #23" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.28855, -7.34594 ], [ 112.28855, -7.34504 ], [ 112.28765, -7.34504 ], [ 112.28765, -7.34594 ], [ 112.28855, -7.34594 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 74, "class": 0, "label": "Bukan Sawah", "tipe": "Pemukiman Warga #24" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.24565, -7.31922 ], [ 112.24565, -7.31832 ], [ 112.24475, -7.31832 ], [ 112.24475, -7.31922 ], [ 112.24565, -7.31922 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 75, "class": 0, "label": "Bukan Sawah", "tipe": "Pemukiman Warga #25" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.24623, -7.29398 ], [ 112.24623, -7.29308 ], [ 112.24533, -7.29308 ], [ 112.24533, -7.29398 ], [ 112.24623, -7.29398 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 76, "class": 0, "label": "Bukan Sawah", "tipe": "Badan Air / Kali Lamong #01" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.31072, -7.25093 ], [ 112.31072, -7.25003 ], [ 112.30982, -7.25003 ], [ 112.30982, -7.25093 ], [ 112.31072, -7.25093 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 77, "class": 0, "label": "Bukan Sawah", "tipe": "Badan Air / Kali Lamong #02" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.31072, -7.2732 ], [ 112.31072, -7.2723 ], [ 112.30982, -7.2723 ], [ 112.30982, -7.2732 ], [ 112.31072, -7.2732 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 78, "class": 0, "label": "Bukan Sawah", "tipe": "Badan Air / Kali Lamong #03" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.28222, -7.29369 ], [ 112.28222, -7.29279 ], [ 112.28132, -7.29279 ], [ 112.28132, -7.29369 ], [ 112.28222, -7.29369 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 79, "class": 0, "label": "Bukan Sawah", "tipe": "Badan Air / Kali Lamong #04" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.2851, -7.26667 ], [ 112.2851, -7.26577 ], [ 112.2842, -7.26577 ], [ 112.2842, -7.26667 ], [ 112.2851, -7.26667 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 80, "class": 0, "label": "Bukan Sawah", "tipe": "Badan Air / Kali Lamong #05" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.26926, -7.22124 ], [ 112.26926, -7.22034 ], [ 112.26836, -7.22034 ], [ 112.26836, -7.22124 ], [ 112.26926, -7.22124 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 81, "class": 0, "label": "Bukan Sawah", "tipe": "Badan Air / Kali Lamong #06" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.25343, -7.27557 ], [ 112.25343, -7.27467 ], [ 112.25253, -7.27467 ], [ 112.25253, -7.27557 ], [ 112.25343, -7.27557 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 82, "class": 0, "label": "Bukan Sawah", "tipe": "Badan Air / Kali Lamong #07" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.28913, -7.26221 ], [ 112.28913, -7.26131 ], [ 112.28823, -7.26131 ], [ 112.28823, -7.26221 ], [ 112.28913, -7.26221 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 83, "class": 0, "label": "Bukan Sawah", "tipe": "Badan Air / Kali Lamong #08" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.31648, -7.24707 ], [ 112.31648, -7.24617 ], [ 112.31558, -7.24617 ], [ 112.31558, -7.24707 ], [ 112.31648, -7.24707 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 84, "class": 0, "label": "Bukan Sawah", "tipe": "Badan Air / Kali Lamong #09" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.2517, -7.25657 ], [ 112.2517, -7.25567 ], [ 112.2508, -7.25567 ], [ 112.2508, -7.25657 ], [ 112.2517, -7.25657 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 85, "class": 0, "label": "Bukan Sawah", "tipe": "Badan Air / Kali Lamong #10" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.2661, -7.25627 ], [ 112.2661, -7.25537 ], [ 112.2652, -7.25537 ], [ 112.2652, -7.25627 ], [ 112.2661, -7.25627 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 86, "class": 0, "label": "Bukan Sawah", "tipe": "Badan Air / Kali Lamong #11" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.31705, -7.25509 ], [ 112.31705, -7.25419 ], [ 112.31615, -7.25419 ], [ 112.31615, -7.25509 ], [ 112.31705, -7.25509 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 87, "class": 0, "label": "Bukan Sawah", "tipe": "Badan Air / Kali Lamong #12" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.25832, -7.27943 ], [ 112.25832, -7.27853 ], [ 112.25742, -7.27853 ], [ 112.25742, -7.27943 ], [ 112.25832, -7.27943 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 88, "class": 0, "label": "Bukan Sawah", "tipe": "Hutan Persemaian Grenjengan" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.25113, -7.33911 ], [ 112.25113, -7.33821 ], [ 112.25023, -7.33821 ], [ 112.25023, -7.33911 ], [ 112.25113, -7.33911 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 89, "class": 0, "label": "Bukan Sawah", "tipe": "Hutan Pura Garung" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.26545, -7.34195 ], [ 112.26545, -7.34105 ], [ 112.26455, -7.34105 ], [ 112.26455, -7.34195 ], [ 112.26545, -7.34195 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 90, "class": 0, "label": "Bukan Sawah", "tipe": "Hutan Jati Perbukitan Selatan" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.29045, -7.34845 ], [ 112.29045, -7.34755 ], [ 112.28955, -7.34755 ], [ 112.28955, -7.34845 ], [ 112.29045, -7.34845 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 91, "class": 0, "label": "Bukan Sawah", "tipe": "Perbukitan Hutan Pamotan" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.30545, -7.35045 ], [ 112.30545, -7.34955 ], [ 112.30455, -7.34955 ], [ 112.30455, -7.35045 ], [ 112.30545, -7.35045 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 92, "class": 0, "label": "Bukan Sawah", "tipe": "Hutan Jati Jatipandak Selatan" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.29545, -7.34245 ], [ 112.29545, -7.34155 ], [ 112.29455, -7.34155 ], [ 112.29455, -7.34245 ], [ 112.29545, -7.34245 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 93, "class": 0, "label": "Bukan Sawah", "tipe": "Hutan Perbukitan Pamotan" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.30045, -7.34545 ], [ 112.30045, -7.34455 ], [ 112.29955, -7.34455 ], [ 112.29955, -7.34545 ], [ 112.30045, -7.34545 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 94, "class": 0, "label": "Bukan Sawah", "tipe": "Kawasan Hutan Jati Selatan" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.28545, -7.34945 ], [ 112.28545, -7.34855 ], [ 112.28455, -7.34855 ], [ 112.28455, -7.34945 ], [ 112.28545, -7.34945 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 95, "class": 0, "label": "Bukan Sawah", "tipe": "Perbukitan Kapur Barurejo" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.30845, -7.33845 ], [ 112.30845, -7.33755 ], [ 112.30755, -7.33755 ], [ 112.30755, -7.33845 ], [ 112.30845, -7.33845 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 96, "class": 0, "label": "Bukan Sawah", "tipe": "Perbukitan Barurejo Timur" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.31545, -7.33045 ], [ 112.31545, -7.32955 ], [ 112.31455, -7.32955 ], [ 112.31455, -7.33045 ], [ 112.31545, -7.33045 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 97, "class": 0, "label": "Bukan Sawah", "tipe": "Perbukitan Hutan Garung" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.26045, -7.34845 ], [ 112.26045, -7.34755 ], [ 112.25955, -7.34755 ], [ 112.25955, -7.34845 ], [ 112.26045, -7.34845 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 98, "class": 0, "label": "Bukan Sawah", "tipe": "Perbukitan Hutan Selatan" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.27045, -7.35245 ], [ 112.27045, -7.35155 ], [ 112.26955, -7.35155 ], [ 112.26955, -7.35245 ], [ 112.27045, -7.35245 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 99, "class": 0, "label": "Bukan Sawah", "tipe": "Hutan Lereng Selatan" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.25425, -7.34645 ], [ 112.25425, -7.34555 ], [ 112.25335, -7.34555 ], [ 112.25335, -7.34645 ], [ 112.25425, -7.34645 ] ] ] } },
+{ "type": "Feature", "properties": { "id": 100, "class": 0, "label": "Bukan Sawah", "tipe": "Hutan Batas Selatan" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 112.26635, -7.36015 ], [ 112.26635, -7.35925 ], [ 112.26545, -7.35925 ], [ 112.26545, -7.36015 ], [ 112.26635, -7.36015 ] ] ] } }
+]
+}
+;
+        const AOI_SAMBENG_GEOJSON = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "kecamatan": "Sambeng",
+        "kabupaten": "Lamongan",
+        "provinsi": "Jawa Timur"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              112.2151193,
+              -7.3036277
+            ],
+            [
+              112.217778,
+              -7.3055558
+            ],
+            [
+              112.2197058,
+              -7.3170308
+            ],
+            [
+              112.2223725,
+              -7.3204928
+            ],
+            [
+              112.2273193,
+              -7.327005
+            ],
+            [
+              112.2313372,
+              -7.3276754
+            ],
+            [
+              112.2261572,
+              -7.3301349
+            ],
+            [
+              112.2293007,
+              -7.3370677
+            ],
+            [
+              112.2372588,
+              -7.3378393
+            ],
+            [
+              112.2396123,
+              -7.3444062
+            ],
+            [
+              112.2415177,
+              -7.3486847
+            ],
+            [
+              112.2464731,
+              -7.347576
+            ],
+            [
+              112.2530136,
+              -7.3499147
+            ],
+            [
+              112.2568607,
+              -7.355152
+            ],
+            [
+              112.2618991,
+              -7.3595267
+            ],
+            [
+              112.2661557,
+              -7.3601974
+            ],
+            [
+              112.2741162,
+              -7.3533796
+            ],
+            [
+              112.2778395,
+              -7.3582498
+            ],
+            [
+              112.2858853,
+              -7.3631591
+            ],
+            [
+              112.2905141,
+              -7.3571217
+            ],
+            [
+              112.2988365,
+              -7.351659
+            ],
+            [
+              112.3023533,
+              -7.3524976
+            ],
+            [
+              112.3082767,
+              -7.3490761
+            ],
+            [
+              112.3090172,
+              -7.3392376
+            ],
+            [
+              112.3175317,
+              -7.3338706
+            ],
+            [
+              112.3177169,
+              -7.3262674
+            ],
+            [
+              112.3273419,
+              -7.3220743
+            ],
+            [
+              112.3364115,
+              -7.3315228
+            ],
+            [
+              112.3484431,
+              -7.3298457
+            ],
+            [
+              112.3589629,
+              -7.3331493
+            ],
+            [
+              112.3590698,
+              -7.3315347
+            ],
+            [
+              112.35747,
+              -7.3272388
+            ],
+            [
+              112.3467391,
+              -7.3285971
+            ],
+            [
+              112.3422437,
+              -7.3288738
+            ],
+            [
+              112.3404708,
+              -7.3262119
+            ],
+            [
+              112.3353343,
+              -7.3254686
+            ],
+            [
+              112.3343508,
+              -7.3234309
+            ],
+            [
+              112.3350763,
+              -7.319475
+            ],
+            [
+              112.3337352,
+              -7.317078
+            ],
+            [
+              112.3285344,
+              -7.3157651
+            ],
+            [
+              112.3268954,
+              -7.3128664
+            ],
+            [
+              112.3278223,
+              -7.3085435
+            ],
+            [
+              112.3260022,
+              -7.3024802
+            ],
+            [
+              112.3292719,
+              -7.2951718
+            ],
+            [
+              112.3281667,
+              -7.292142
+            ],
+            [
+              112.3304937,
+              -7.2898693
+            ],
+            [
+              112.327719,
+              -7.2859413
+            ],
+            [
+              112.3274226,
+              -7.27807
+            ],
+            [
+              112.328521,
+              -7.2746857
+            ],
+            [
+              112.3281294,
+              -7.271908
+            ],
+            [
+              112.3228669,
+              -7.2706415
+            ],
+            [
+              112.322073,
+              -7.2674062
+            ],
+            [
+              112.3231137,
+              -7.2589771
+            ],
+            [
+              112.3202276,
+              -7.2565399
+            ],
+            [
+              112.3176366,
+              -7.2506677
+            ],
+            [
+              112.3199406,
+              -7.2494757
+            ],
+            [
+              112.3229581,
+              -7.2401137
+            ],
+            [
+              112.3209572,
+              -7.2368075
+            ],
+            [
+              112.3185325,
+              -7.2357964
+            ],
+            [
+              112.3190904,
+              -7.2337422
+            ],
+            [
+              112.3163009,
+              -7.2324704
+            ],
+            [
+              112.3142034,
+              -7.2349077
+            ],
+            [
+              112.3112422,
+              -7.2347161
+            ],
+            [
+              112.3089731,
+              -7.2310654
+            ],
+            [
+              112.3040593,
+              -7.2306822
+            ],
+            [
+              112.3045903,
+              -7.2261641
+            ],
+            [
+              112.2970855,
+              -7.2214489
+            ],
+            [
+              112.2932982,
+              -7.2212946
+            ],
+            [
+              112.292515,
+              -7.217979
+            ],
+            [
+              112.2854728,
+              -7.2147007
+            ],
+            [
+              112.2826596,
+              -7.2184317
+            ],
+            [
+              112.2800213,
+              -7.2177768
+            ],
+            [
+              112.2796968,
+              -7.2194027
+            ],
+            [
+              112.2724092,
+              -7.2151291
+            ],
+            [
+              112.271449,
+              -7.2195091
+            ],
+            [
+              112.2693461,
+              -7.219062
+            ],
+            [
+              112.2668463,
+              -7.2240273
+            ],
+            [
+              112.2651082,
+              -7.2249613
+            ],
+            [
+              112.2653094,
+              -7.2276994
+            ],
+            [
+              112.262308,
+              -7.2286014
+            ],
+            [
+              112.2615597,
+              -7.2302299
+            ],
+            [
+              112.2631878,
+              -7.2328216
+            ],
+            [
+              112.2627385,
+              -7.2365628
+            ],
+            [
+              112.2648912,
+              -7.2387194
+            ],
+            [
+              112.2650819,
+              -7.2458937
+            ],
+            [
+              112.2625709,
+              -7.2456521
+            ],
+            [
+              112.2607335,
+              -7.2420334
+            ],
+            [
+              112.257995,
+              -7.2411953
+            ],
+            [
+              112.2560424,
+              -7.24239
+            ],
+            [
+              112.2584456,
+              -7.239942
+            ],
+            [
+              112.2560263,
+              -7.239958
+            ],
+            [
+              112.2545698,
+              -7.2383961
+            ],
+            [
+              112.2526574,
+              -7.2397025
+            ],
+            [
+              112.2539127,
+              -7.2403305
+            ],
+            [
+              112.2529578,
+              -7.2418951
+            ],
+            [
+              112.2479179,
+              -7.2471262
+            ],
+            [
+              112.244828,
+              -7.2477967
+            ],
+            [
+              112.2434923,
+              -7.2461683
+            ],
+            [
+              112.2421968,
+              -7.2470171
+            ],
+            [
+              112.2427171,
+              -7.2453275
+            ],
+            [
+              112.2409442,
+              -7.2453208
+            ],
+            [
+              112.2398888,
+              -7.249151
+            ],
+            [
+              112.2352982,
+              -7.2513302
+            ],
+            [
+              112.2344774,
+              -7.253677
+            ],
+            [
+              112.2314706,
+              -7.2540761
+            ],
+            [
+              112.2300813,
+              -7.2565586
+            ],
+            [
+              112.2308095,
+              -7.2606281
+            ],
+            [
+              112.2332731,
+              -7.2622684
+            ],
+            [
+              112.235148,
+              -7.2661889
+            ],
+            [
+              112.2329056,
+              -7.2702025
+            ],
+            [
+              112.2291559,
+              -7.273257
+            ],
+            [
+              112.2293651,
+              -7.2763459
+            ],
+            [
+              112.2248872,
+              -7.2817203
+            ],
+            [
+              112.2235635,
+              -7.2882653
+            ],
+            [
+              112.2204682,
+              -7.2893694
+            ],
+            [
+              112.2202228,
+              -7.2963519
+            ],
+            [
+              112.2191808,
+              -7.2981943
+            ],
+            [
+              112.2161463,
+              -7.2977501
+            ],
+            [
+              112.2151193,
+              -7.3036277
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+};
+
+        let sampleData = [];
+        let map;
+        let layerGroup;
+        let boundaryLayer;
+        let currentFilter = 'all';
+        let searchQuery = '';
+        let markersMap = {};
+        let activePointId = null;
+
+        const delta = 0.00045; // ~50m box radius
+
+        // Ray casting point-in-polygon algorithm untuk batas Sambeng
+        function isPointInSambeng(lat, lon) {
+            if (!AOI_SAMBENG_GEOJSON || !AOI_SAMBENG_GEOJSON.features || AOI_SAMBENG_GEOJSON.features.length === 0) return true;
+            const coords = AOI_SAMBENG_GEOJSON.features[0].geometry.coordinates[0];
+            let inside = false;
+            for (let i = 0, j = coords.length - 1; i < coords.length; j = i++) {
+                const xi = coords[i][0], yi = coords[i][1];
+                const xj = coords[j][0], yj = coords[j][1];
+                const intersect = ((yi > lat) !== (yj > lat)) &&
+                    (lon < (xj - xi) * (lat - yi) / (yj - yi) + xi);
+                if (intersect) inside = !inside;
+            }
+            return inside;
+        }
+
+        // PRESETS
+        const SAWAH_PRESETS = [
+            "Petak Sawah Irigasi",
+            "Sawah Tadah Hujan",
+            "Sawah Bera / Baru Panen",
+            "Petak Sawah"
+        ];
+
+        const NONSAWAH_PRESETS = [
+            "Pemukiman Warga",
+            "Badan Air / Kali Lamong",
+            "Hutan / Kebun Pepohonan",
+            "Hutan Jati Perbukitan",
+            "Lahan Terbuka / Tegalan",
+            "Jalan / Infrastruktur"
+        ];
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            document.getElementById('toast-text').innerText = msg;
+            t.classList.add('show');
+            setTimeout(() => { t.classList.remove('show'); }, 3000);
+        }
+
+        function initData(sourceGeojson) {
+            const raw = sourceGeojson || DEFAULT_EMBEDDED_GEOJSON;
+            sampleData = raw.features.map(f => {
+                const coords = f.geometry.coordinates[0];
+                let lats = coords.map(c => c[1]);
+                let lons = coords.map(c => c[0]);
+                let cLat = (Math.min(...lats) + Math.max(...lats)) / 2;
+                let cLon = (Math.min(...lons) + Math.max(...lons)) / 2;
+                return {
+                    id: f.properties.id,
+                    class: f.properties.class,
+                    label: f.properties.label,
+                    tipe: f.properties.tipe || (f.properties.label + ' #' + f.properties.id),
+                    lat: cLat,
+                    lon: cLon
+                };
+            });
+
+            // Cek apakah ada saved data di localStorage
+            const localSaved = localStorage.getItem('sambeng_sample_data_v2');
+            if (localSaved && !sourceGeojson) {
+                try {
+                    const parsed = JSON.parse(localSaved);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        sampleData = parsed;
+                        console.log("Memuat data hasil editan sebelumnya dari LocalStorage");
+                    }
+                } catch (e) {}
+            }
+        }
+
+        initData();
+
+        // Inisialisasi Peta Leaflet
+        map = L.map('map', {
+            center: [-7.288, 112.275],
+            zoom: 13,
+            maxZoom: 20
+        });
+
+        // Layer Google Hybrid
+        const googleHybrid = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            attribution: 'Google Satellite Hybrid'
+        }).addTo(map);
+
+        const googleSat = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            attribution: 'Google Satellite Clean'
+        });
+
+        const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: 'OpenStreetMap'
+        });
+
+        // LAYER BATAS POLIGON WILAYAH KECAMATAN SAMBENG
+        boundaryLayer = L.geoJSON(AOI_SAMBENG_GEOJSON, {
+            style: {
+                color: '#f59e0b',
+                weight: 3.5,
+                dashArray: '8, 6',
+                fillColor: '#f59e0b',
+                fillOpacity: 0.04
+            },
+            onEachFeature: function(feature, layer) {
+                layer.bindTooltip("<b>Wilayah Kajian: Kecamatan Sambeng, Lamongan</b><br><small>Garis kuning putus-putus menunjukkan batas resmi kecamatan</small>", {
+                    sticky: true,
+                    className: 'boundary-tooltip'
+                });
+            }
+        }).addTo(map);
+
+        // Kontrol Layer
+        L.control.layers({
+            "Google Satellite (Hybrid)": googleHybrid,
+            "Google Satellite (Clean)": googleSat,
+            "OpenStreetMap": osm
+        }, {
+            "Batas Wilayah Sambeng": boundaryLayer
+        }, { position: 'topright' }).addTo(map);
+
+        layerGroup = L.layerGroup().addTo(map);
+
+        // Fit bounds batas wilayah Sambeng
+        function toggleBoundaryZoom() {
+            if (boundaryLayer) {
+                map.fitBounds(boundaryLayer.getBounds().pad(0.08), { duration: 0.8 });
+                showToast("🗺️ Peta difokuskan ke seluruh wilayah Kecamatan Sambeng");
+            }
+        }
+
+        // Otomatis pusatkan ke batas wilayah Sambeng pada awal buka
+        if (boundaryLayer) {
+            map.fitBounds(boundaryLayer.getBounds().pad(0.08));
+        }
+
+        function createBoxGeometry(lat, lon) {
+            return [
+                [lat - delta, lon - delta],
+                [lat + delta, lon - delta],
+                [lat + delta, lon + delta],
+                [lat - delta, lon + delta]
+            ];
+        }
+
+        function persistData() {
+            localStorage.setItem('sambeng_sample_data_v2', JSON.stringify(sampleData));
+        }
+
+        function renderMap() {
+            layerGroup.clearLayers();
+            markersMap = {};
+
+            let sawahCount = 0;
+            let nonsawahCount = 0;
+
+            sampleData.forEach((pt) => {
+                if (pt.class === 1) sawahCount++;
+                else nonsawahCount++;
+
+                if (currentFilter === 'sawah' && pt.class !== 1) return;
+                if (currentFilter === 'nonsawah' && pt.class !== 0) return;
+
+                if (searchQuery) {
+                    const q = searchQuery.toLowerCase();
+                    const matchId = pt.id.toString().includes(q);
+                    const matchTipe = pt.tipe.toLowerCase().includes(q);
+                    const matchLabel = pt.label.toLowerCase().includes(q);
+                    if (!matchId && !matchTipe && !matchLabel) return;
+                }
+
+                const isSawah = pt.class === 1;
+                const color = isSawah ? '#22c55e' : '#ef4444';
+                const fillColor = isSawah ? '#4ade80' : '#f87171';
+
+                // Kotak Poligon Petak
+                const boxCoords = createBoxGeometry(pt.lat, pt.lon);
+                const polygon = L.polygon(boxCoords, {
+                    color: color,
+                    weight: 2,
+                    fillColor: fillColor,
+                    fillOpacity: 0.35
+                }).addTo(layerGroup);
+
+                // Marker Pin di Tengah Kotak
+                const markerIcon = L.divIcon({
+                    className: 'custom-pin',
+                    html: `<div style="background: ${color}; width: 14px; height: 14px; border-radius: 50%; border: 2.5px solid white; box-shadow: 0 0 6px rgba(0,0,0,0.8);"></div>`,
+                    iconSize: [14, 14],
+                    iconAnchor: [7, 7]
+                });
+
+                const marker = L.marker([pt.lat, pt.lon], {
+                    icon: markerIcon,
+                    draggable: true,
+                    title: `Petak #${pt.id}: ${pt.tipe}`
+                }).addTo(layerGroup);
+
+                markersMap[pt.id] = { marker, polygon };
+
+                marker.on('drag', function(e) {
+                    const newPos = e.target.getLatLng();
+                    pt.lat = newPos.lat;
+                    pt.lon = newPos.lng;
+                    polygon.setLatLngs(createBoxGeometry(pt.lat, pt.lon));
+                    if (activePointId === pt.id) {
+                        document.getElementById('panel-lat').innerText = pt.lat.toFixed(5);
+                        document.getElementById('panel-lon').innerText = pt.lon.toFixed(5);
+                    }
+                });
+
+                marker.on('dragend', function() {
+                    persistData();
+                    renderSidebar();
+                    updateCounters();
+                    const inside = isPointInSambeng(pt.lat, pt.lon);
+                    if (!inside) {
+                        showToast(`⚠️ Perhatian: Petak #${pt.id} berada di luar garis batas Kecamatan Sambeng!`);
+                    } else {
+                        showToast(`📍 Posisi Petak #${pt.id} berhasil diperbarui`);
+                    }
+                });
+
+                marker.on('click', function() {
+                    openEditPanel(pt.id);
+                });
+
+                // Bikin konten popup interaktif dengan form edit langsung di peta
+                const popupContent = buildPopupHtml(pt);
+                marker.bindPopup(popupContent, { maxWidth: 280 });
+            });
+
+            updateCounters(sawahCount, nonsawahCount);
+        }
+
+        function buildPopupHtml(pt) {
+            const isSawah = pt.class === 1;
+            const color = isSawah ? '#22c55e' : '#ef4444';
+            const inside = isPointInSambeng(pt.lat, pt.lon);
+            const insideBadge = inside ? '' : '<div style="color: #f59e0b; font-size: 10px; font-weight: 600; margin-bottom: 4px;">⚠️ Berada di Luar Batas Sambeng</div>';
+
+            return `
+                <div style="font-size: 12px; color: #f8fafc; min-width: 220px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                        <strong style="color: ${color}; font-size: 13px;">Petak #${pt.id}: ${pt.label}</strong>
+                        <span style="font-size: 10px; background: #334155; padding: 2px 6px; border-radius: 3px;">Kelas ${pt.class}</span>
+                    </div>
+                    ${insideBadge}
+                    <div style="margin-bottom: 6px;">
+                        <label style="font-size: 10px; color: #94a3b8; display: block; margin-bottom: 2px;">KETERANGAN / TIPE:</label>
+                        <input type="text" id="popup-input-${pt.id}" value="${pt.tipe}" 
+                            style="width: 100%; padding: 5px 8px; border-radius: 4px; border: 1px solid #475569; background: #1e293b; color: white; font-size: 11.5px; box-sizing: border-box;"
+                            placeholder="Ketik keterangan...">
+                    </div>
+
+                    <div style="display: flex; gap: 4px; margin-bottom: 8px;">
+                        <button onclick="quickUpdatePopup(${pt.id}, 1)" style="flex: 1; background: ${isSawah ? '#16a34a' : '#1e293b'}; color: white; border: 1px solid #16a34a; padding: 4px; border-radius: 4px; cursor: pointer; font-size: 11px;">
+                            🌾 Sawah
+                        </button>
+                        <button onclick="quickUpdatePopup(${pt.id}, 0)" style="flex: 1; background: ${!isSawah ? '#dc2626' : '#1e293b'}; color: white; border: 1px solid #dc2626; padding: 4px; border-radius: 4px; cursor: pointer; font-size: 11px;">
+                            🏡 Bukan Sawah
+                        </button>
+                    </div>
+
+                    <div style="display: flex; gap: 4px;">
+                        <button onclick="savePopupEdit(${pt.id})" style="flex: 1; background: #0284c7; color: white; border: none; padding: 6px 8px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 11px;">
+                            💾 Simpan Keterangan
+                        </button>
+                        <button onclick="openEditPanel(${pt.id}); map.closePopup();" style="background: #334155; color: white; border: none; padding: 6px 8px; border-radius: 4px; cursor: pointer; font-size: 11px;" title="Buka di Panel Samping">
+                            ✏️ Panel
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function quickUpdatePopup(id, newClass) {
+            const pt = sampleData.find(d => d.id === id);
+            if (!pt) return;
+            const inputEl = document.getElementById(`popup-input-${id}`);
+            const customTipe = inputEl ? inputEl.value.trim() : pt.tipe;
+
+            pt.class = newClass;
+            pt.label = newClass === 1 ? 'Sawah' : 'Bukan Sawah';
+            pt.tipe = customTipe;
+
+            persistData();
+            renderMap();
+            renderSidebar();
+            if (activePointId === id) openEditPanel(id);
+            showToast(`Kelas Petak #${id} diubah ke ${pt.label}`);
+        }
+
+        function savePopupEdit(id) {
+            const pt = sampleData.find(d => d.id === id);
+            if (!pt) return;
+            const inputEl = document.getElementById(`popup-input-${id}`);
+            if (inputEl && inputEl.value.trim()) {
+                pt.tipe = inputEl.value.trim();
+            }
+            persistData();
+            renderMap();
+            renderSidebar();
+            if (activePointId === id) openEditPanel(id);
+            map.closePopup();
+            showToast(`✅ Keterangan Petak #${id} berhasil disimpan!`);
+        }
+
+        function updateCounters(sawah, nonsawah) {
+            if (sawah === undefined) {
+                sawah = sampleData.filter(d => d.class === 1).length;
+                nonsawah = sampleData.filter(d => d.class === 0).length;
+            }
+            document.getElementById('cnt-sawah').innerText = sawah;
+            document.getElementById('cnt-nonsawah').innerText = nonsawah;
+            document.getElementById('cnt-total').innerText = sampleData.length;
+        }
+
+        function renderSidebar() {
+            const listEl = document.getElementById('point-list');
+            listEl.innerHTML = '';
+
+            const filtered = sampleData.filter(pt => {
+                if (currentFilter === 'sawah' && pt.class !== 1) return false;
+                if (currentFilter === 'nonsawah' && pt.class !== 0) return false;
+                if (searchQuery) {
+                    const q = searchQuery.toLowerCase();
+                    return pt.id.toString().includes(q) || pt.tipe.toLowerCase().includes(q) || pt.label.toLowerCase().includes(q);
+                }
+                return true;
+            });
+
+            filtered.forEach(pt => {
+                const isSawah = pt.class === 1;
+                const dotColor = isSawah ? '#22c55e' : '#ef4444';
+                const isActive = activePointId === pt.id;
+                const inside = isPointInSambeng(pt.lat, pt.lon);
+
+                const card = document.createElement('div');
+                card.className = `point-card ${isActive ? 'active-card' : ''}`;
+                card.id = `card-pt-${pt.id}`;
+                card.onclick = () => zoomToPoint(pt.id);
+
+                card.innerHTML = `
+                    <div class="point-info">
+                        <div class="point-title">
+                            <span class="badge" style="background: ${dotColor};"></span>
+                            <span>#${pt.id} - ${pt.label}</span>
+                            ${!inside ? '<span class="badge-warning-outside" title="Berada di luar batas Kecamatan Sambeng">⚠️ Luar Batas</span>' : ''}
+                        </div>
+                        <div class="point-desc" title="${pt.tipe}">${pt.tipe}</div>
+                        <div class="point-coords">
+                            <span>${pt.lat.toFixed(5)}, ${pt.lon.toFixed(5)}</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn-card-action" onclick="event.stopPropagation(); openEditPanel(${pt.id})" title="Edit Keterangan & Kelas">
+                            ✏️ Edit
+                        </button>
+                    </div>
+                `;
+                listEl.appendChild(card);
+            });
+        }
+
+        function zoomToPoint(id) {
+            const pt = sampleData.find(d => d.id === id);
+            if (!pt) return;
+            activePointId = id;
+            map.flyTo([pt.lat, pt.lon], 17, { duration: 0.7 });
+            openEditPanel(id);
+            if (markersMap[id]) {
+                setTimeout(() => {
+                    markersMap[id].marker.openPopup();
+                }, 750);
+            }
+            document.querySelectorAll('.point-card').forEach(c => c.classList.remove('active-card'));
+            const activeCard = document.getElementById(`card-pt-${id}`);
+            if (activeCard) activeCard.classList.add('active-card');
+        }
+
+        // ACTIVE EDIT PANEL LOGIC
+        function openEditPanel(id) {
+            const pt = sampleData.find(d => d.id === id);
+            if (!pt) return;
+            activePointId = id;
+
+            document.getElementById('active-edit-panel').style.display = 'flex';
+            document.getElementById('panel-id').innerText = pt.id;
+            document.getElementById('panel-tipe-input').value = pt.tipe;
+            document.getElementById('panel-lat').innerText = pt.lat.toFixed(5);
+            document.getElementById('panel-lon').innerText = pt.lon.toFixed(5);
+
+            updatePanelClassButtons(pt.class);
+            renderPresetTags(pt.class);
+
+            // Highlight card
+            document.querySelectorAll('.point-card').forEach(c => c.classList.remove('active-card'));
+            const activeCard = document.getElementById(`card-pt-${id}`);
+            if (activeCard) {
+                activeCard.classList.add('active-card');
+                activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        function closeEditPanel() {
+            document.getElementById('active-edit-panel').style.display = 'none';
+            activePointId = null;
+            document.querySelectorAll('.point-card').forEach(c => c.classList.remove('active-card'));
+        }
+
+        function updatePanelClassButtons(cls) {
+            const btnSawah = document.getElementById('btn-cls-sawah');
+            const btnNon = document.getElementById('btn-cls-nonsawah');
+            if (cls === 1) {
+                btnSawah.className = 'radio-btn active-sawah';
+                btnNon.className = 'radio-btn';
+            } else {
+                btnSawah.className = 'radio-btn';
+                btnNon.className = 'radio-btn active-nonsawah';
+            }
+        }
+
+        function renderPresetTags(cls) {
+            const container = document.getElementById('preset-container');
+            container.innerHTML = '';
+            const presets = cls === 1 ? SAWAH_PRESETS : NONSAWAH_PRESETS;
+            presets.forEach(p => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'tag-btn';
+                btn.innerText = p;
+                btn.onclick = () => {
+                    const pt = sampleData.find(d => d.id === activePointId);
+                    const suffix = pt ? ' #' + String(pt.id).padStart(2, '0') : '';
+                    document.getElementById('panel-tipe-input').value = p + suffix;
+                    onPanelTipeChange();
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        function selectClass(newClass) {
+            if (!activePointId) return;
+            const pt = sampleData.find(d => d.id === activePointId);
+            if (!pt) return;
+
+            pt.class = newClass;
+            pt.label = newClass === 1 ? 'Sawah' : 'Bukan Sawah';
+            updatePanelClassButtons(newClass);
+            renderPresetTags(newClass);
+
+            // Jika tipe lama adalah generic, sesuaikan ke nama baru
+            if (newClass === 1 && (pt.tipe.startsWith('Bukan Sawah') || pt.tipe.startsWith('Pemukiman') || pt.tipe.startsWith('Hutan') || pt.tipe.startsWith('Badan Air'))) {
+                pt.tipe = 'Petak Sawah #' + String(pt.id).padStart(2, '0');
+            } else if (newClass === 0 && pt.tipe.startsWith('Petak Sawah')) {
+                pt.tipe = 'Bukan Sawah #' + String(pt.id).padStart(2, '0');
+            }
+            document.getElementById('panel-tipe-input').value = pt.tipe;
+
+            persistData();
+            renderMap();
+            renderSidebar();
+            showToast(`Kelas Petak #${pt.id} diubah ke ${pt.label}`);
+        }
+
+        function onPanelTipeChange() {
+            if (!activePointId) return;
+            const pt = sampleData.find(d => d.id === activePointId);
+            if (!pt) return;
+            const val = document.getElementById('panel-tipe-input').value.trim();
+            if (val) {
+                pt.tipe = val;
+                persistData();
+                // update text pada card sidebar tanpa rerender penuh
+                const card = document.getElementById(`card-pt-${pt.id}`);
+                if (card) {
+                    const descEl = card.querySelector('.point-desc');
+                    if (descEl) descEl.innerText = pt.tipe;
+                }
+            }
+        }
+
+        function saveActiveEdit() {
+            if (!activePointId) return;
+            const pt = sampleData.find(d => d.id === activePointId);
+            if (!pt) return;
+            const val = document.getElementById('panel-tipe-input').value.trim();
+            if (val) pt.tipe = val;
+            persistData();
+            renderMap();
+            renderSidebar();
+            showToast(`✅ Data Petak #${pt.id} berhasil disimpan!`);
+        }
+
+        function setFilter(flt) {
+            currentFilter = flt;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('flt-' + flt).classList.add('active');
+            renderMap();
+            renderSidebar();
+        }
+
+        function handleSearch() {
+            searchQuery = document.getElementById('search-input').value.trim();
+            renderMap();
+            renderSidebar();
+        }
+
+        function resetToInitial() {
+            if (confirm("Kembalikan seluruh sampel dan keterangan ke versi default awal?")) {
+                localStorage.removeItem('sambeng_sample_data_v2');
+                initData(DEFAULT_EMBEDDED_GEOJSON);
+                closeEditPanel();
+                renderMap();
+                renderSidebar();
+                if (boundaryLayer) map.fitBounds(boundaryLayer.getBounds().pad(0.08));
+                showToast("🔄 Data sampel berhasil di-reset ke default awal");
+            }
+        }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const uploadedGeojson = JSON.parse(e.target.result);
+                    if (uploadedGeojson && uploadedGeojson.features) {
+                        initData(uploadedGeojson);
+                        persistData();
+                        closeEditPanel();
+                        renderMap();
+                        renderSidebar();
+                        showToast(`📂 Berhasil memuat ${uploadedGeojson.features.length} petak sampel dari file!`);
+                    } else {
+                        alert("File yang diunggah bukan format GeoJSON FeatureCollection yang valid.");
+                    }
+                } catch (err) {
+                    alert("Gagal membaca file JSON: " + err.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function downloadGeoJSON() {
+            const features = sampleData.map(pt => {
+                // format GeoJSON polygon: [[lon, lat], ...]
+                const ring = [
+                    [parseFloat((pt.lon + delta).toFixed(5)), parseFloat((pt.lat - delta).toFixed(5))],
+                    [parseFloat((pt.lon + delta).toFixed(5)), parseFloat((pt.lat + delta).toFixed(5))],
+                    [parseFloat((pt.lon - delta).toFixed(5)), parseFloat((pt.lat + delta).toFixed(5))],
+                    [parseFloat((pt.lon - delta).toFixed(5)), parseFloat((pt.lat - delta).toFixed(5))],
+                    [parseFloat((pt.lon + delta).toFixed(5)), parseFloat((pt.lat - delta).toFixed(5))]
+                ];
+                return {
+                    type: "Feature",
+                    properties: {
+                        id: pt.id,
+                        class: pt.class,
+                        label: pt.label,
+                        tipe: pt.tipe
+                    },
+                    geometry: {
+                        type: "Polygon",
+                        coordinates: [ring]
+                    }
+                };
+            });
+
+            const exportObj = {
+                type: "FeatureCollection",
+                name: "sampel_sawah_sambeng",
+                crs: { type: "name", properties: { name: "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+                features: features
+            };
+
+            const blob = new Blob([JSON.stringify(exportObj, null, 2)], { type: 'application/geo+json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'sampel_sawah_sambeng.geojson';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            alert("✅ File 'sampel_sawah_sambeng.geojson' berhasil di-download!\n\nSilakan timpa file tersebut ke dalam folder:\nmateri/sampel_sawah_sambeng.geojson\n\nLalu jalankan di terminal:\npython apply_custom_geojson.py");
+        }
+
+        renderMap();
+        renderSidebar();
+    </script>
+</body>
+</html>

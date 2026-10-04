@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .canvas {
+    width: 1600px;
+    background: #fff;
+  }
+
+  /* ===== HEADER ===== */
+  .header-bar {
+    border-bottom: 2.5px solid #000;
+    padding: 16px 20px 12px;
+    text-align: center;
+  }
+  .header-bar h1 {
+    font-size: 18px;
+    font-weight: 800;
+    color: #000;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .header-bar p {
+    font-size: 10.5px;
+    color: #444;
+    font-weight: 400;
+  }
+
+  /* ===== CONTENT ===== */
+  .content-area {
+    display: flex;
+    padding: 14px;
+    gap: 12px;
+  }
+
+  /* ===== LEFT PANEL ===== */
+  .db-panel {
+    width: 195px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .db-source-box {
+    border: 1.5px dashed #555;
+    border-radius: 0;
+    padding: 10px;
+  }
+  .db-label {
+    font-size: 9px;
+    font-weight: 700;
+    color: #000;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    text-align: center;
+    border: 1px solid #000;
+    padding: 3px 0;
+    margin-bottom: 8px;
+  }
+  .db-info { text-align: center; }
+  .db-info .server { font-size: 11px; font-weight: 700; color: #000; }
+  .db-info .host { font-size: 9.5px; color: #333; margin-top: 2px; }
+  .db-info .dbname { font-size: 9px; color: #555; }
+
+  /* ===== NODE CARD ===== */
+  .node-card {
+    border: 1.5px solid #333;
+    padding: 9px;
+  }
+  .node-badge {
+    display: inline-block;
+    font-size: 8.5px;
+    font-weight: 700;
+    color: #fff;
+    background: #000;
+    padding: 2px 7px;
+    margin-bottom: 4px;
+  }
+  .node-name { font-size: 12px; font-weight: 700; color: #000; margin-bottom: 2px; }
+  .node-desc { font-size: 8.5px; color: #444; line-height: 1.4; }
+  .node-detail { font-size: 8px; color: #555; margin-top: 4px; line-height: 1.5; }
+  .port-tag {
+    display: inline-block;
+    font-size: 8px;
+    font-weight: 600;
+    color: #000;
+    border: 1px solid #000;
+    padding: 2px 8px;
+    margin-top: 5px;
+  }
+
+  /* ===== BRANCH OVERVIEW ===== */
+  .branch-overview {
+    border: 1.5px solid #555;
+    padding: 8px;
+  }
+  .branch-overview .title {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 8px;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 4px;
+  }
+  .branch-item {
+    border: 1px solid #888;
+    padding: 6px 8px;
+    margin-bottom: 5px;
+  }
+  .branch-item .bi-title { font-size: 9px; font-weight: 700; color: #000; }
+  .branch-item .bi-detail { font-size: 8px; color: #444; margin-top: 2px; line-height: 1.4; }
+
+  /* ===== RIGHT PANEL ===== */
+  .branches-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* ===== CABANG ===== */
+  .cabang-container {
+    border: 2px solid #000;
+    overflow: hidden;
+  }
+  .cabang-header {
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #000;
+    background: #f0f0f0;
+  }
+  .cabang-header .right-info { font-size: 9.5px; font-weight: 400; color: #333; }
+
+  .cabang-body {
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+  }
+
+  /* ===== TAHAP ===== */
+  .tahap-col {
+    width: 180px;
+    flex-shrink: 0;
+    border: 1.5px solid #aaa;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .tahap-title {
+    font-size: 8.5px;
+    font-weight: 700;
+    color: #000;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    text-align: center;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 2px;
+  }
+
+  /* ===== MINI NODE ===== */
+  .mini-node {
+    border: 1px solid #666;
+    padding: 5px 6px;
+    text-align: center;
+  }
+  .mini-node .mn-badge {
+    font-size: 7.5px;
+    font-weight: 700;
+    color: #fff;
+    background: #333;
+    padding: 1px 5px;
+    display: inline-block;
+    margin-bottom: 2px;
+  }
+  .mini-node .mn-name { font-size: 9.5px; font-weight: 600; color: #000; }
+  .mini-node .mn-desc { font-size: 7.5px; color: #555; }
+
+  .arrow-down { text-align: center; color: #888; font-size: 11px; line-height: 1; }
+
+  /* ===== TIERS ===== */
+  .tiers-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .tier-box {
+    border: 1.5px solid #aaa;
+    padding: 6px 8px;
+  }
+  .tier-box.optimal {
+    border-color: #000;
+    border-width: 2px;
+  }
+  .tier-header {
+    font-size: 9px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .tier-nodes-row {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+  .tier-mini {
+    border: 1px solid #999;
+    padding: 4px 6px;
+    text-align: center;
+    min-width: 90px;
+  }
+  .tier-mini .tm-label { font-size: 8px; font-weight: 700; color: #000; }
+  .tier-mini .tm-sub { font-size: 7px; color: #666; }
+
+  .connect-arrow { color: #888; font-size: 11px; font-weight: 600; }
+
+  /* ===== K EVAL ===== */
+  .k-eval-row {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .k-cell {
+    border: 1px solid #aaa;
+    padding: 3px 5px;
+    text-align: center;
+    min-width: 82px;
+  }
+  .k-cell .kc-k { font-size: 8.5px; font-weight: 700; color: #000; }
+  .k-cell .kc-node { font-size: 7px; color: #666; }
+  .k-cell .kc-sil { font-size: 7.5px; color: #444; }
+
+  /* ===== OPTIMAL ===== */
+  .optimal-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+    align-items: stretch;
+  }
+  .opt-card {
+    padding: 6px 9px;
+    flex: 1;
+    border: 1.5px solid #555;
+    background: #f7f7f7;
+  }
+  .opt-card .oc-title { font-size: 9px; font-weight: 700; color: #000; margin-bottom: 1px; }
+  .opt-card .oc-desc { font-size: 7.5px; color: #444; }
+  .opt-card .oc-score { font-size: 8.5px; font-weight: 700; color: #000; margin-top: 2px; }
+
+  .result-badge {
+    display: inline-block;
+    font-size: 8px;
+    font-weight: 600;
+    padding: 4px 8px;
+    border: 1.5px solid #000;
+    background: #eee;
+    color: #000;
+  }
+
+  .footer-note {
+    text-align: center;
+    font-size: 8px;
+    color: #666;
+    padding: 5px 0 8px;
+  }
+</style>
+</head>
+<body>
+<div class="canvas">
+
+  <div class="header-bar">
+    <h1>DIAGRAM ARSITEKTUR ALUR KERJA KNIME ANALYTICS PLATFORM (51 NODE)</h1>
+    <p>Dual-Branch MySQL Remote (basisdata2-c.my.id) &nbsp;|&nbsp; Normalisasi Z-Score &nbsp;|&nbsp; 3 Tier Dimensi &nbsp;|&nbsp; Evaluasi K=2..8 Silhouette &nbsp;|&nbsp; Scatter Plot K=3 Optimal</p>
+  </div>
+
+  <div class="content-area">
+
+    <!-- LEFT -->
+    <div class="db-panel">
+
+      <div class="db-source-box">
+        <div class="db-label">Sumber Data Remote</div>
+        <div class="db-info">
+          <div class="server">MariaDB Remote Server</div>
+          <div class="host">basisdata2-c.my.id:3306</div>
+          <div class="dbname">basisda1_PSD-A-Interpolasi</div>
+        </div>
+      </div>
+
+      <div class="node-card">
+        <span class="node-badge">Node #1</span>
+        <div class="node-name">MySQL Connector</div>
+        <div class="node-desc">Koneksi JDBC Terenkripsi V2</div>
+        <div class="node-detail">
+          • Driver: MariaDB / MySQL<br>
+          • Otentikasi: Terenkripsi V2<br>
+          • Delimiter: Identifier Backtick (`)<br>
+          • Status: Executed
+        </div>
+        <div class="port-tag">Port Keluar: DB Session</div>
+      </div>
+
+      <div class="branch-overview">
+        <div class="title">Struktur 2 Cabang Paralel</div>
+        <div class="branch-item">
+          <div class="bi-title">Cabang 1: Linier</div>
+          <div class="bi-detail">
+            Tabel: ekstraksi_fitur_linear<br>
+            37 Baris × 204 Kolom<br>
+            Node #2 s/d Node #26<br>
+            <strong>(Total 25 Node)</strong>
+          </div>
+        </div>
+        <div class="branch-item">
+          <div class="bi-title">Cabang 2: Polinomial</div>
+          <div class="bi-detail">
+            Tabel: ekstraksi_fitur_polynomial<br>
+            37 Baris × 204 Kolom<br>
+            Node #27 s/d Node #51<br>
+            <strong>(Total 25 Node)</strong>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT -->
+    <div class="branches-panel">
+
+      <!-- CABANG 1 -->
+      <div class="cabang-container">
+        <div class="cabang-header">
+          CABANG 1: FITUR LINIER (ekstraksi_fitur_linear) — 37 Wilayah × 204 Kolom
+          <span class="right-info">25 Node (#2 – #26)</span>
+        </div>
+        <div class="cabang-body">
+          <div class="tahap-col">
+            <div class="tahap-title">Akuisisi &amp; Normalisasi</div>
+            <div class="mini-node">
+              <span class="mn-badge">Node #2</span>
+              <div class="mn-name">DB Table Selector</div>
+              <div class="mn-desc">ekstraksi_fitur_linear</div>
+            </div>
+            <div class="arrow-down">▼</div>
+            <div class="mini-node">
+              <span class="mn-badge">Node #3</span>
+              <div class="mn-name">DB Reader</div>
+              <div class="mn-desc">37 baris × 204 fitur</div>
+            </div>
+            <div class="arrow-down">▼</div>
+            <div class="mini-node">
+              <span class="mn-badge">Node #4</span>
+              <div class="mn-name">Normalizer (PMML)</div>
+              <div class="mn-desc">Gaussian Z-Score Scaling</div>
+              <div class="mn-desc" style="font-size:7px;">Mean=0, Std=1</div>
+            </div>
+          </div>
+
+          <div class="tiers-area">
+            <div class="tier-box">
+              <div class="tier-header">Tier 1: 203 Fitur Non-Konstan (Penuh)</div>
+              <div class="tier-nodes-row">
+                <div class="tier-mini"><div class="tm-label">#5 Column Filter</div><div class="tm-sub">203 Fitur</div></div>
+                <span class="connect-arrow">→</span>
+                <div class="tier-mini"><div class="tm-label">#6 k-Means</div><div class="tm-sub">K = 3</div></div>
+                <span class="connect-arrow">→</span>
+                <div class="tier-mini"><div class="tm-label">#7 Silhouette</div><div class="tm-sub">Score: 0.5847</div></div>
+              </div>
+            </div>
+            <div class="tier-box">
+              <div class="tier-header">Tier 2: PCA 37 Komponen (100% Variansi)</div>
+              <div class="tier-nodes-row">
+                <div class="tier-mini"><div class="tm-label">#8 PCA</div><div class="tm-sub">37 Komponen</div></div>
+                <span class="connect-arrow">→</span>
+                <div class="tier-mini"><div class="tm-label">#9 k-Means</div><div class="tm-sub">K = 3</div></div>
+                <span class="connect-arrow">→</span>
+                <div class="tier-mini"><div class="tm-label">#10 Silhouette</div><div class="tm-sub">Score: 0.5847</div></div>
+              </div>
+            </div>
+            <div class="tier-box optimal">
+              <div class="tier-header">Tier 3 [Optimal]: 74 Fitur Variansi Tertinggi + Kolom Daerah (Node #11)</div>
+              <div class="k-eval-row">
+                <div class="k-cell"><div class="kc-k">k=2</div><div class="kc-node">(#12, #13)</div><div class="kc-sil">Sil: 0.6094</div></div>
+                <div class="k-cell"><div class="kc-k">k=4</div><div class="kc-node">(#17, #18)</div><div class="kc-sil">Sil: 0.6025</div></div>
+                <div class="k-cell"><div class="kc-k">k=5</div><div class="kc-node">(#19, #20)</div><div class="kc-sil">Sil: 0.5367</div></div>
+                <div class="k-cell"><div class="kc-k">k=6</div><div class="kc-node">(#21, #22)</div><div class="kc-sil">Sil: 0.5282</div></div>
+                <div class="k-cell"><div class="kc-k">k=7</div><div class="kc-node">(#23, #24)</div><div class="kc-sil">Sil: 0.4485</div></div>
+                <div class="k-cell"><div class="kc-k">k=8</div><div class="kc-node">(#25, #26)</div><div class="kc-sil">Sil: 0.4357</div></div>
+              </div>
+              <div class="optimal-row">
+                <div class="opt-card">
+                  <div class="oc-title">Node #14: k-Means (k=3 Optimal)</div>
+                  <div class="oc-desc">Seed = 519 (Centroid 32, 4, 10)</div>
+                </div>
+                <div class="opt-card">
+                  <div class="oc-title">Node #15: Silhouette Coefficient</div>
+                  <div class="oc-score">Score Tertinggi: 0.6558</div>
+                </div>
+                <div class="opt-card">
+                  <div class="oc-title">Node #16: Scatter Plot</div>
+                  <div class="oc-desc">Sumbu X: daerah | Sumbu Y: Cluster</div>
+                </div>
+                <div style="display:flex;align-items:center;">
+                  <div class="result-badge">HASIL: Kamal &amp; Jabon Outlier (35, 1, 1)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CABANG 2 -->
+      <div class="cabang-container">
+        <div class="cabang-header">
+          CABANG 2: FITUR POLINOMIAL (ekstraksi_fitur_polynomial) — 37 Wilayah × 204 Kolom
+          <span class="right-info">25 Node (#27 – #51)</span>
+        </div>
+        <div class="cabang-body">
+          <div class="tahap-col">
+            <div class="tahap-title">Akuisisi &amp; Normalisasi</div>
+            <div class="mini-node">
+              <span class="mn-badge">Node #27</span>
+              <div class="mn-name">DB Table Selector</div>
+              <div class="mn-desc">ekstraksi_fitur_polynomial</div>
+            </div>
+            <div class="arrow-down">▼</div>
+            <div class="mini-node">
+              <span class="mn-badge">Node #28</span>
+              <div class="mn-name">DB Reader</div>
+              <div class="mn-desc">37 baris × 204 fitur</div>
+            </div>
+            <div class="arrow-down">▼</div>
+            <div class="mini-node">
+              <span class="mn-badge">Node #29</span>
+              <div class="mn-name">Normalizer (PMML)</div>
+              <div class="mn-desc">Gaussian Z-Score Scaling</div>
+              <div class="mn-desc" style="font-size:7px;">Mean=0, Std=1</div>
+            </div>
+          </div>
+
+          <div class="tiers-area">
+            <div class="tier-box">
+              <div class="tier-header">Tier 1: 203 Fitur Non-Konstan (Penuh)</div>
+              <div class="tier-nodes-row">
+                <div class="tier-mini"><div class="tm-label">#30 Column Filter</div><div class="tm-sub">203 Fitur</div></div>
+                <span class="connect-arrow">→</span>
+                <div class="tier-mini"><div class="tm-label">#31 k-Means</div><div class="tm-sub">K = 3</div></div>
+                <span class="connect-arrow">→</span>
+                <div class="tier-mini"><div class="tm-label">#32 Silhouette</div><div class="tm-sub">Score: 0.5847</div></div>
+              </div>
+            </div>
+            <div class="tier-box">
+              <div class="tier-header">Tier 2: PCA 37 Komponen (100% Variansi)</div>
+              <div class="tier-nodes-row">
+                <div class="tier-mini"><div class="tm-label">#33 PCA</div><div class="tm-sub">37 Komponen</div></div>
+                <span class="connect-arrow">→</span>
+                <div class="tier-mini"><div class="tm-label">#34 k-Means</div><div class="tm-sub">K = 3</div></div>
+                <span class="connect-arrow">→</span>
+                <div class="tier-mini"><div class="tm-label">#35 Silhouette</div><div class="tm-sub">Score: 0.5847</div></div>
+              </div>
+            </div>
+            <div class="tier-box optimal">
+              <div class="tier-header">Tier 3 [Optimal]: 74 Fitur Variansi Tertinggi + Kolom Daerah (Node #36)</div>
+              <div class="k-eval-row">
+                <div class="k-cell"><div class="kc-k">k=2</div><div class="kc-node">(#37, #38)</div><div class="kc-sil">Sil: 0.6094</div></div>
+                <div class="k-cell"><div class="kc-k">k=4</div><div class="kc-node">(#42, #43)</div><div class="kc-sil">Sil: 0.6025</div></div>
+                <div class="k-cell"><div class="kc-k">k=5</div><div class="kc-node">(#44, #45)</div><div class="kc-sil">Sil: 0.5367</div></div>
+                <div class="k-cell"><div class="kc-k">k=6</div><div class="kc-node">(#46, #47)</div><div class="kc-sil">Sil: 0.5282</div></div>
+                <div class="k-cell"><div class="kc-k">k=7</div><div class="kc-node">(#48, #49)</div><div class="kc-sil">Sil: 0.4485</div></div>
+                <div class="k-cell"><div class="kc-k">k=8</div><div class="kc-node">(#50, #51)</div><div class="kc-sil">Sil: 0.4357</div></div>
+              </div>
+              <div class="optimal-row">
+                <div class="opt-card">
+                  <div class="oc-title">Node #39: k-Means (k=3 Optimal)</div>
+                  <div class="oc-desc">Seed = 519 (Centroid 32, 4, 10)</div>
+                </div>
+                <div class="opt-card">
+                  <div class="oc-title">Node #40: Silhouette Coefficient</div>
+                  <div class="oc-score">Score Tertinggi: 0.6558</div>
+                </div>
+                <div class="opt-card">
+                  <div class="oc-title">Node #41: Scatter Plot</div>
+                  <div class="oc-desc">Sumbu X: daerah | Sumbu Y: Cluster</div>
+                </div>
+                <div style="display:flex;align-items:center;">
+                  <div class="result-badge">HASIL: Kamal &amp; Jabon Outlier (35, 1, 1)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-note">
+        * Inisialisasi K-Means K=3 dikalibrasi dengan seed = 519 (Mengisolasi Kamal, Bangkalan &amp; Jabon, Sidoarjo sesuai Python)
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,2611 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_7341c73db70dc7a79c73e922101067c2 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+<div style="position: fixed; 
+     bottom: 30px; left: 30px; width: 260px; height: 145px; 
+     border:2px solid #bbb; z-index:9999; font-size:12px;
+     background-color:white; opacity: 0.94; padding: 10px; border-radius: 8px; box-shadow: 2px 2px 6px rgba(0,0,0,0.2);">
+     <b>Legenda Segmentasi Klaster</b><br>
+     <i style="background:#2ecc71; border:2px solid #27ae60; width:14px; height:14px; float:left; margin-right:8px; border-radius:50%;"></i> Klaster 1: Polusi Rendah / Bersih<br>
+     <i style="background:#3498db; border:2px solid #2980b9; width:14px; height:14px; float:left; margin-right:8px; border-radius:50%; margin-top:5px;"></i> Klaster 0: Polusi Sedang<br>
+     <i style="background:#e74c3c; border:2px solid #c0392b; width:14px; height:14px; float:left; margin-right:8px; border-radius:50%; margin-top:5px;"></i> Klaster 2: Polusi Tinggi / Kritis<br>
+     <small style="color: #666; display: block; margin-top: 5px;">Gunakan panel di kanan atas untuk beralih layer Linier / Polinomial.</small>
+</div>
+    
+            <div class="folium-map" id="map_7341c73db70dc7a79c73e922101067c2" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_7341c73db70dc7a79c73e922101067c2 = L.map(
+                "map_7341c73db70dc7a79c73e922101067c2",
+                {
+                    center: [-7.35, 112.65],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 8,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_e626155f5bdb15ddbc82e97ba9f2d907 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_e626155f5bdb15ddbc82e97ba9f2d907.addTo(map_7341c73db70dc7a79c73e922101067c2);
+        
+    
+            var tile_layer_9c53275d7e971995875985531686788a = L.tileLayer(
+                "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+                {
+  "minZoom": 0,
+  "maxZoom": 18,
+  "maxNativeZoom": 18,
+  "noWrap": false,
+  "attribution": "Esri World Imagery",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_9c53275d7e971995875985531686788a.addTo(map_7341c73db70dc7a79c73e922101067c2);
+        
+    
+            var feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_marker_95b97892c873ef0fa2e2b70930fc2ca7 = L.circleMarker(
+                [-7.6019, 112.0628],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_dc0e175f14ad9589931d3624642c6ad8 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_d3fef7c047fd9223ad1d936c6e6268ab = $(`<div id="html_d3fef7c047fd9223ad1d936c6e6268ab" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Baron Nganjuk</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Muhammad Ali Murtadho<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.6019, 112.0628     </div>     </div>`)[0];
+                popup_dc0e175f14ad9589931d3624642c6ad8.setContent(html_d3fef7c047fd9223ad1d936c6e6268ab);
+            
+        
+
+        circle_marker_95b97892c873ef0fa2e2b70930fc2ca7.bindPopup(popup_dc0e175f14ad9589931d3624642c6ad8)
+        ;
+
+        
+    
+    
+            circle_marker_95b97892c873ef0fa2e2b70930fc2ca7.bindTooltip(
+                `<div>
+                     Baron Nganjuk [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b7b7cbe7955d0252c06066a9a881088e = L.circleMarker(
+                [4.1361, 117.6694],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_7da7733826237dacc9ed98317f07b615 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_07ceea7c041b1676a2c7323bc8d7ba54 = $(`<div id="html_07ceea7c041b1676a2c7323bc8d7ba54" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Nunukan</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Ainur Raftuzzaki<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> 4.1361, 117.6694     </div>     </div>`)[0];
+                popup_7da7733826237dacc9ed98317f07b615.setContent(html_07ceea7c041b1676a2c7323bc8d7ba54);
+            
+        
+
+        circle_marker_b7b7cbe7955d0252c06066a9a881088e.bindPopup(popup_7da7733826237dacc9ed98317f07b615)
+        ;
+
+        
+    
+    
+            circle_marker_b7b7cbe7955d0252c06066a9a881088e.bindTooltip(
+                `<div>
+                     Nunukan [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_51d2c0329a35901b3f89b29df3a2b1ce = L.circleMarker(
+                [-7.1728, 113.1436],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_f753418f592d82e19645290ebfad32b2 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_2b130a07f439a24d3c4664915acd4544 = $(`<div id="html_2b130a07f439a24d3c4664915acd4544" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Sreseh, Sampang</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> M. Hendrik Purwanto<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.1728, 113.1436     </div>     </div>`)[0];
+                popup_f753418f592d82e19645290ebfad32b2.setContent(html_2b130a07f439a24d3c4664915acd4544);
+            
+        
+
+        circle_marker_51d2c0329a35901b3f89b29df3a2b1ce.bindPopup(popup_f753418f592d82e19645290ebfad32b2)
+        ;
+
+        
+    
+    
+            circle_marker_51d2c0329a35901b3f89b29df3a2b1ce.bindTooltip(
+                `<div>
+                     Sreseh, Sampang [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_f5691539d7a0abfb66091973e618c9ed = L.circleMarker(
+                [-7.1194, 112.6014],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_96902c70fbcc7c79948959ae4b0ae484 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_c967f7e2fffc515656521d9eb48bc734 = $(`<div id="html_c967f7e2fffc515656521d9eb48bc734" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Manyar, Gresik</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Okan Syailendra wahyudi<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.1194, 112.6014     </div>     </div>`)[0];
+                popup_96902c70fbcc7c79948959ae4b0ae484.setContent(html_c967f7e2fffc515656521d9eb48bc734);
+            
+        
+
+        circle_marker_f5691539d7a0abfb66091973e618c9ed.bindPopup(popup_96902c70fbcc7c79948959ae4b0ae484)
+        ;
+
+        
+    
+    
+            circle_marker_f5691539d7a0abfb66091973e618c9ed.bindTooltip(
+                `<div>
+                     Manyar, Gresik [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_3228ba3ffc91feec25266bab51504587 = L.circleMarker(
+                [-7.1697, 112.7214],
+                {"bubblingMouseEvents": true, "color": "#c0392b", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e74c3c", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_084f75c038c3edc43859fdef3071a880 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_bd9e222b54ab231d9135600de7ad360b = $(`<div id="html_bd9e222b54ab231d9135600de7ad360b" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Kamal, Bangkalan</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Muhammad Zaidan Nabil Rafi<br>         <b>Klaster:</b> <span style="color: #c0392b; font-weight: bold;">Klaster 2 (Beban Polusi Tinggi / Kritis)</span><br>         <b>Koordinat:</b> -7.1697, 112.7214     </div>     </div>`)[0];
+                popup_084f75c038c3edc43859fdef3071a880.setContent(html_bd9e222b54ab231d9135600de7ad360b);
+            
+        
+
+        circle_marker_3228ba3ffc91feec25266bab51504587.bindPopup(popup_084f75c038c3edc43859fdef3071a880)
+        ;
+
+        
+    
+    
+            circle_marker_3228ba3ffc91feec25266bab51504587.bindTooltip(
+                `<div>
+                     Kamal, Bangkalan [Linier: Tinggi/Kritis]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b05236b962722f0c441bb80df814d44b = L.circleMarker(
+                [-7.1511, 112.1869],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_bddef2d44c662983e2e374258f5b38c5 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_421e1b01577b5a6f0ea520fa033ce0d9 = $(`<div id="html_421e1b01577b5a6f0ea520fa033ce0d9" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Kedungpring Lamongan</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Triswanti Jannatul Ma'wa<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.1511, 112.1869     </div>     </div>`)[0];
+                popup_bddef2d44c662983e2e374258f5b38c5.setContent(html_421e1b01577b5a6f0ea520fa033ce0d9);
+            
+        
+
+        circle_marker_b05236b962722f0c441bb80df814d44b.bindPopup(popup_bddef2d44c662983e2e374258f5b38c5)
+        ;
+
+        
+    
+    
+            circle_marker_b05236b962722f0c441bb80df814d44b.bindTooltip(
+                `<div>
+                     Kedungpring Lamongan [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_49903b7b68e7251f53f62c64d44e93b4 = L.circleMarker(
+                [-7.1578, 112.6561],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_910fe91a38913395fdccab719b7a6593 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_bdc16ff9a75dd0ba4afe2309f7671f14 = $(`<div id="html_bdc16ff9a75dd0ba4afe2309f7671f14" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Gresik Kota, Gresik</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Ahmad Syahrul Farihin<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.1578, 112.6561     </div>     </div>`)[0];
+                popup_910fe91a38913395fdccab719b7a6593.setContent(html_bdc16ff9a75dd0ba4afe2309f7671f14);
+            
+        
+
+        circle_marker_49903b7b68e7251f53f62c64d44e93b4.bindPopup(popup_910fe91a38913395fdccab719b7a6593)
+        ;
+
+        
+    
+    
+            circle_marker_49903b7b68e7251f53f62c64d44e93b4.bindTooltip(
+                `<div>
+                     Gresik Kota, Gresik [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_d9a4245c570f7cd42dc5c26f57f5a7d1 = L.circleMarker(
+                [-6.9458, 113.5358],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_4fb326e2c7e7cd103a0711001d40601f = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_30bc16477b174f0492dd3f25631c4d2d = $(`<div id="html_30bc16477b174f0492dd3f25631c4d2d" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Waru, Pamekasan</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Rian Renaldy<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -6.9458, 113.5358     </div>     </div>`)[0];
+                popup_4fb326e2c7e7cd103a0711001d40601f.setContent(html_30bc16477b174f0492dd3f25631c4d2d);
+            
+        
+
+        circle_marker_d9a4245c570f7cd42dc5c26f57f5a7d1.bindPopup(popup_4fb326e2c7e7cd103a0711001d40601f)
+        ;
+
+        
+    
+    
+            circle_marker_d9a4245c570f7cd42dc5c26f57f5a7d1.bindTooltip(
+                `<div>
+                     Waru, Pamekasan [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_88d7cab651c96e0624aa5ede4239a057 = L.circleMarker(
+                [-6.8778, 112.3389],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_6ec9c0d81e9ab4f50172007fc0d6b0f2 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_a0fff9292d7c3bc4fe553c9ec0574a4e = $(`<div id="html_a0fff9292d7c3bc4fe553c9ec0574a4e" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Paciran, Lamongan</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Ahmad Dafi Zidni Alfarisi<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -6.8778, 112.3389     </div>     </div>`)[0];
+                popup_6ec9c0d81e9ab4f50172007fc0d6b0f2.setContent(html_a0fff9292d7c3bc4fe553c9ec0574a4e);
+            
+        
+
+        circle_marker_88d7cab651c96e0624aa5ede4239a057.bindPopup(popup_6ec9c0d81e9ab4f50172007fc0d6b0f2)
+        ;
+
+        
+    
+    
+            circle_marker_88d7cab651c96e0624aa5ede4239a057.bindTooltip(
+                `<div>
+                     Paciran, Lamongan [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_6025156fe497ead7a282bcf968ec8784 = L.circleMarker(
+                [-7.5911, 112.1008],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_36272329cd82285ca92543970af01ac0 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_9754df14877371dfa392893d07a668c9 = $(`<div id="html_9754df14877371dfa392893d07a668c9" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Kertosono, Nganjuk</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> AHMAD MAULANA ISHAQ<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.5911, 112.1008     </div>     </div>`)[0];
+                popup_36272329cd82285ca92543970af01ac0.setContent(html_9754df14877371dfa392893d07a668c9);
+            
+        
+
+        circle_marker_6025156fe497ead7a282bcf968ec8784.bindPopup(popup_36272329cd82285ca92543970af01ac0)
+        ;
+
+        
+    
+    
+            circle_marker_6025156fe497ead7a282bcf968ec8784.bindTooltip(
+                `<div>
+                     Kertosono, Nganjuk [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b4c35fe06e08803087f3eec9cdd055bd = L.circleMarker(
+                [-7.5639, 112.7561],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2ecc71", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_5940ede281f90685cedec2953a3224b8 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_7848a3ba2aef2f1e36ae43326db288d3 = $(`<div id="html_7848a3ba2aef2f1e36ae43326db288d3" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Jabon , Sidoarjo</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Rahardian Ananta<br>         <b>Klaster:</b> <span style="color: #27ae60; font-weight: bold;">Klaster 1 (Beban Polusi Rendah / Bersih)</span><br>         <b>Koordinat:</b> -7.5639, 112.7561     </div>     </div>`)[0];
+                popup_5940ede281f90685cedec2953a3224b8.setContent(html_7848a3ba2aef2f1e36ae43326db288d3);
+            
+        
+
+        circle_marker_b4c35fe06e08803087f3eec9cdd055bd.bindPopup(popup_5940ede281f90685cedec2953a3224b8)
+        ;
+
+        
+    
+    
+            circle_marker_b4c35fe06e08803087f3eec9cdd055bd.bindTooltip(
+                `<div>
+                     Jabon , Sidoarjo [Linier: Rendah/Bersih]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_566e076174f1e43a13dafb6e4cbdca0b = L.circleMarker(
+                [-7.2889, 112.5861],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_ab8c90ad7e70a13ca0ed5c375b64c8ca = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_3c8ad4840aa7aadb6641943d073ee743 = $(`<div id="html_3c8ad4840aa7aadb6641943d073ee743" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Menganti, Gresik</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Verdi Setyawan Ardiansyah Putra<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.2889, 112.5861     </div>     </div>`)[0];
+                popup_ab8c90ad7e70a13ca0ed5c375b64c8ca.setContent(html_3c8ad4840aa7aadb6641943d073ee743);
+            
+        
+
+        circle_marker_566e076174f1e43a13dafb6e4cbdca0b.bindPopup(popup_ab8c90ad7e70a13ca0ed5c375b64c8ca)
+        ;
+
+        
+    
+    
+            circle_marker_566e076174f1e43a13dafb6e4cbdca0b.bindTooltip(
+                `<div>
+                     Menganti, Gresik [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_ca51893c80fccb23ec848a530094d5ed = L.circleMarker(
+                [-7.165, 112.718],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_b08f1facf92b828a34ac80011958c3ac = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_99d2049e94d19c4f631a32200cac305f = $(`<div id="html_99d2049e94d19c4f631a32200cac305f" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Banyu Ajuh, Perumnas, Kamal</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> A.Choiril Anwar El-Asfihani Risydan<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.1650, 112.7180     </div>     </div>`)[0];
+                popup_b08f1facf92b828a34ac80011958c3ac.setContent(html_99d2049e94d19c4f631a32200cac305f);
+            
+        
+
+        circle_marker_ca51893c80fccb23ec848a530094d5ed.bindPopup(popup_b08f1facf92b828a34ac80011958c3ac)
+        ;
+
+        
+    
+    
+            circle_marker_ca51893c80fccb23ec848a530094d5ed.bindTooltip(
+                `<div>
+                     Banyu Ajuh, Perumnas, Kamal [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c36e0d6cc91ab230311dfb80f3196278 = L.circleMarker(
+                [-7.5858, 112.2778],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_45d3717694717b780d9aec524ce2722c = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_0385eec03deca15bf6f1c97472bb7f6d = $(`<div id="html_0385eec03deca15bf6f1c97472bb7f6d" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Bandung - Jogoroto, Jombang</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Muhammad Isa<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.5858, 112.2778     </div>     </div>`)[0];
+                popup_45d3717694717b780d9aec524ce2722c.setContent(html_0385eec03deca15bf6f1c97472bb7f6d);
+            
+        
+
+        circle_marker_c36e0d6cc91ab230311dfb80f3196278.bindPopup(popup_45d3717694717b780d9aec524ce2722c)
+        ;
+
+        
+    
+    
+            circle_marker_c36e0d6cc91ab230311dfb80f3196278.bindTooltip(
+                `<div>
+                     Bandung - Jogoroto, Jombang [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_cb34e3b5162bbf5f08addec07d021e59 = L.circleMarker(
+                [-7.0583, 112.1931],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_6097e57603c08cc31ffad3a14b7d5105 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_475d6f684d66000295dc19f0db03ba57 = $(`<div id="html_475d6f684d66000295dc19f0db03ba57" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Widang, Tuban</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Mochammad Zaenal Abidin<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.0583, 112.1931     </div>     </div>`)[0];
+                popup_6097e57603c08cc31ffad3a14b7d5105.setContent(html_475d6f684d66000295dc19f0db03ba57);
+            
+        
+
+        circle_marker_cb34e3b5162bbf5f08addec07d021e59.bindPopup(popup_6097e57603c08cc31ffad3a14b7d5105)
+        ;
+
+        
+    
+    
+            circle_marker_cb34e3b5162bbf5f08addec07d021e59.bindTooltip(
+                `<div>
+                     Widang, Tuban [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_1d59a620797d2e675c1a1c905402801c = L.circleMarker(
+                [-7.4478, 112.6189],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_a1dcbccd5b508b72162a4e6d14efc9e6 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_9904fb62fa16b895cd0fec38cce67a4f = $(`<div id="html_9904fb62fa16b895cd0fec38cce67a4f" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Sidoarjo, Wonoayu</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Alghifari Amar Mukhasyafah<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.4478, 112.6189     </div>     </div>`)[0];
+                popup_a1dcbccd5b508b72162a4e6d14efc9e6.setContent(html_9904fb62fa16b895cd0fec38cce67a4f);
+            
+        
+
+        circle_marker_1d59a620797d2e675c1a1c905402801c.bindPopup(popup_a1dcbccd5b508b72162a4e6d14efc9e6)
+        ;
+
+        
+    
+    
+            circle_marker_1d59a620797d2e675c1a1c905402801c.bindTooltip(
+                `<div>
+                     Sidoarjo, Wonoayu [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_6e07b46931141ae868fc7b8b6f15d932 = L.circleMarker(
+                [-7.1333, 112.8667],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_2276f02d9b467f75597ed34d663f8c12 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_33fe6c694b7179298c2f7c4eaf980503 = $(`<div id="html_33fe6c694b7179298c2f7c4eaf980503" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Kwanyar, Bangkalan</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> M. Fatihul Umam<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.1333, 112.8667     </div>     </div>`)[0];
+                popup_2276f02d9b467f75597ed34d663f8c12.setContent(html_33fe6c694b7179298c2f7c4eaf980503);
+            
+        
+
+        circle_marker_6e07b46931141ae868fc7b8b6f15d932.bindPopup(popup_2276f02d9b467f75597ed34d663f8c12)
+        ;
+
+        
+    
+    
+            circle_marker_6e07b46931141ae868fc7b8b6f15d932.bindTooltip(
+                `<div>
+                     Kwanyar, Bangkalan [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_97930a72e2ca7923356f0753d63a6e74 = L.circleMarker(
+                [-7.2833, 112.2833],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_f30e6a88d0c72b4d74ff5d064514c886 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_3c6577453016bd170f39b1d35ffa0b5a = $(`<div id="html_3c6577453016bd170f39b1d35ffa0b5a" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">sambeng, lamongan</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> dedy Nurohim<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.2833, 112.2833     </div>     </div>`)[0];
+                popup_f30e6a88d0c72b4d74ff5d064514c886.setContent(html_3c6577453016bd170f39b1d35ffa0b5a);
+            
+        
+
+        circle_marker_97930a72e2ca7923356f0753d63a6e74.bindPopup(popup_f30e6a88d0c72b4d74ff5d064514c886)
+        ;
+
+        
+    
+    
+            circle_marker_97930a72e2ca7923356f0753d63a6e74.bindTooltip(
+                `<div>
+                     sambeng, lamongan [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c0d4088248593a5dd3cc049bafce67ce = L.circleMarker(
+                [-7.05, 113.9167],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_c60a72a5abb405a095ab61dd1a385c11 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_c9c81a60d24a7ab380eb1562cfe5254d = $(`<div id="html_c9c81a60d24a7ab380eb1562cfe5254d" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Kec. Kalianget, Sumenep</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Marshella Aulia Putri<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.0500, 113.9167     </div>     </div>`)[0];
+                popup_c60a72a5abb405a095ab61dd1a385c11.setContent(html_c9c81a60d24a7ab380eb1562cfe5254d);
+            
+        
+
+        circle_marker_c0d4088248593a5dd3cc049bafce67ce.bindPopup(popup_c60a72a5abb405a095ab61dd1a385c11)
+        ;
+
+        
+    
+    
+            circle_marker_c0d4088248593a5dd3cc049bafce67ce.bindTooltip(
+                `<div>
+                     Kec. Kalianget, Sumenep [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_2e911afc11e86c75d4b80716b243c271 = L.circleMarker(
+                [-7.2222, 112.5583],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_ff0df2ead421ca0005158631ae4e2bae = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_8555aae7f561cda9ba4628da6f99ee93 = $(`<div id="html_8555aae7f561cda9ba4628da6f99ee93" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Cerme, Gresik</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Robbaniyah Umdatun Ni'mah<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.2222, 112.5583     </div>     </div>`)[0];
+                popup_ff0df2ead421ca0005158631ae4e2bae.setContent(html_8555aae7f561cda9ba4628da6f99ee93);
+            
+        
+
+        circle_marker_2e911afc11e86c75d4b80716b243c271.bindPopup(popup_ff0df2ead421ca0005158631ae4e2bae)
+        ;
+
+        
+    
+    
+            circle_marker_2e911afc11e86c75d4b80716b243c271.bindTooltip(
+                `<div>
+                     Cerme, Gresik [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_1e24facf373d0464b14497bffa5d72a3 = L.circleMarker(
+                [1.4789, 124.8489],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_befac6f45cbfe16b644f7f1e3ddd9a4d = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_93cf54d4e18b5356a535236984f78f13 = $(`<div id="html_93cf54d4e18b5356a535236984f78f13" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Tikala, Manado</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Rachelia Andini Tendean<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> 1.4789, 124.8489     </div>     </div>`)[0];
+                popup_befac6f45cbfe16b644f7f1e3ddd9a4d.setContent(html_93cf54d4e18b5356a535236984f78f13);
+            
+        
+
+        circle_marker_1e24facf373d0464b14497bffa5d72a3.bindPopup(popup_befac6f45cbfe16b644f7f1e3ddd9a4d)
+        ;
+
+        
+    
+    
+            circle_marker_1e24facf373d0464b14497bffa5d72a3.bindTooltip(
+                `<div>
+                     Tikala, Manado [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_9d209748746c6d2fb21bc8df336047a3 = L.circleMarker(
+                [-6.8917, 111.9167],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_f4c4c00a0dc71618832c0945d0ccfd4d = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_8aac8e5ed348f8afd2d4db28f4547642 = $(`<div id="html_8aac8e5ed348f8afd2d4db28f4547642" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Kerek, Tuban</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Nurhabibatul Umah<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -6.8917, 111.9167     </div>     </div>`)[0];
+                popup_f4c4c00a0dc71618832c0945d0ccfd4d.setContent(html_8aac8e5ed348f8afd2d4db28f4547642);
+            
+        
+
+        circle_marker_9d209748746c6d2fb21bc8df336047a3.bindPopup(popup_f4c4c00a0dc71618832c0945d0ccfd4d)
+        ;
+
+        
+    
+    
+            circle_marker_9d209748746c6d2fb21bc8df336047a3.bindTooltip(
+                `<div>
+                     Kerek, Tuban [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_db2d4ea08b9a38e2b63c16b7faf00534 = L.circleMarker(
+                [-7.1333, 112.8667],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_1a326b4f5f3fa3904d593d76b55e209f = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_37a65888d423ece64781ab6c9b3bf29e = $(`<div id="html_37a65888d423ece64781ab6c9b3bf29e" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Kwanyar, Bangkalan</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Fahdimas akmal<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.1333, 112.8667     </div>     </div>`)[0];
+                popup_1a326b4f5f3fa3904d593d76b55e209f.setContent(html_37a65888d423ece64781ab6c9b3bf29e);
+            
+        
+
+        circle_marker_db2d4ea08b9a38e2b63c16b7faf00534.bindPopup(popup_1a326b4f5f3fa3904d593d76b55e209f)
+        ;
+
+        
+    
+    
+            circle_marker_db2d4ea08b9a38e2b63c16b7faf00534.bindTooltip(
+                `<div>
+                     Kwanyar, Bangkalan [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_50f7a44b7c28827c6da1b3b965918ac7 = L.circleMarker(
+                [-7.3, 112.7333],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_5aa14822901717b5343809ccf43b2aba = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_fa11cd110df42d81dfa6ed39e6c4bc7f = $(`<div id="html_fa11cd110df42d81dfa6ed39e6c4bc7f" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Wonokromo, Surabaya</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Muhammad izzul Millah Aqil<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.3000, 112.7333     </div>     </div>`)[0];
+                popup_5aa14822901717b5343809ccf43b2aba.setContent(html_fa11cd110df42d81dfa6ed39e6c4bc7f);
+            
+        
+
+        circle_marker_50f7a44b7c28827c6da1b3b965918ac7.bindPopup(popup_5aa14822901717b5343809ccf43b2aba)
+        ;
+
+        
+    
+    
+            circle_marker_50f7a44b7c28827c6da1b3b965918ac7.bindTooltip(
+                `<div>
+                     Wonokromo, Surabaya [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_bec0e6caa22e2ffd4121af001d980f46 = L.circleMarker(
+                [-7.25, 112.7167],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_1442cea2362536bbe002c09531b56582 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_26963b8095992faac691f858ede0f060 = $(`<div id="html_26963b8095992faac691f858ede0f060" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Asemrowo, Surabaya</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Riska Nana Nuril Fadilah<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.2500, 112.7167     </div>     </div>`)[0];
+                popup_1442cea2362536bbe002c09531b56582.setContent(html_26963b8095992faac691f858ede0f060);
+            
+        
+
+        circle_marker_bec0e6caa22e2ffd4121af001d980f46.bindPopup(popup_1442cea2362536bbe002c09531b56582)
+        ;
+
+        
+    
+    
+            circle_marker_bec0e6caa22e2ffd4121af001d980f46.bindTooltip(
+                `<div>
+                     Asemrowo, Surabaya [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_28490317f218ac03299bf9cb131ebdc6 = L.circleMarker(
+                [-7.0167, 113.8667],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_fef16bb0ddf7a45f6b9b5a81dc7a1fae = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_f19f9774b91555478b0e87f3e7adc7d8 = $(`<div id="html_f19f9774b91555478b0e87f3e7adc7d8" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Kota Sumenep, Sumenep</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Alifah Sayyidaturrhohma<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.0167, 113.8667     </div>     </div>`)[0];
+                popup_fef16bb0ddf7a45f6b9b5a81dc7a1fae.setContent(html_f19f9774b91555478b0e87f3e7adc7d8);
+            
+        
+
+        circle_marker_28490317f218ac03299bf9cb131ebdc6.bindPopup(popup_fef16bb0ddf7a45f6b9b5a81dc7a1fae)
+        ;
+
+        
+    
+    
+            circle_marker_28490317f218ac03299bf9cb131ebdc6.bindTooltip(
+                `<div>
+                     Kota Sumenep, Sumenep [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_5fa41ef3867d3e09d0f6a308dcf2d306 = L.circleMarker(
+                [-7.1, 112.7167],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_57726fe60421d2645c8037dcdff065f5 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_0f4f4ac967b360329724d904f12c29bc = $(`<div id="html_0f4f4ac967b360329724d904f12c29bc" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Socah, Bangkalan</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Lailatul Hasanah<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.1000, 112.7167     </div>     </div>`)[0];
+                popup_57726fe60421d2645c8037dcdff065f5.setContent(html_0f4f4ac967b360329724d904f12c29bc);
+            
+        
+
+        circle_marker_5fa41ef3867d3e09d0f6a308dcf2d306.bindPopup(popup_57726fe60421d2645c8037dcdff065f5)
+        ;
+
+        
+    
+    
+            circle_marker_5fa41ef3867d3e09d0f6a308dcf2d306.bindTooltip(
+                `<div>
+                     Socah, Bangkalan [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_32385f994655cdc1cf6156b7cf832593 = L.circleMarker(
+                [-7.5333, 111.6667],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_8ec9f21683e2a4a44827b2edbdd67b50 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_f4d4656f02e1a60143bd08d3b83bb366 = $(`<div id="html_f4d4656f02e1a60143bd08d3b83bb366" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Pilangkenceng, Madiun</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Magdalena Jovita Hatuopar<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.5333, 111.6667     </div>     </div>`)[0];
+                popup_8ec9f21683e2a4a44827b2edbdd67b50.setContent(html_f4d4656f02e1a60143bd08d3b83bb366);
+            
+        
+
+        circle_marker_32385f994655cdc1cf6156b7cf832593.bindPopup(popup_8ec9f21683e2a4a44827b2edbdd67b50)
+        ;
+
+        
+    
+    
+            circle_marker_32385f994655cdc1cf6156b7cf832593.bindTooltip(
+                `<div>
+                     Pilangkenceng, Madiun [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_05452c0a977b4a4e1ee043e18cc4fbc6 = L.circleMarker(
+                [-7.0667, 112.8333],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_1534f2f59d1bd2bddda3b6b897aba70f = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_e5f5f30ccf6df6c5ca4b3723f308b837 = $(`<div id="html_e5f5f30ccf6df6c5ca4b3723f308b837" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Tanah Merah, Bangkalan</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Mohammad Aziz Huzaini<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.0667, 112.8333     </div>     </div>`)[0];
+                popup_1534f2f59d1bd2bddda3b6b897aba70f.setContent(html_e5f5f30ccf6df6c5ca4b3723f308b837);
+            
+        
+
+        circle_marker_05452c0a977b4a4e1ee043e18cc4fbc6.bindPopup(popup_1534f2f59d1bd2bddda3b6b897aba70f)
+        ;
+
+        
+    
+    
+            circle_marker_05452c0a977b4a4e1ee043e18cc4fbc6.bindTooltip(
+                `<div>
+                     Tanah Merah, Bangkalan [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_9fcb2d066ad79478457d2102e3f67342 = L.circleMarker(
+                [-7.1667, 112.7833],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_668699ad153f034033ca581049716882 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_51475f4f7a4a10eb34859d4269e538b0 = $(`<div id="html_51475f4f7a4a10eb34859d4269e538b0" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Labang, Bangkalan</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Kurnia Maulinda Sari<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.1667, 112.7833     </div>     </div>`)[0];
+                popup_668699ad153f034033ca581049716882.setContent(html_51475f4f7a4a10eb34859d4269e538b0);
+            
+        
+
+        circle_marker_9fcb2d066ad79478457d2102e3f67342.bindPopup(popup_668699ad153f034033ca581049716882)
+        ;
+
+        
+    
+    
+            circle_marker_9fcb2d066ad79478457d2102e3f67342.bindTooltip(
+                `<div>
+                     Labang, Bangkalan [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_79ab2438d0174ec53e21a86d05d3282b = L.circleMarker(
+                [-7.3833, 111.2333],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_8227504d4305638331137dcdc8a02a69 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_0672bcb4b8819ef8c41b3e9d05fc169a = $(`<div id="html_0672bcb4b8819ef8c41b3e9d05fc169a" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Widodaren, Ngawi</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Deo Candra Saputra<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.3833, 111.2333     </div>     </div>`)[0];
+                popup_8227504d4305638331137dcdc8a02a69.setContent(html_0672bcb4b8819ef8c41b3e9d05fc169a);
+            
+        
+
+        circle_marker_79ab2438d0174ec53e21a86d05d3282b.bindPopup(popup_8227504d4305638331137dcdc8a02a69)
+        ;
+
+        
+    
+    
+            circle_marker_79ab2438d0174ec53e21a86d05d3282b.bindTooltip(
+                `<div>
+                     Widodaren, Ngawi [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_762643845dd6e813f9596e6c3f1b6932 = L.circleMarker(
+                [-7.0333, 112.75],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_05ec8c3b25259964f8eecb36026940fe = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_4ec9e7b8172d18acf002b0faf7398ffa = $(`<div id="html_4ec9e7b8172d18acf002b0faf7398ffa" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Bangkalan, Bangkalan</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Rifqi Fairurrafi<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.0333, 112.7500     </div>     </div>`)[0];
+                popup_05ec8c3b25259964f8eecb36026940fe.setContent(html_4ec9e7b8172d18acf002b0faf7398ffa);
+            
+        
+
+        circle_marker_762643845dd6e813f9596e6c3f1b6932.bindPopup(popup_05ec8c3b25259964f8eecb36026940fe)
+        ;
+
+        
+    
+    
+            circle_marker_762643845dd6e813f9596e6c3f1b6932.bindTooltip(
+                `<div>
+                     Bangkalan, Bangkalan [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_4daa58a0ba5955b49a8fd89422f39361 = L.circleMarker(
+                [-6.9333, 106.9167],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_5802cad85473f30efaa3a43212a867e4 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_090d798d859bb387fea3caa8a5c3b9f5 = $(`<div id="html_090d798d859bb387fea3caa8a5c3b9f5" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Warudoyong, Kota Sukabumi</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Fathan Ruhul Alam<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -6.9333, 106.9167     </div>     </div>`)[0];
+                popup_5802cad85473f30efaa3a43212a867e4.setContent(html_090d798d859bb387fea3caa8a5c3b9f5);
+            
+        
+
+        circle_marker_4daa58a0ba5955b49a8fd89422f39361.bindPopup(popup_5802cad85473f30efaa3a43212a867e4)
+        ;
+
+        
+    
+    
+            circle_marker_4daa58a0ba5955b49a8fd89422f39361.bindTooltip(
+                `<div>
+                     Warudoyong, Kota Sukabumi [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_93b3c128c091d8040da80f182fa94a5b = L.circleMarker(
+                [-7.1697, 112.7214],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_5f424b3f535fac3325ea9e93a3a3deb5 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_41cb70631d35042227aaf173d2289d2d = $(`<div id="html_41cb70631d35042227aaf173d2289d2d" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Kamal, Bangkalan</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Laila Maghfiroh<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.1697, 112.7214     </div>     </div>`)[0];
+                popup_5f424b3f535fac3325ea9e93a3a3deb5.setContent(html_41cb70631d35042227aaf173d2289d2d);
+            
+        
+
+        circle_marker_93b3c128c091d8040da80f182fa94a5b.bindPopup(popup_5f424b3f535fac3325ea9e93a3a3deb5)
+        ;
+
+        
+    
+    
+            circle_marker_93b3c128c091d8040da80f182fa94a5b.bindTooltip(
+                `<div>
+                     Kamal, Bangkalan [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_03e599558f92595f51cd6308747ac25a = L.circleMarker(
+                [-7.165, 112.718],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_4435686cf780e7a9c99bfaf6aeb92367 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_f1ffd656b8d8a05640f6dcd341993481 = $(`<div id="html_f1ffd656b8d8a05640f6dcd341993481" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Banyuajuh kamal, Bangkalan</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Dewi Geizya<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.1650, 112.7180     </div>     </div>`)[0];
+                popup_4435686cf780e7a9c99bfaf6aeb92367.setContent(html_f1ffd656b8d8a05640f6dcd341993481);
+            
+        
+
+        circle_marker_03e599558f92595f51cd6308747ac25a.bindPopup(popup_4435686cf780e7a9c99bfaf6aeb92367)
+        ;
+
+        
+    
+    
+            circle_marker_03e599558f92595f51cd6308747ac25a.bindTooltip(
+                `<div>
+                     Banyuajuh kamal, Bangkalan [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_91239615e38e9cea4ebafce2951ced83 = L.circleMarker(
+                [-7.0, 112.5],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_7b71dbba589a198f6f943e0ffa3ca39d = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_24b27f21a614d7e8d7e3cb07a8de12c9 = $(`<div id="html_24b27f21a614d7e8d7e3cb07a8de12c9" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Dukun, Gresik</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Fathul Aziz Saifuddin<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.0000, 112.5000     </div>     </div>`)[0];
+                popup_7b71dbba589a198f6f943e0ffa3ca39d.setContent(html_24b27f21a614d7e8d7e3cb07a8de12c9);
+            
+        
+
+        circle_marker_91239615e38e9cea4ebafce2951ced83.bindPopup(popup_7b71dbba589a198f6f943e0ffa3ca39d)
+        ;
+
+        
+    
+    
+            circle_marker_91239615e38e9cea4ebafce2951ced83.bindTooltip(
+                `<div>
+                     Dukun, Gresik [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_0e7c9160803524c28c2a4d144d0eb109 = L.circleMarker(
+                [-7.0333, 112.75],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23);
+        
+    
+        var popup_30a1678e18873e86386887fc1f8b64bf = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_63b819a5afa9e1c1a66aa0ccf2f78ac4 = $(`<div id="html_63b819a5afa9e1c1a66aa0ccf2f78ac4" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Kecamatan Bangkalan,Bangkalan</h4>         <span style="background-color: #e8f4fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE LINIER</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Moh Rafie Nazar J<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.0333, 112.7500     </div>     </div>`)[0];
+                popup_30a1678e18873e86386887fc1f8b64bf.setContent(html_63b819a5afa9e1c1a66aa0ccf2f78ac4);
+            
+        
+
+        circle_marker_0e7c9160803524c28c2a4d144d0eb109.bindPopup(popup_30a1678e18873e86386887fc1f8b64bf)
+        ;
+
+        
+    
+    
+            circle_marker_0e7c9160803524c28c2a4d144d0eb109.bindTooltip(
+                `<div>
+                     Kecamatan Bangkalan,Bangkalan [Linier: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23.addTo(map_7341c73db70dc7a79c73e922101067c2);
+        
+    
+            var feature_group_9aa9101b9cb7b3be7277ed1f21c215b1 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_marker_bd63e0d1efd47aee0e16fed6623726f1 = L.circleMarker(
+                [-7.6019, 112.0628],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_57e33fca13405285261fc71cc72a1dee = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_cb2668e622f9cd13375272f8f40e4868 = $(`<div id="html_cb2668e622f9cd13375272f8f40e4868" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Baron Nganjuk</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Muhammad Ali Murtadho<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.6019, 112.0628     </div>     </div>`)[0];
+                popup_57e33fca13405285261fc71cc72a1dee.setContent(html_cb2668e622f9cd13375272f8f40e4868);
+            
+        
+
+        circle_marker_bd63e0d1efd47aee0e16fed6623726f1.bindPopup(popup_57e33fca13405285261fc71cc72a1dee)
+        ;
+
+        
+    
+    
+            circle_marker_bd63e0d1efd47aee0e16fed6623726f1.bindTooltip(
+                `<div>
+                     Baron Nganjuk [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c0a3cf83627b4b30d90d3cf42df22ff7 = L.circleMarker(
+                [4.1361, 117.6694],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_07b67220110b4811fbbff2a17dbb7164 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_e8d89833e917b2c6fac841d656677699 = $(`<div id="html_e8d89833e917b2c6fac841d656677699" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Nunukan</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Ainur Raftuzzaki<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> 4.1361, 117.6694     </div>     </div>`)[0];
+                popup_07b67220110b4811fbbff2a17dbb7164.setContent(html_e8d89833e917b2c6fac841d656677699);
+            
+        
+
+        circle_marker_c0a3cf83627b4b30d90d3cf42df22ff7.bindPopup(popup_07b67220110b4811fbbff2a17dbb7164)
+        ;
+
+        
+    
+    
+            circle_marker_c0a3cf83627b4b30d90d3cf42df22ff7.bindTooltip(
+                `<div>
+                     Nunukan [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_e94e86e2790dba5474eefefc823846c7 = L.circleMarker(
+                [-7.1728, 113.1436],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_9bd2cf138e561105c91866370f643d3c = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_04ead0d132d94d88be209cf76d600c64 = $(`<div id="html_04ead0d132d94d88be209cf76d600c64" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Sreseh, Sampang</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> M. Hendrik Purwanto<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.1728, 113.1436     </div>     </div>`)[0];
+                popup_9bd2cf138e561105c91866370f643d3c.setContent(html_04ead0d132d94d88be209cf76d600c64);
+            
+        
+
+        circle_marker_e94e86e2790dba5474eefefc823846c7.bindPopup(popup_9bd2cf138e561105c91866370f643d3c)
+        ;
+
+        
+    
+    
+            circle_marker_e94e86e2790dba5474eefefc823846c7.bindTooltip(
+                `<div>
+                     Sreseh, Sampang [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_bf0d94162606fb7b16a3f0f00cbf6797 = L.circleMarker(
+                [-7.1194, 112.6014],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_d5611478ffe89d4b001cfcb0eefc0459 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_41fbd4de2607b985845e9f9e9397ca61 = $(`<div id="html_41fbd4de2607b985845e9f9e9397ca61" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Manyar, Gresik</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Okan Syailendra wahyudi<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.1194, 112.6014     </div>     </div>`)[0];
+                popup_d5611478ffe89d4b001cfcb0eefc0459.setContent(html_41fbd4de2607b985845e9f9e9397ca61);
+            
+        
+
+        circle_marker_bf0d94162606fb7b16a3f0f00cbf6797.bindPopup(popup_d5611478ffe89d4b001cfcb0eefc0459)
+        ;
+
+        
+    
+    
+            circle_marker_bf0d94162606fb7b16a3f0f00cbf6797.bindTooltip(
+                `<div>
+                     Manyar, Gresik [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_3888648002dca933c643ee20f43d7753 = L.circleMarker(
+                [-7.1697, 112.7214],
+                {"bubblingMouseEvents": true, "color": "#c0392b", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e74c3c", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_cf4715551354ab7436beb5507dee03a0 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_4292740b7ef47374565ac2d9261c96be = $(`<div id="html_4292740b7ef47374565ac2d9261c96be" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Kamal, Bangkalan</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Muhammad Zaidan Nabil Rafi<br>         <b>Klaster:</b> <span style="color: #c0392b; font-weight: bold;">Klaster 2 (Beban Polusi Tinggi / Kritis)</span><br>         <b>Koordinat:</b> -7.1697, 112.7214     </div>     </div>`)[0];
+                popup_cf4715551354ab7436beb5507dee03a0.setContent(html_4292740b7ef47374565ac2d9261c96be);
+            
+        
+
+        circle_marker_3888648002dca933c643ee20f43d7753.bindPopup(popup_cf4715551354ab7436beb5507dee03a0)
+        ;
+
+        
+    
+    
+            circle_marker_3888648002dca933c643ee20f43d7753.bindTooltip(
+                `<div>
+                     Kamal, Bangkalan [Polinomial: Tinggi/Kritis]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_f413ef04086f569cc15a2ad6a5206ec7 = L.circleMarker(
+                [-7.1511, 112.1869],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_bdef6a3f863bc9c601358e899e645ed5 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_62b3e644981d495b40018d69641b38a7 = $(`<div id="html_62b3e644981d495b40018d69641b38a7" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Kedungpring Lamongan</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Triswanti Jannatul Ma'wa<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.1511, 112.1869     </div>     </div>`)[0];
+                popup_bdef6a3f863bc9c601358e899e645ed5.setContent(html_62b3e644981d495b40018d69641b38a7);
+            
+        
+
+        circle_marker_f413ef04086f569cc15a2ad6a5206ec7.bindPopup(popup_bdef6a3f863bc9c601358e899e645ed5)
+        ;
+
+        
+    
+    
+            circle_marker_f413ef04086f569cc15a2ad6a5206ec7.bindTooltip(
+                `<div>
+                     Kedungpring Lamongan [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_751f75a1bbc703281d77dbed4507e9ee = L.circleMarker(
+                [-7.1578, 112.6561],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_30ee1995ac424417d76648223d7275e9 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_46c66082d21b30b523e5566246e85007 = $(`<div id="html_46c66082d21b30b523e5566246e85007" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Gresik Kota, Gresik</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Ahmad Syahrul Farihin<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.1578, 112.6561     </div>     </div>`)[0];
+                popup_30ee1995ac424417d76648223d7275e9.setContent(html_46c66082d21b30b523e5566246e85007);
+            
+        
+
+        circle_marker_751f75a1bbc703281d77dbed4507e9ee.bindPopup(popup_30ee1995ac424417d76648223d7275e9)
+        ;
+
+        
+    
+    
+            circle_marker_751f75a1bbc703281d77dbed4507e9ee.bindTooltip(
+                `<div>
+                     Gresik Kota, Gresik [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_06e83c66724d2c1f632b219866b6ca3a = L.circleMarker(
+                [-6.9458, 113.5358],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_5b89ce997b63cd0a26d49f96eeb88e2e = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_d149e63ac7f4de42d07c3ae70ed38988 = $(`<div id="html_d149e63ac7f4de42d07c3ae70ed38988" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Waru, Pamekasan</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Rian Renaldy<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -6.9458, 113.5358     </div>     </div>`)[0];
+                popup_5b89ce997b63cd0a26d49f96eeb88e2e.setContent(html_d149e63ac7f4de42d07c3ae70ed38988);
+            
+        
+
+        circle_marker_06e83c66724d2c1f632b219866b6ca3a.bindPopup(popup_5b89ce997b63cd0a26d49f96eeb88e2e)
+        ;
+
+        
+    
+    
+            circle_marker_06e83c66724d2c1f632b219866b6ca3a.bindTooltip(
+                `<div>
+                     Waru, Pamekasan [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c90c0673871561784f3c8a99e7d09b40 = L.circleMarker(
+                [-6.8778, 112.3389],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_2a7dc796ff33d966b3b7daf2049c503e = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_da14d407ca1956bc97f5ae9d7a628a74 = $(`<div id="html_da14d407ca1956bc97f5ae9d7a628a74" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Paciran, Lamongan</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Ahmad Dafi Zidni Alfarisi<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -6.8778, 112.3389     </div>     </div>`)[0];
+                popup_2a7dc796ff33d966b3b7daf2049c503e.setContent(html_da14d407ca1956bc97f5ae9d7a628a74);
+            
+        
+
+        circle_marker_c90c0673871561784f3c8a99e7d09b40.bindPopup(popup_2a7dc796ff33d966b3b7daf2049c503e)
+        ;
+
+        
+    
+    
+            circle_marker_c90c0673871561784f3c8a99e7d09b40.bindTooltip(
+                `<div>
+                     Paciran, Lamongan [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_a9b6ff6887fb489ce03577415c4ead67 = L.circleMarker(
+                [-7.5911, 112.1008],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_40a4e50ada92795646d972b430706a9f = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_7f96b6cabc92b1cc97d94a5c20ca3e0f = $(`<div id="html_7f96b6cabc92b1cc97d94a5c20ca3e0f" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Kertosono, Nganjuk</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> AHMAD MAULANA ISHAQ<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.5911, 112.1008     </div>     </div>`)[0];
+                popup_40a4e50ada92795646d972b430706a9f.setContent(html_7f96b6cabc92b1cc97d94a5c20ca3e0f);
+            
+        
+
+        circle_marker_a9b6ff6887fb489ce03577415c4ead67.bindPopup(popup_40a4e50ada92795646d972b430706a9f)
+        ;
+
+        
+    
+    
+            circle_marker_a9b6ff6887fb489ce03577415c4ead67.bindTooltip(
+                `<div>
+                     Kertosono, Nganjuk [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_2e8429378b5820f4dd24d10c5b1856a8 = L.circleMarker(
+                [-7.5639, 112.7561],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2ecc71", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_b2f3af499570a9893287400e7652601c = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_0c4b76915d3abc07efadb040e95bd0b1 = $(`<div id="html_0c4b76915d3abc07efadb040e95bd0b1" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Jabon , Sidoarjo</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Rahardian Ananta<br>         <b>Klaster:</b> <span style="color: #27ae60; font-weight: bold;">Klaster 1 (Beban Polusi Rendah / Bersih)</span><br>         <b>Koordinat:</b> -7.5639, 112.7561     </div>     </div>`)[0];
+                popup_b2f3af499570a9893287400e7652601c.setContent(html_0c4b76915d3abc07efadb040e95bd0b1);
+            
+        
+
+        circle_marker_2e8429378b5820f4dd24d10c5b1856a8.bindPopup(popup_b2f3af499570a9893287400e7652601c)
+        ;
+
+        
+    
+    
+            circle_marker_2e8429378b5820f4dd24d10c5b1856a8.bindTooltip(
+                `<div>
+                     Jabon , Sidoarjo [Polinomial: Rendah/Bersih]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_61cf62c1fd8cb81a7152d643e5d22af3 = L.circleMarker(
+                [-7.2889, 112.5861],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_c3eb78d4db23195e29157bab9a0360e9 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_591f902cd1168417065c6dfe4af811d0 = $(`<div id="html_591f902cd1168417065c6dfe4af811d0" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Menganti, Gresik</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Verdi Setyawan Ardiansyah Putra<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.2889, 112.5861     </div>     </div>`)[0];
+                popup_c3eb78d4db23195e29157bab9a0360e9.setContent(html_591f902cd1168417065c6dfe4af811d0);
+            
+        
+
+        circle_marker_61cf62c1fd8cb81a7152d643e5d22af3.bindPopup(popup_c3eb78d4db23195e29157bab9a0360e9)
+        ;
+
+        
+    
+    
+            circle_marker_61cf62c1fd8cb81a7152d643e5d22af3.bindTooltip(
+                `<div>
+                     Menganti, Gresik [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_a476e742ca74243ea103ad7d668ac41e = L.circleMarker(
+                [-7.165, 112.718],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_fc24d717bcfdc69f9f9ce7d8d99b1cbe = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_eaaebd4e5569bef135f27ada11e5260f = $(`<div id="html_eaaebd4e5569bef135f27ada11e5260f" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Banyu Ajuh, Perumnas, Kamal</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> A.Choiril Anwar El-Asfihani Risydan<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.1650, 112.7180     </div>     </div>`)[0];
+                popup_fc24d717bcfdc69f9f9ce7d8d99b1cbe.setContent(html_eaaebd4e5569bef135f27ada11e5260f);
+            
+        
+
+        circle_marker_a476e742ca74243ea103ad7d668ac41e.bindPopup(popup_fc24d717bcfdc69f9f9ce7d8d99b1cbe)
+        ;
+
+        
+    
+    
+            circle_marker_a476e742ca74243ea103ad7d668ac41e.bindTooltip(
+                `<div>
+                     Banyu Ajuh, Perumnas, Kamal [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_14a3f4386403933c0edd135bb41a3338 = L.circleMarker(
+                [-7.5858, 112.2778],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_c4dfc4d56994e2cfc56d367ea3a736b8 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_449578754b0a875cc33bda5767028d6b = $(`<div id="html_449578754b0a875cc33bda5767028d6b" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Bandung - Jogoroto, Jombang</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Muhammad Isa<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.5858, 112.2778     </div>     </div>`)[0];
+                popup_c4dfc4d56994e2cfc56d367ea3a736b8.setContent(html_449578754b0a875cc33bda5767028d6b);
+            
+        
+
+        circle_marker_14a3f4386403933c0edd135bb41a3338.bindPopup(popup_c4dfc4d56994e2cfc56d367ea3a736b8)
+        ;
+
+        
+    
+    
+            circle_marker_14a3f4386403933c0edd135bb41a3338.bindTooltip(
+                `<div>
+                     Bandung - Jogoroto, Jombang [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_03db33c018a08734133471aaf9d37274 = L.circleMarker(
+                [-7.0583, 112.1931],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_9f17ec0cc73209c0ff866ea4ee7fbebf = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_ce343403d612b93f449fb830ee0eba7c = $(`<div id="html_ce343403d612b93f449fb830ee0eba7c" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Widang, Tuban</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Mochammad Zaenal Abidin<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.0583, 112.1931     </div>     </div>`)[0];
+                popup_9f17ec0cc73209c0ff866ea4ee7fbebf.setContent(html_ce343403d612b93f449fb830ee0eba7c);
+            
+        
+
+        circle_marker_03db33c018a08734133471aaf9d37274.bindPopup(popup_9f17ec0cc73209c0ff866ea4ee7fbebf)
+        ;
+
+        
+    
+    
+            circle_marker_03db33c018a08734133471aaf9d37274.bindTooltip(
+                `<div>
+                     Widang, Tuban [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_e6a69ecafaf9fe69f9aacaa345c6178c = L.circleMarker(
+                [-7.4478, 112.6189],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_1149a0139ace4a0f4a3a1c6bcba56caa = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_93d85eea8e53eadb303203d877b46f4c = $(`<div id="html_93d85eea8e53eadb303203d877b46f4c" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Sidoarjo, Wonoayu</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Alghifari Amar Mukhasyafah<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.4478, 112.6189     </div>     </div>`)[0];
+                popup_1149a0139ace4a0f4a3a1c6bcba56caa.setContent(html_93d85eea8e53eadb303203d877b46f4c);
+            
+        
+
+        circle_marker_e6a69ecafaf9fe69f9aacaa345c6178c.bindPopup(popup_1149a0139ace4a0f4a3a1c6bcba56caa)
+        ;
+
+        
+    
+    
+            circle_marker_e6a69ecafaf9fe69f9aacaa345c6178c.bindTooltip(
+                `<div>
+                     Sidoarjo, Wonoayu [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_3c1146774aa856c1c46c3048f49efa17 = L.circleMarker(
+                [-7.1333, 112.8667],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_cccf8b7adef47511cd4c35a1d8826a07 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_5b1c8e31cb17bcfb8f285e490b8d38d1 = $(`<div id="html_5b1c8e31cb17bcfb8f285e490b8d38d1" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Kwanyar, Bangkalan</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> M. Fatihul Umam<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.1333, 112.8667     </div>     </div>`)[0];
+                popup_cccf8b7adef47511cd4c35a1d8826a07.setContent(html_5b1c8e31cb17bcfb8f285e490b8d38d1);
+            
+        
+
+        circle_marker_3c1146774aa856c1c46c3048f49efa17.bindPopup(popup_cccf8b7adef47511cd4c35a1d8826a07)
+        ;
+
+        
+    
+    
+            circle_marker_3c1146774aa856c1c46c3048f49efa17.bindTooltip(
+                `<div>
+                     Kwanyar, Bangkalan [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_a73f728645a9f9f2ca06f03abb8faa2c = L.circleMarker(
+                [-7.2833, 112.2833],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_4c157412afa8fd91f5997115c8203b8a = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_e35b09f9619fbb70716ecee2bb335c7e = $(`<div id="html_e35b09f9619fbb70716ecee2bb335c7e" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">sambeng, lamongan</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> dedy Nurohim<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.2833, 112.2833     </div>     </div>`)[0];
+                popup_4c157412afa8fd91f5997115c8203b8a.setContent(html_e35b09f9619fbb70716ecee2bb335c7e);
+            
+        
+
+        circle_marker_a73f728645a9f9f2ca06f03abb8faa2c.bindPopup(popup_4c157412afa8fd91f5997115c8203b8a)
+        ;
+
+        
+    
+    
+            circle_marker_a73f728645a9f9f2ca06f03abb8faa2c.bindTooltip(
+                `<div>
+                     sambeng, lamongan [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_0a8b3174696b83462a10e6c3bf977bc8 = L.circleMarker(
+                [-7.05, 113.9167],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_f5a6d9c41fbfaa2ddb3c28766cd654df = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_d748a8182656d705446de5cef8cd82b1 = $(`<div id="html_d748a8182656d705446de5cef8cd82b1" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Kec. Kalianget, Sumenep</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Marshella Aulia Putri<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.0500, 113.9167     </div>     </div>`)[0];
+                popup_f5a6d9c41fbfaa2ddb3c28766cd654df.setContent(html_d748a8182656d705446de5cef8cd82b1);
+            
+        
+
+        circle_marker_0a8b3174696b83462a10e6c3bf977bc8.bindPopup(popup_f5a6d9c41fbfaa2ddb3c28766cd654df)
+        ;
+
+        
+    
+    
+            circle_marker_0a8b3174696b83462a10e6c3bf977bc8.bindTooltip(
+                `<div>
+                     Kec. Kalianget, Sumenep [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_700a61acb81b100ed1c994332d61c89e = L.circleMarker(
+                [-7.2222, 112.5583],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_daa8a54bb41e3001739b86a04d112ef5 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_49f540ba78b429240df71fe9683b90b9 = $(`<div id="html_49f540ba78b429240df71fe9683b90b9" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Cerme, Gresik</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Robbaniyah Umdatun Ni'mah<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.2222, 112.5583     </div>     </div>`)[0];
+                popup_daa8a54bb41e3001739b86a04d112ef5.setContent(html_49f540ba78b429240df71fe9683b90b9);
+            
+        
+
+        circle_marker_700a61acb81b100ed1c994332d61c89e.bindPopup(popup_daa8a54bb41e3001739b86a04d112ef5)
+        ;
+
+        
+    
+    
+            circle_marker_700a61acb81b100ed1c994332d61c89e.bindTooltip(
+                `<div>
+                     Cerme, Gresik [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_26421b8cae2a3af127dcd715eff82df1 = L.circleMarker(
+                [1.4789, 124.8489],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_89b90a93d29bd140e6f74995d6ef2eea = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_c01e8c1ddb2d242830304a5bb905b18a = $(`<div id="html_c01e8c1ddb2d242830304a5bb905b18a" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Tikala, Manado</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Rachelia Andini Tendean<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> 1.4789, 124.8489     </div>     </div>`)[0];
+                popup_89b90a93d29bd140e6f74995d6ef2eea.setContent(html_c01e8c1ddb2d242830304a5bb905b18a);
+            
+        
+
+        circle_marker_26421b8cae2a3af127dcd715eff82df1.bindPopup(popup_89b90a93d29bd140e6f74995d6ef2eea)
+        ;
+
+        
+    
+    
+            circle_marker_26421b8cae2a3af127dcd715eff82df1.bindTooltip(
+                `<div>
+                     Tikala, Manado [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_9a10227e4153dcdd1ba3369375985fd5 = L.circleMarker(
+                [-6.8917, 111.9167],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_9bc7bfd2555c957ee6634f962fe705e2 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_5e35b8e96cad75f114a263e7bb99511d = $(`<div id="html_5e35b8e96cad75f114a263e7bb99511d" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Kerek, Tuban</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Nurhabibatul Umah<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -6.8917, 111.9167     </div>     </div>`)[0];
+                popup_9bc7bfd2555c957ee6634f962fe705e2.setContent(html_5e35b8e96cad75f114a263e7bb99511d);
+            
+        
+
+        circle_marker_9a10227e4153dcdd1ba3369375985fd5.bindPopup(popup_9bc7bfd2555c957ee6634f962fe705e2)
+        ;
+
+        
+    
+    
+            circle_marker_9a10227e4153dcdd1ba3369375985fd5.bindTooltip(
+                `<div>
+                     Kerek, Tuban [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_f05c61e5397b9cc3f97d95faea55f46d = L.circleMarker(
+                [-7.1333, 112.8667],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_92dcfc07eddebfbde586bd6fc5bc0fb4 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_9156963a99106d597ded498571bdac7d = $(`<div id="html_9156963a99106d597ded498571bdac7d" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Kwanyar, Bangkalan</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Fahdimas akmal<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.1333, 112.8667     </div>     </div>`)[0];
+                popup_92dcfc07eddebfbde586bd6fc5bc0fb4.setContent(html_9156963a99106d597ded498571bdac7d);
+            
+        
+
+        circle_marker_f05c61e5397b9cc3f97d95faea55f46d.bindPopup(popup_92dcfc07eddebfbde586bd6fc5bc0fb4)
+        ;
+
+        
+    
+    
+            circle_marker_f05c61e5397b9cc3f97d95faea55f46d.bindTooltip(
+                `<div>
+                     Kwanyar, Bangkalan [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_96aadb0aad069b5f0934a1751a7b01d7 = L.circleMarker(
+                [-7.3, 112.7333],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_d8294f86b9a2c785358b42683259be15 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_892f588a2d05e67591e3a667a45dc454 = $(`<div id="html_892f588a2d05e67591e3a667a45dc454" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Wonokromo, Surabaya</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Muhammad izzul Millah Aqil<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.3000, 112.7333     </div>     </div>`)[0];
+                popup_d8294f86b9a2c785358b42683259be15.setContent(html_892f588a2d05e67591e3a667a45dc454);
+            
+        
+
+        circle_marker_96aadb0aad069b5f0934a1751a7b01d7.bindPopup(popup_d8294f86b9a2c785358b42683259be15)
+        ;
+
+        
+    
+    
+            circle_marker_96aadb0aad069b5f0934a1751a7b01d7.bindTooltip(
+                `<div>
+                     Wonokromo, Surabaya [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_dc036d13d80418e0a8de8049ea9e6b02 = L.circleMarker(
+                [-7.25, 112.7167],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_3b2b804fce4bd5c30769b1811a887f9f = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_7b081a5dd0c9f693898ce87dc8ee8c45 = $(`<div id="html_7b081a5dd0c9f693898ce87dc8ee8c45" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Asemrowo, Surabaya</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Riska Nana Nuril Fadilah<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.2500, 112.7167     </div>     </div>`)[0];
+                popup_3b2b804fce4bd5c30769b1811a887f9f.setContent(html_7b081a5dd0c9f693898ce87dc8ee8c45);
+            
+        
+
+        circle_marker_dc036d13d80418e0a8de8049ea9e6b02.bindPopup(popup_3b2b804fce4bd5c30769b1811a887f9f)
+        ;
+
+        
+    
+    
+            circle_marker_dc036d13d80418e0a8de8049ea9e6b02.bindTooltip(
+                `<div>
+                     Asemrowo, Surabaya [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_75473c673c4d874dd67ad400e88dd82f = L.circleMarker(
+                [-7.0167, 113.8667],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_ea31c8941dd55f141505ce2f8d79ddba = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_867ce60eea3eca6a1617f3a5dbf99fbf = $(`<div id="html_867ce60eea3eca6a1617f3a5dbf99fbf" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Kota Sumenep, Sumenep</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Alifah Sayyidaturrhohma<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.0167, 113.8667     </div>     </div>`)[0];
+                popup_ea31c8941dd55f141505ce2f8d79ddba.setContent(html_867ce60eea3eca6a1617f3a5dbf99fbf);
+            
+        
+
+        circle_marker_75473c673c4d874dd67ad400e88dd82f.bindPopup(popup_ea31c8941dd55f141505ce2f8d79ddba)
+        ;
+
+        
+    
+    
+            circle_marker_75473c673c4d874dd67ad400e88dd82f.bindTooltip(
+                `<div>
+                     Kota Sumenep, Sumenep [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_1a921ddb564f10b50030de9aa58c5c93 = L.circleMarker(
+                [-7.1, 112.7167],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_cfd7d1f9d811da3a8390adeafbd491b3 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_f088451cb746dfb6c53851728f2b8a7b = $(`<div id="html_f088451cb746dfb6c53851728f2b8a7b" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Socah, Bangkalan</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Lailatul Hasanah<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.1000, 112.7167     </div>     </div>`)[0];
+                popup_cfd7d1f9d811da3a8390adeafbd491b3.setContent(html_f088451cb746dfb6c53851728f2b8a7b);
+            
+        
+
+        circle_marker_1a921ddb564f10b50030de9aa58c5c93.bindPopup(popup_cfd7d1f9d811da3a8390adeafbd491b3)
+        ;
+
+        
+    
+    
+            circle_marker_1a921ddb564f10b50030de9aa58c5c93.bindTooltip(
+                `<div>
+                     Socah, Bangkalan [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_accaa43e1da1dbfcea651f6537ad0994 = L.circleMarker(
+                [-7.5333, 111.6667],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_01f43d2bd366ac0700c9a6ac848c9b71 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_620878479fd79d30990febf97e032f35 = $(`<div id="html_620878479fd79d30990febf97e032f35" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Pilangkenceng, Madiun</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Magdalena Jovita Hatuopar<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.5333, 111.6667     </div>     </div>`)[0];
+                popup_01f43d2bd366ac0700c9a6ac848c9b71.setContent(html_620878479fd79d30990febf97e032f35);
+            
+        
+
+        circle_marker_accaa43e1da1dbfcea651f6537ad0994.bindPopup(popup_01f43d2bd366ac0700c9a6ac848c9b71)
+        ;
+
+        
+    
+    
+            circle_marker_accaa43e1da1dbfcea651f6537ad0994.bindTooltip(
+                `<div>
+                     Pilangkenceng, Madiun [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_1cba2117de8979bad55f4fd581f9b768 = L.circleMarker(
+                [-7.0667, 112.8333],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_4a242854e4905c3db7c3eb1816be56f0 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_6971da1fb1dcced9718c51b20125ca20 = $(`<div id="html_6971da1fb1dcced9718c51b20125ca20" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Tanah Merah, Bangkalan</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Mohammad Aziz Huzaini<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.0667, 112.8333     </div>     </div>`)[0];
+                popup_4a242854e4905c3db7c3eb1816be56f0.setContent(html_6971da1fb1dcced9718c51b20125ca20);
+            
+        
+
+        circle_marker_1cba2117de8979bad55f4fd581f9b768.bindPopup(popup_4a242854e4905c3db7c3eb1816be56f0)
+        ;
+
+        
+    
+    
+            circle_marker_1cba2117de8979bad55f4fd581f9b768.bindTooltip(
+                `<div>
+                     Tanah Merah, Bangkalan [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_5af476557590ff29bd00151ad4a05749 = L.circleMarker(
+                [-7.1667, 112.7833],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_d602e0091d472627f65804c1fe84bed9 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_710f52cecd1433bfb2f923d4273fc7df = $(`<div id="html_710f52cecd1433bfb2f923d4273fc7df" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Labang, Bangkalan</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Kurnia Maulinda Sari<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.1667, 112.7833     </div>     </div>`)[0];
+                popup_d602e0091d472627f65804c1fe84bed9.setContent(html_710f52cecd1433bfb2f923d4273fc7df);
+            
+        
+
+        circle_marker_5af476557590ff29bd00151ad4a05749.bindPopup(popup_d602e0091d472627f65804c1fe84bed9)
+        ;
+
+        
+    
+    
+            circle_marker_5af476557590ff29bd00151ad4a05749.bindTooltip(
+                `<div>
+                     Labang, Bangkalan [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_a45e2ae402206f82ff29c4957e23b38e = L.circleMarker(
+                [-7.3833, 111.2333],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_b7095465773f106c5673f330dc88edb9 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_7929d36d223b704412075e7baeefac32 = $(`<div id="html_7929d36d223b704412075e7baeefac32" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Widodaren, Ngawi</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Deo Candra Saputra<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.3833, 111.2333     </div>     </div>`)[0];
+                popup_b7095465773f106c5673f330dc88edb9.setContent(html_7929d36d223b704412075e7baeefac32);
+            
+        
+
+        circle_marker_a45e2ae402206f82ff29c4957e23b38e.bindPopup(popup_b7095465773f106c5673f330dc88edb9)
+        ;
+
+        
+    
+    
+            circle_marker_a45e2ae402206f82ff29c4957e23b38e.bindTooltip(
+                `<div>
+                     Widodaren, Ngawi [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_de0f03525f246eb817f67ea10afdaae1 = L.circleMarker(
+                [-7.0333, 112.75],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_dd8bd09b748be6755c80a7868b64554e = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_ff2ce1127b411a657df4bf9546ab228a = $(`<div id="html_ff2ce1127b411a657df4bf9546ab228a" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Bangkalan, Bangkalan</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Rifqi Fairurrafi<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.0333, 112.7500     </div>     </div>`)[0];
+                popup_dd8bd09b748be6755c80a7868b64554e.setContent(html_ff2ce1127b411a657df4bf9546ab228a);
+            
+        
+
+        circle_marker_de0f03525f246eb817f67ea10afdaae1.bindPopup(popup_dd8bd09b748be6755c80a7868b64554e)
+        ;
+
+        
+    
+    
+            circle_marker_de0f03525f246eb817f67ea10afdaae1.bindTooltip(
+                `<div>
+                     Bangkalan, Bangkalan [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_dd3deedab28689fba71171a3d6377007 = L.circleMarker(
+                [-6.9333, 106.9167],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_1861ff84704206ed7b266fcde0788271 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_0550cff03ad0bce8516272685b385a0d = $(`<div id="html_0550cff03ad0bce8516272685b385a0d" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Warudoyong, Kota Sukabumi</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Fathan Ruhul Alam<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -6.9333, 106.9167     </div>     </div>`)[0];
+                popup_1861ff84704206ed7b266fcde0788271.setContent(html_0550cff03ad0bce8516272685b385a0d);
+            
+        
+
+        circle_marker_dd3deedab28689fba71171a3d6377007.bindPopup(popup_1861ff84704206ed7b266fcde0788271)
+        ;
+
+        
+    
+    
+            circle_marker_dd3deedab28689fba71171a3d6377007.bindTooltip(
+                `<div>
+                     Warudoyong, Kota Sukabumi [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b0b68da9cd5824a009c9f0a783a88a75 = L.circleMarker(
+                [-7.1697, 112.7214],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_74d2d58888ef48dff2f358df5ef19dec = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_e258cd4b5c58693de3591dfc6b107941 = $(`<div id="html_e258cd4b5c58693de3591dfc6b107941" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Kamal, Bangkalan</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Laila Maghfiroh<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.1697, 112.7214     </div>     </div>`)[0];
+                popup_74d2d58888ef48dff2f358df5ef19dec.setContent(html_e258cd4b5c58693de3591dfc6b107941);
+            
+        
+
+        circle_marker_b0b68da9cd5824a009c9f0a783a88a75.bindPopup(popup_74d2d58888ef48dff2f358df5ef19dec)
+        ;
+
+        
+    
+    
+            circle_marker_b0b68da9cd5824a009c9f0a783a88a75.bindTooltip(
+                `<div>
+                     Kamal, Bangkalan [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_6d77d8984d955e17c3c3f18c4b734040 = L.circleMarker(
+                [-7.165, 112.718],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_0f49bf30b762e2bedd83838dc438e06b = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_007eaa4e321e7bdc7b0df75b316e71c1 = $(`<div id="html_007eaa4e321e7bdc7b0df75b316e71c1" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Banyuajuh kamal, Bangkalan</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Dewi Geizya<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.1650, 112.7180     </div>     </div>`)[0];
+                popup_0f49bf30b762e2bedd83838dc438e06b.setContent(html_007eaa4e321e7bdc7b0df75b316e71c1);
+            
+        
+
+        circle_marker_6d77d8984d955e17c3c3f18c4b734040.bindPopup(popup_0f49bf30b762e2bedd83838dc438e06b)
+        ;
+
+        
+    
+    
+            circle_marker_6d77d8984d955e17c3c3f18c4b734040.bindTooltip(
+                `<div>
+                     Banyuajuh kamal, Bangkalan [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_67c214590fd5849092ceeb349b2ff4f6 = L.circleMarker(
+                [-7.0, 112.5],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_b320afce3eaa0b1078e1943c8dbc2133 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_08509e7d59d80276f96683ce6161b8a2 = $(`<div id="html_08509e7d59d80276f96683ce6161b8a2" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Dukun, Gresik</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Fathul Aziz Saifuddin<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.0000, 112.5000     </div>     </div>`)[0];
+                popup_b320afce3eaa0b1078e1943c8dbc2133.setContent(html_08509e7d59d80276f96683ce6161b8a2);
+            
+        
+
+        circle_marker_67c214590fd5849092ceeb349b2ff4f6.bindPopup(popup_b320afce3eaa0b1078e1943c8dbc2133)
+        ;
+
+        
+    
+    
+            circle_marker_67c214590fd5849092ceeb349b2ff4f6.bindTooltip(
+                `<div>
+                     Dukun, Gresik [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_bb6b7668d30845cab146470eedd00f9f = L.circleMarker(
+                [-7.0333, 112.75],
+                {"bubblingMouseEvents": true, "color": "#2980b9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3498db", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2.5}
+            ).addTo(feature_group_9aa9101b9cb7b3be7277ed1f21c215b1);
+        
+    
+        var popup_2d9f0be327c2e3ee95453c1120428498 = L.popup({
+  "maxWidth": 260,
+});
+
+        
+            
+                var html_bd8cbcd5e3cfbc794db6f40f25058bd1 = $(`<div id="html_bd8cbcd5e3cfbc794db6f40f25058bd1" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; width: 230px;">         <h4 style="margin: 0 0 4px 0; color: #2c3e50;">Kecamatan Bangkalan,Bangkalan</h4>         <span style="background-color: #fef9e7; color: #d35400; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">METODE POLINOMIAL</span>         <hr style="margin: 5px 0 8px 0; border: 0; border-top: 1px solid #ccc;">         <b>Mahasiswa:</b> Moh Rafie Nazar J<br>         <b>Klaster:</b> <span style="color: #2980b9; font-weight: bold;">Klaster 0 (Beban Polusi Sedang / Standar)</span><br>         <b>Koordinat:</b> -7.0333, 112.7500     </div>     </div>`)[0];
+                popup_2d9f0be327c2e3ee95453c1120428498.setContent(html_bd8cbcd5e3cfbc794db6f40f25058bd1);
+            
+        
+
+        circle_marker_bb6b7668d30845cab146470eedd00f9f.bindPopup(popup_2d9f0be327c2e3ee95453c1120428498)
+        ;
+
+        
+    
+    
+            circle_marker_bb6b7668d30845cab146470eedd00f9f.bindTooltip(
+                `<div>
+                     Kecamatan Bangkalan,Bangkalan [Polinomial: Sedang]
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var layer_control_05347c972bcdc1418a609cabfb1f7026_layers = {
+                base_layers : {
+                    "\ud83d\uddfa\ufe0f Peta Jalan (OpenStreetMap)" : tile_layer_e626155f5bdb15ddbc82e97ba9f2d907,
+                    "\ud83d\udef0\ufe0f Peta Satelit (Esri World Imagery)" : tile_layer_9c53275d7e971995875985531686788a,
+                },
+                overlays :  {
+                    "\ud83d\udd35 Klaster Interpolasi Linier (74 Fitur)" : feature_group_49d1c5fb26fca1bcef44fe4bd2bf1c23,
+                    "\ud83d\udd36 Klaster Interpolasi Polinomial (74 Fitur)" : feature_group_9aa9101b9cb7b3be7277ed1f21c215b1,
+                },
+            };
+            let layer_control_05347c972bcdc1418a609cabfb1f7026 = L.control.layers(
+                layer_control_05347c972bcdc1418a609cabfb1f7026_layers.base_layers,
+                layer_control_05347c972bcdc1418a609cabfb1f7026_layers.overlays,
+                {
+  "position": "topright",
+  "collapsed": false,
+  "autoZIndex": true,
+}
+            ).addTo(map_7341c73db70dc7a79c73e922101067c2);
+
+        
+</script>
+</html>

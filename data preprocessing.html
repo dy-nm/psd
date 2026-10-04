@@ -1,0 +1,1044 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Pra-Pemrosesan Data (Data Preprocessing) &amp; Ekstraksi Fitur Deret Waktu Polutan Udara &#8212; WELCOME TO MY NOTEBOOK</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'data preprocessing';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/profil.png" class="logo__image only-light" alt="WELCOME TO MY NOTEBOOK - Home"/>
+    <script>document.write(`<img src="_static/profil.png" class="logo__image only-dark" alt="WELCOME TO MY NOTEBOOK - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    🌐 Selamat Datang di Web catatan saya
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Crawling_Polutan_Lamongan.html">Crawling &amp; Analisis Data Polutan Udara di Kabupaten Lamongan</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="Crawling_Polutan_sambeng.html">Crawling &amp; Analisis Data Polutan Udara di Kecamatan Sambeng, Kabupaten Lamongan</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="code_clustering_Code.html">Clustering Polutan Udara (NO2, CO, SO2)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Deskripsi_fitur_perhitungan_manual_no2.html">Deskripsi Fitur &amp; Perhitungan Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="penggabungan_3_polutan.html">Catatan Materi: Pra-Pemrosesan Deret Waktu 3 Polutan (NO2, SO2, CO), Komparasi 2 Metode Interpolasi (Linier vs Polinomial), dan Ekstraksi 204 Fitur TSFEL</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/dy-nm/psd" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/dy-nm/psd/issues/new?title=Issue%20on%20page%20%2Fdata preprocessing.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/data preprocessing.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Pra-Pemrosesan Data (Data Preprocessing) & Ekstraksi Fitur Deret Waktu Polutan Udara</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Pra-Pemrosesan Data (<em>Data Preprocessing</em>) &amp; Ekstraksi Fitur Deret Waktu Polutan Udara</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ringkasan-7-tahapan-pra-pemrosesan">Ringkasan 7 Tahapan Pra-Pemrosesan:</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#bagian-i-step-by-step-pra-pemrosesan-ekstraksi-fitur-studi-kasus-no2">BAGIAN I: STEP-BY-STEP PRA-PEMROSESAN &amp; EKSTRAKSI FITUR (STUDI KASUS NO2)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-1-pemuatan-data-pengurutan-kronologis-waktu-time-series-setup">Langkah 1: Pemuatan Data &amp; Pengurutan Kronologis Waktu (<em>Time Series Setup</em>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-2-sanitasi-tipe-data-numerik-type-casting-coercion">Langkah 2: Sanitasi Tipe Data Numerik (<em>Type Casting &amp; Coercion</em>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-3-deteksi-penanganan-pencilan-outliers-dengan-metode-iqr">Langkah 3: Deteksi &amp; Penanganan Pencilan (<em>Outliers</em>) dengan Metode IQR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-4-imputasi-nilai-hilang-menggunakan-interpolasi-waktu-time-based-interpolation">Langkah 4: Imputasi Nilai Hilang Menggunakan Interpolasi Waktu (<em>Time-based Interpolation</em>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-5-pembentukan-sinyal-1-dimensi-frekuensi-sampling-fs-1">Langkah 5: Pembentukan Sinyal 1-Dimensi &amp; Frekuensi Sampling (<code class="docutils literal notranslate"><span class="pre">fs</span> <span class="pre">=</span> <span class="pre">1</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-6-ekstraksi-68-fitur-tsfel-dinamis-robust">Langkah 6: Ekstraksi 68 Fitur TSFEL Dinamis &amp; Robust</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-7-ekspor-hasil-ekstraksi-fitur-ke-format-csv">Langkah 7: Ekspor Hasil Ekstraksi Fitur ke Format CSV</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#bagian-ii-implementasi-modular-untuk-polutan-co-dan-so2">BAGIAN II: IMPLEMENTASI MODULAR UNTUK POLUTAN CO DAN SO2</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eksekusi-polutan-co-karbon-monoksida">Eksekusi Polutan CO (Karbon Monoksida)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eksekusi-polutan-so2-sulfur-dioksida">Eksekusi Polutan SO2 (Sulfur Dioksida)</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#bagian-iii-kesimpulan-evaluasi-pra-pemrosesan-data">BAGIAN III: KESIMPULAN &amp; EVALUASI PRA-PEMROSESAN DATA</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="pra-pemrosesan-data-data-preprocessing-ekstraksi-fitur-deret-waktu-polutan-udara">
+<h1>Pra-Pemrosesan Data (<em>Data Preprocessing</em>) &amp; Ekstraksi Fitur Deret Waktu Polutan Udara<a class="headerlink" href="#pra-pemrosesan-data-data-preprocessing-ekstraksi-fitur-deret-waktu-polutan-udara" title="Link to this heading">#</a></h1>
+<p>Data konsentrasi polutan udara harian yang diperoleh dari observasi satelit (<strong>Sentinel-5P</strong>) pada hakikatnya merupakan data deret waktu mentah (<em>raw time series</em>). Dalam kondisi riil, data satelit ini sering kali memiliki kendala kualitas data:</p>
+<ol class="arabic simple">
+<li><p><strong>Nilai Hilang (<em>Missing Values</em>):</strong> Disebabkan oleh tutupan awan tebal (<em>cloud masking</em>), anomali sensor, atau kualitas piksel satelit yang berada di bawah ambang batas validitas (<code class="docutils literal notranslate"><span class="pre">qa_value</span> <span class="pre">&lt;</span> <span class="pre">0.5</span></code>).</p></li>
+<li><p><strong>Pencilan Ekstrem (<em>Outliers</em>):</strong> Lonjakan nilai konsentrasi yang tidak wajar akibat pantulan aerosol permukaan, anomali pantulan sinar matahari (<em>glint</em>), atau gangguan instrumen pengukur.</p></li>
+<li><p><strong>Format Tidak Standar / Nilai Kosong:</strong> Keberadaan string non-numerik yang dapat memicu <em>crash</em> saat komputasi numerik.</p></li>
+</ol>
+<p>Jika data mentah yang bermasalah langsung diumpankan ke algoritma ekstraksi fitur deret waktu (<strong>TSFEL</strong>), hasilnya akan sangat bias (<em>Garbage In, Garbage Out</em>), bahkan dapat memicu lonjakan nilai fitur hingga skala <span class="math notranslate nohighlight">\(10^8\)</span> yang merusak analisis lanjutan seperti PCA dan K-Means Clustering.</p>
+<p>Oleh karena itu, notebook ini membagi proses pra-pemrosesan data ke dalam <strong>7 tahapan terstruktur</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[1. Pemuatan &amp; Kronologi Datetime] ──► [2. Sanitasi Tipe Data Numerik] ──► [3. Filter Outlier (IQR)]
+                                                                                  │ (ubah ke NaN)
+                                                                                  ▼
+[6. Ekstraksi 68 Fitur TSFEL] ◄── [5. Pembentukan Sinyal 1D (fs=1)] ◄── [4. Interpolasi Waktu]
+             │
+             ▼
+[7. Ekspor CSV Fitur Siap Klastering]
+</pre></div>
+</div>
+<hr class="docutils" />
+<section id="ringkasan-7-tahapan-pra-pemrosesan">
+<h2>Ringkasan 7 Tahapan Pra-Pemrosesan:<a class="headerlink" href="#ringkasan-7-tahapan-pra-pemrosesan" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>No</p></th>
+<th class="head text-left"><p>Tahapan</p></th>
+<th class="head text-left"><p>Fungsi / Metode Utama</p></th>
+<th class="head text-left"><p>Tujuan &amp; Manfaat</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>1</strong></p></td>
+<td class="text-left"><p>Pemuatan &amp; Kronologi Waktu</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">pd.to_datetime()</span></code>, <code class="docutils literal notranslate"><span class="pre">sort_values('date')</span></code></p></td>
+<td class="text-left"><p>Menjamin kontinuitas urutan kalender observasi harian.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>2</strong></p></td>
+<td class="text-left"><p>Sanitasi Numerik</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">pd.to_numeric(...,</span> <span class="pre">errors='coerce')</span></code></p></td>
+<td class="text-left"><p>Mengubah string/karakter kotor menjadi <code class="docutils literal notranslate"><span class="pre">NaN</span></code> secara aman.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>3</strong></p></td>
+<td class="text-left"><p>Deteksi Pencilan (Outlier)</p></td>
+<td class="text-left"><p>Batas Pagar IQR (<span class="math notranslate nohighlight">\(Q_1 - 1.5 \times \text{IQR}\)</span>, <span class="math notranslate nohighlight">\(Q_3 + 1.5 \times \text{IQR}\)</span>)</p></td>
+<td class="text-left"><p>Mengisolasi anomali ekstrem menjadi <code class="docutils literal notranslate"><span class="pre">NaN</span></code> tanpa memotong baris waktu.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>4</strong></p></td>
+<td class="text-left"><p>Imputasi Data Hilang</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">.interpolate(method='time').ffill().bfill()</span></code></p></td>
+<td class="text-left"><p>Mengisi kekosongan data dengan memperhitungkan jarak hari sesungguhnya.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>5</strong></p></td>
+<td class="text-left"><p>Persiapan Sinyal 1D</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">.astype(float).values</span></code>, <code class="docutils literal notranslate"><span class="pre">fs</span> <span class="pre">=</span> <span class="pre">1</span></code></p></td>
+<td class="text-left"><p>Membentuk larik NumPy 1-dimensi dengan frekuensi sampling 1 hari.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>6</strong></p></td>
+<td class="text-left"><p>Ekstraksi Fitur TSFEL</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">FEATURE_LIST</span></code> (68 fitur), <code class="docutils literal notranslate"><span class="pre">inspect.signature</span></code></p></td>
+<td class="text-left"><p>Mengekstrak representasi domain temporal, statistik, dan spektral secara dinamis.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>7</strong></p></td>
+<td class="text-left"><p>Ekspor Berkas Fitur</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">.to_csv(...,</span> <span class="pre">index=False)</span></code></p></td>
+<td class="text-left"><p>Menyimpan dataset fitur yang siap digabungkan untuk PCA &amp; K-Means.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section class="tex2jax_ignore mathjax_ignore" id="bagian-i-step-by-step-pra-pemrosesan-ekstraksi-fitur-studi-kasus-no2">
+<h1>BAGIAN I: STEP-BY-STEP PRA-PEMROSESAN &amp; EKSTRAKSI FITUR (STUDI KASUS NO2)<a class="headerlink" href="#bagian-i-step-by-step-pra-pemrosesan-ekstraksi-fitur-studi-kasus-no2" title="Link to this heading">#</a></h1>
+<p>Pada bagian ini, kita akan membedah setiap langkah secara bertahap pada variabel polutan <strong>NO2 (Nitrogen Dioksida)</strong> di wilayah Sambeng, Lamongan.</p>
+<hr class="docutils" />
+<section id="langkah-1-pemuatan-data-pengurutan-kronologis-waktu-time-series-setup">
+<h2>Langkah 1: Pemuatan Data &amp; Pengurutan Kronologis Waktu (<em>Time Series Setup</em>)<a class="headerlink" href="#langkah-1-pemuatan-data-pengurutan-kronologis-waktu-time-series-setup" title="Link to this heading">#</a></h2>
+<p><strong>Mengapa ini penting?</strong></p>
+<ul class="simple">
+<li><p>Data deret waktu (<em>time series</em>) sangat bergantung pada urutan kronologis. Jika data tidak terurut berdasarkan tanggal, algoritma autokorelasi, tren, dan frekuensi spektral akan salah membaca urutan sinyal.</p></li>
+<li><p>Fungsi <code class="docutils literal notranslate"><span class="pre">pd.to_datetime()</span></code> mengonversi string tanggal (misal <code class="docutils literal notranslate"><span class="pre">'2025-08-25'</span></code>) menjadi objek representasi waktu standar <code class="docutils literal notranslate"><span class="pre">Timestamp</span></code>.</p></li>
+<li><p>Fungsi <code class="docutils literal notranslate"><span class="pre">sort_values('date').reset_index(drop=True)</span></code> memastikan data tersusun rapi dari hari pertama hingga hari terakhir observasi.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tsfel.feature_extraction.features</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tsfel_features</span>
+
+<span class="c1"># 1. Pemuatan dataset mentah deret waktu polutan Sambeng</span>
+<span class="n">file_path</span> <span class="o">=</span> <span class="s1">&#39;all_polutan_Sambeng_timeseries.csv&#39;</span>
+<span class="n">df_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+
+<span class="c1"># 2. Salin data dan konversi kolom tanggal menjadi objek Datetime</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df_raw</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">])</span>
+
+<span class="c1"># 3. Urutkan berdasarkan kronologi waktu menaik (ascending)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">target_pollutant</span> <span class="o">=</span> <span class="s1">&#39;NO2&#39;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dataset berhasil dimuat!&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Jumlah baris observasi : </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> hari&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Rentang tanggal        : </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> s.d. </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Variabel target        : </span><span class="si">{</span><span class="n">target_pollutant</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Lima baris pertama data:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="n">target_pollutant</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+</section>
+<section id="langkah-2-sanitasi-tipe-data-numerik-type-casting-coercion">
+<h2>Langkah 2: Sanitasi Tipe Data Numerik (<em>Type Casting &amp; Coercion</em>)<a class="headerlink" href="#langkah-2-sanitasi-tipe-data-numerik-type-casting-coercion" title="Link to this heading">#</a></h2>
+<p><strong>Permasalahan:</strong>
+Sering kali data mentah hasil crawling satelit mengandung nilai kosong bertipe teks (<code class="docutils literal notranslate"><span class="pre">&quot;None&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;null&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;N/A&quot;</span></code>, atau spasi kosong). Jika langsung diproses secara matematis, Python akan melempar error <code class="docutils literal notranslate"><span class="pre">TypeError:</span> <span class="pre">could</span> <span class="pre">not</span> <span class="pre">convert</span> <span class="pre">string</span> <span class="pre">to</span> <span class="pre">float</span></code>.</p>
+<p><strong>Solusi:</strong>
+Fungsi <code class="docutils literal notranslate"><span class="pre">pd.to_numeric(df[target_pollutant],</span> <span class="pre">errors='coerce')</span></code>:</p>
+<ul class="simple">
+<li><p>Parameter <code class="docutils literal notranslate"><span class="pre">errors='coerce'</span></code> akan memaksa seluruh karakter yang tidak bisa dikonversi menjadi angka desimal untuk diubah menjadi <code class="docutils literal notranslate"><span class="pre">NaN</span></code> (<em>Not a Number</em>).</p></li>
+<li><p>Dengan cara ini, proses komputasi tidak akan terhenti (<em>crash</em>), dan kita dapat menghitung persis berapa banyak nilai yang hilang (<em>missing values</em>) pada data observasi.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Paksa kolom target menjadi tipe data numerik (float)</span>
+<span class="c1"># Karakter string kotor otomatis dikonversi menjadi NaN</span>
+<span class="n">df</span><span class="p">[</span><span class="n">target_pollutant</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">target_pollutant</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
+
+<span class="c1"># Hitung jumlah nilai hilang sebelum proses pembersihan</span>
+<span class="n">n_missing_before</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">target_pollutant</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">total_rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">pct_missing</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_missing_before</span> <span class="o">/</span> <span class="n">total_rows</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Hasil Sanitasi Tipe Data Numerik:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Total baris observasi          : </span><span class="si">{</span><span class="n">total_rows</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Nilai NaN / hilang awal        : </span><span class="si">{</span><span class="n">n_missing_before</span><span class="si">}</span><span class="s2"> baris (</span><span class="si">{</span><span class="n">pct_missing</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Nilai valid awal               : </span><span class="si">{</span><span class="n">total_rows</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">n_missing_before</span><span class="si">}</span><span class="s2"> baris&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+</section>
+<section id="langkah-3-deteksi-penanganan-pencilan-outliers-dengan-metode-iqr">
+<h2>Langkah 3: Deteksi &amp; Penanganan Pencilan (<em>Outliers</em>) dengan Metode IQR<a class="headerlink" href="#langkah-3-deteksi-penanganan-pencilan-outliers-dengan-metode-iqr" title="Link to this heading">#</a></h2>
+<p><strong>Konsep Statistik IQR (<em>Interquartile Range</em>):</strong>
+Pencilan atau nilai ekstrem dapat merusak komputasi statistik (seperti rata-rata, variansi, skewness, kurtosis, dan energi spektral). Untuk mendeteksinya, kita menggunakan metode non-parametrik yang tangguh terhadap distribusi data miring:</p>
+<ol class="arabic simple">
+<li><p><strong>Kuartil 1 (<span class="math notranslate nohighlight">\(Q_1\)</span>):</strong> Titik persentil ke-25 dari data.</p></li>
+<li><p><strong>Kuartil 3 (<span class="math notranslate nohighlight">\(Q_3\)</span>):</strong> Titik persentil ke-75 dari data.</p></li>
+<li><p><strong>Rentang Interkuartil (IQR):</strong>
+$<span class="math notranslate nohighlight">\(\text{IQR} = Q_3 - Q_1\)</span>$</p></li>
+<li><p><strong>Batas Bawah Pagar (<em>Lower Bound</em>):</strong>
+$<span class="math notranslate nohighlight">\(\text{Batas Bawah} = Q_1 - 1.5 \times \text{IQR}\)</span>$</p></li>
+<li><p><strong>Batas Atas Pagar (<em>Upper Bound</em>):</strong>
+$<span class="math notranslate nohighlight">\(\text{Batas Atas} = Q_3 + 1.5 \times \text{IQR}\)</span>$</p></li>
+</ol>
+<p><strong>Mengapa Outlier Diubah Menjadi <code class="docutils literal notranslate"><span class="pre">NaN</span></code> dan BUKAN Dihapus Barisnya?</strong></p>
+<blockquote>
+<div><p><strong>Prinsip Penting Deret Waktu:</strong>
+Jika kita menghapus baris data yang mengandung pencilan (<code class="docutils literal notranslate"><span class="pre">df.dropna()</span></code>), urutan kalender harian akan terputus (misalnya: tanggal 10 langsung lompat ke tanggal 14).
+Hal ini merusak sifat periodisitas deret waktu (<em>time series continuity</em>) dan menyebabkan frekuensi sampling menjadi tidak beraturan.
+Oleh karena itu, nilai di luar rentang <span class="math notranslate nohighlight">\([ \text{Batas Bawah}, \text{Batas Atas} ]\)</span> <strong>diubah menjadi <code class="docutils literal notranslate"><span class="pre">NaN</span></code></strong> untuk kemudian ditambal secara kontinu pada tahap interpolasi.</p>
+</div></blockquote>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Hitung Kuartil 1, Kuartil 3, dan IQR</span>
+<span class="n">Q1</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">target_pollutant</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">Q3</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">target_pollutant</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">IQR</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">-</span> <span class="n">Q1</span>
+
+<span class="c1"># 2. Tentukan Batas Bawah dan Batas Atas toleransi</span>
+<span class="n">lower_bound</span> <span class="o">=</span> <span class="n">Q1</span> <span class="o">-</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR</span>
+<span class="n">upper_bound</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR</span>
+
+<span class="c1"># 3. Hitung berapa banyak titik outlier yang terdeteksi</span>
+<span class="n">outlier_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">target_pollutant</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lower_bound</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">target_pollutant</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">upper_bound</span><span class="p">)</span>
+<span class="n">n_outliers</span> <span class="o">=</span> <span class="n">outlier_mask</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Analisis Statistik Pencilan (IQR):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Q1 (Persentil 25)   : </span><span class="si">{</span><span class="n">Q1</span><span class="si">:</span><span class="s2">.8e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Q3 (Persentil 75)   : </span><span class="si">{</span><span class="n">Q3</span><span class="si">:</span><span class="s2">.8e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Nilai IQR           : </span><span class="si">{</span><span class="n">IQR</span><span class="si">:</span><span class="s2">.8e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Batas Bawah Pagar   : </span><span class="si">{</span><span class="n">lower_bound</span><span class="si">:</span><span class="s2">.8e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Batas Atas Pagar    : </span><span class="si">{</span><span class="n">upper_bound</span><span class="si">:</span><span class="s2">.8e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Jumlah Outlier      : </span><span class="si">{</span><span class="n">n_outliers</span><span class="si">}</span><span class="s2"> titik terdeteksi&quot;</span><span class="p">)</span>
+
+<span class="c1"># 4. Ganti nilai outlier menjadi NaN (tanpa membuang baris kalender)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">outlier_mask</span><span class="p">,</span> <span class="n">target_pollutant</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+<span class="n">total_nan_now</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">target_pollutant</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Total nilai NaN saat ini (Missing Awal + Outlier): </span><span class="si">{</span><span class="n">total_nan_now</span><span class="si">}</span><span class="s2"> baris&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+</section>
+<section id="langkah-4-imputasi-nilai-hilang-menggunakan-interpolasi-waktu-time-based-interpolation">
+<h2>Langkah 4: Imputasi Nilai Hilang Menggunakan Interpolasi Waktu (<em>Time-based Interpolation</em>)<a class="headerlink" href="#langkah-4-imputasi-nilai-hilang-menggunakan-interpolasi-waktu-time-based-interpolation" title="Link to this heading">#</a></h2>
+<p>Setelah nilai hilang awal dan titik-titik pencilan disatukan menjadi nilai <code class="docutils literal notranslate"><span class="pre">NaN</span></code>, langkah berikutnya adalah mengimputasi kekosongan tersebut agar deret waktu kembali utuh dan kontinu.</p>
+<p>Sintaks yang digunakan:
+$<span class="math notranslate nohighlight">\(\text{df\_clean} = \text{df.set\_index('date').interpolate(method='time').ffill().bfill()}\)</span>$</p>
+<p><strong>Bedah Komponen Kode:</strong></p>
+<ol class="arabic simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">set_index('date')</span></code>:</strong>
+Menjadikan kolom tanggal sebagai indeks DataFrame. Hal ini merupakan syarat wajib untuk menjalankan interpolasi berbasis waktu di pustaka Pandas.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">interpolate(method='time')</span></code>:</strong></p>
+<ul class="simple">
+<li><p>Berbeda dengan interpolasi linier biasa (<code class="docutils literal notranslate"><span class="pre">method='linear'</span></code>) yang memperlakukan jarak antar-baris selalu sama (1 unit), <code class="docutils literal notranslate"><span class="pre">method='time'</span></code> memperhitungkan selisih durasi tanggal yang sesungguhnya (misal jika ada selisih 1 hari vs 3 hari).</p></li>
+<li><p>Nilai estimasi dihitung secara linier proporsional terhadap jarak waktu antara titik valid sebelum dan sesudah kekosongan.</p></li>
+</ul>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">.ffill()</span></code> (<em>Forward Fill</em>) dan <code class="docutils literal notranslate"><span class="pre">.bfill()</span></code> (<em>Backward Fill</em>):</strong></p>
+<ul class="simple">
+<li><p><strong>Kelemahan Inheren Interpolasi Linier:</strong> Interpolasi hanya dapat bekerja jika titik <code class="docutils literal notranslate"><span class="pre">NaN</span></code> diapit oleh data valid di sebelah kiri dan kanan. Jika nilai <code class="docutils literal notranslate"><span class="pre">NaN</span></code> berada di ujung awal data (hari ke-1 belum ada data valid) atau di ujung akhir data, interpolasi tidak dapat memprediksi nilainya (<em>ekstrapolasi</em>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.bfill()</span></code> mengisi kekosongan di ujung awal dengan menarik nilai valid terdekat di depannya.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.ffill()</span></code> mengisi kekosongan di ujung akhir dengan meneruskan nilai valid terakhir yang diketahui.</p></li>
+<li><p>Kombinasi keduanya menjamin bahwa deret waktu menjadi <strong>100% lengkap tanpa ada satu pun nilai <code class="docutils literal notranslate"><span class="pre">NaN</span></code> yang tersisa (<em>gapless time series</em>)</strong>.</p></li>
+</ul>
+</li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Imputasi data hilang dengan interpolasi berbasis waktu + forward/backward fill</span>
+<span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span><span class="o">.</span><span class="n">bfill</span><span class="p">()</span>
+
+<span class="c1"># Verifikasi bahwa tidak ada lagi nilai NaN yang tersisa</span>
+<span class="n">n_missing_after</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">target_pollutant</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hasil Imputasi Interpolasi Waktu:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Nilai NaN sebelum interpolasi : </span><span class="si">{</span><span class="n">total_nan_now</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Nilai NaN setelah interpolasi : </span><span class="si">{</span><span class="n">n_missing_after</span><span class="si">}</span><span class="s2"> (100% Lengkap &amp; Kontinu)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Contoh 5 baris pertama data bersih setelah interpolasi:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[[</span><span class="n">target_pollutant</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+</section>
+<section id="langkah-5-pembentukan-sinyal-1-dimensi-frekuensi-sampling-fs-1">
+<h2>Langkah 5: Pembentukan Sinyal 1-Dimensi &amp; Frekuensi Sampling (<code class="docutils literal notranslate"><span class="pre">fs</span> <span class="pre">=</span> <span class="pre">1</span></code>)<a class="headerlink" href="#langkah-5-pembentukan-sinyal-1-dimensi-frekuensi-sampling-fs-1" title="Link to this heading">#</a></h2>
+<p><strong>Persyaratan Pustaka TSFEL:</strong>
+Pustaka <em>Time Series Feature Extraction Library</em> (TSFEL) dirancang untuk memproses sinyal deret waktu dalam bentuk larik 1-dimensi (<em>NumPy 1D array</em>) dengan elemen bertipe numerik desimal (<em>float</em>).</p>
+<p><strong>Arti Parameter Frekuensi Sampling (<code class="docutils literal notranslate"><span class="pre">fs</span> <span class="pre">=</span> <span class="pre">1</span></code>):</strong></p>
+<ul class="simple">
+<li><p>Frekuensi sampling (<span class="math notranslate nohighlight">\(f_s\)</span>) menyatakan banyaknya sampel pengamatan per satuan waktu.</p></li>
+<li><p>Karena data konsentrasi polutan satelit ini diobservasi dengan resolusi <strong>harian (1 observasi per hari)</strong>, maka kita tetapkan:
+$<span class="math notranslate nohighlight">\(f_s = 1 \text{ sampel/hari}\)</span>$</p></li>
+<li><p>Nilai <span class="math notranslate nohighlight">\(f_s\)</span> ini menjadi referensi fundamental untuk komputasi fitur berbasis frekuensi dan domain waktu, seperti <em>fundamental frequency</em>, <em>spectral centroid</em>, <em>power bandwidth</em>, dan <em>spectral roll-off</em>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tetapkan frekuensi sampling (1 sampel per hari)</span>
+<span class="n">fs</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c1"># Konversi kolom polutan bersih menjadi array 1D NumPy berjenis float</span>
+<span class="n">signal_1d</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">target_pollutant</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Spesifikasi Sinyal Deret Waktu:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Tipe data array    : </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">signal_1d</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Tipe elemen data   : </span><span class="si">{</span><span class="n">signal_1d</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Dimensi sinyal     : </span><span class="si">{</span><span class="n">signal_1d</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> (Panjang </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">signal_1d</span><span class="p">)</span><span class="si">}</span><span class="s2"> hari)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Frekuensi sampling : fs = </span><span class="si">{</span><span class="n">fs</span><span class="si">}</span><span class="s2"> Hz/hari&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Nilai minimum      : </span><span class="si">{</span><span class="n">signal_1d</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.8e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Nilai maksimum     : </span><span class="si">{</span><span class="n">signal_1d</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.8e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Nilai rata-rata    : </span><span class="si">{</span><span class="n">signal_1d</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.8e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+</section>
+<section id="langkah-6-ekstraksi-68-fitur-tsfel-dinamis-robust">
+<h2>Langkah 6: Ekstraksi 68 Fitur TSFEL Dinamis &amp; Robust<a class="headerlink" href="#langkah-6-ekstraksi-68-fitur-tsfel-dinamis-robust" title="Link to this heading">#</a></h2>
+<p><strong>Mengapa Diperlukan Mekanisme Ekstraksi Khusus?</strong>
+Secara <em>default</em>, modul fitur TSFEL memiliki karakteristik teknis sebagai berikut:</p>
+<ol class="arabic simple">
+<li><p><strong>Perbedaan Tanda Tangan Parameter Fungsi:</strong></p>
+<ul class="simple">
+<li><p>Sebagian fungsi (seperti <code class="docutils literal notranslate"><span class="pre">calc_mean</span></code>, <code class="docutils literal notranslate"><span class="pre">calc_std</span></code>, <code class="docutils literal notranslate"><span class="pre">skewness</span></code>) hanya menerima masukan berupa sinyal <code class="docutils literal notranslate"><span class="pre">fn(signal)</span></code>.</p></li>
+<li><p>Sebagian fungsi lainnya (seperti <code class="docutils literal notranslate"><span class="pre">spectral_centroid</span></code>, <code class="docutils literal notranslate"><span class="pre">fundamental_frequency</span></code>, <code class="docutils literal notranslate"><span class="pre">power_bandwidth</span></code>) mewajibkan masukan frekuensi sampling <code class="docutils literal notranslate"><span class="pre">fn(signal,</span> <span class="pre">fs)</span></code>.</p></li>
+<li><p>Jika kita mengirim <code class="docutils literal notranslate"><span class="pre">fs</span></code> ke fungsi yang tidak membutuhkannya, Python akan melempar <code class="docutils literal notranslate"><span class="pre">TypeError:</span> <span class="pre">fn()</span> <span class="pre">got</span> <span class="pre">an</span> <span class="pre">unexpected</span> <span class="pre">keyword</span> <span class="pre">argument</span> <span class="pre">'fs'</span></code>.</p></li>
+<li><p><strong>Solusi:</strong> Kita memanfaatkan modul bawaan Python <code class="docutils literal notranslate"><span class="pre">inspect.signature(fn).parameters</span></code> untuk memeriksa apakah fungsi tersebut membutuhkan parameter <code class="docutils literal notranslate"><span class="pre">fs</span></code> secara otomatis sebelum dipanggil.</p></li>
+</ul>
+</li>
+<li><p><strong>Perbedaan Format Nilai Keluaran (<em>Scalar Standardization</em>):</strong></p>
+<ul class="simple">
+<li><p>Sebagian fungsi TSFEL mengembalikan nilai skalar tunggal (<code class="docutils literal notranslate"><span class="pre">float</span></code>), namun fungsi lain (seperti <code class="docutils literal notranslate"><span class="pre">wavelet</span></code>, <code class="docutils literal notranslate"><span class="pre">mfcc</span></code>, atau <code class="docutils literal notranslate"><span class="pre">ecdf</span></code>) dapat mengembalikan kamus (<em>dictionary</em> <code class="docutils literal notranslate"><span class="pre">{&quot;values&quot;:</span> <span class="pre">...}</span></code>) atau larik matriks (<em>array/list</em>).</p></li>
+<li><p><strong>Solusi:</strong> Fungsi pembantu <code class="docutils literal notranslate"><span class="pre">to_scalar(result)</span></code> mengonversi setiap keluaran multi-nilai menjadi nilai skalar rerata representatif (<code class="docutils literal notranslate"><span class="pre">np.nanmean</span></code>) agar siap disusun rapi ke dalam tabel baris-kolom (DataFrame 1 x 68).</p></li>
+</ul>
+</li>
+</ol>
+<p><strong>Cakupan 68 Fitur TSFEL:</strong>
+Fitur-fitur ini mencakup 3 domain utama deret waktu:</p>
+<ol class="arabic simple">
+<li><p><strong>Domain Statistik:</strong> Mean, Median, Min, Max, Variansi, Standar Deviasi, Skewness, Kurtosis, IQR, Mean Absolute Deviation.</p></li>
+<li><p><strong>Domain Temporal:</strong> Abs Energy, Peak-to-Peak Distance, Zero Crossing Rate, Positive/Negative Turning Points, Petrosian/Higuchi Fractal Dimension, Lempel-Ziv Complexity, Hurst Exponent.</p></li>
+<li><p><strong>Domain Spektral (Frekuensi):</strong> Spectral Centroid, Spectral Spread, Spectral Decrease, Spectral Entropy, Spectral Roll-off, Fundamental Frequency, Power Bandwidth, Wavelet Energy/Entropy.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Daftar 68 fitur TSFEL yang diekstrak</span>
+<span class="n">FEATURE_LIST</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;abs_energy auc autocorr average_power calc_centroid calc_max calc_mean</span>
+<span class="s2">calc_median calc_min calc_std calc_var dfa distance ecdf ecdf_percentile ecdf_percentile_count</span>
+<span class="s2">ecdf_slope entropy fundamental_frequency higuchi_fractal_dimension hist_mode human_range_energy</span>
+<span class="s2">hurst_exponent interq_range kurtosis lempel_ziv lpcc max_frequency max_power_spectrum</span>
+<span class="s2">maximum_fractal_length mean_abs_deviation mean_abs_diff mean_diff median_abs_deviation</span>
+<span class="s2">median_abs_diff median_diff median_frequency mfcc mse negative_turning neighbourhood_peaks</span>
+<span class="s2">petrosian_fractal_dimension pk_pk_distance positive_turning power_bandwidth rms skewness slope</span>
+<span class="s2">spectral_centroid spectral_decrease spectral_distance spectral_entropy spectral_kurtosis</span>
+<span class="s2">spectral_positive_turning spectral_roll_off spectral_roll_on spectral_skewness spectral_slope</span>
+<span class="s2">spectral_spread spectral_variation spectrogram_mean_coeff sum_abs_diff wavelet_abs_mean</span>
+<span class="s2">wavelet_energy wavelet_entropy wavelet_std wavelet_var zero_cross&quot;&quot;&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total fitur TSFEL yang akan diekstrak: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">FEATURE_LIST</span><span class="p">)</span><span class="si">}</span><span class="s2"> fitur&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">to_scalar</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Mengonversi berbagai tipe keluaran TSFEL (skalar, dict, list, numpy array)</span>
+<span class="sd">    menjadi nilai float skalar tunggal yang terstandar.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;values&quot;</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;values&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_one</span><span class="p">(</span><span class="n">fn_name</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Mengekstrak satu fitur TSFEL dengan inspeksi parameter dinamis (inspect.signature).</span>
+<span class="sd">    Jika fungsi membutuhkan &#39;fs&#39;, kirimkan (signal, fs). Jika tidak, kirimkan (signal).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">tsfel_features</span><span class="p">,</span> <span class="n">fn_name</span><span class="p">)</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span>
+    <span class="k">if</span> <span class="s2">&quot;fs&quot;</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">to_scalar</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+
+<span class="c1"># Ekstraksi seluruh 68 fitur untuk sinyal NO2</span>
+<span class="n">row</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">fn_name</span> <span class="ow">in</span> <span class="n">FEATURE_LIST</span><span class="p">:</span>
+    <span class="n">row</span><span class="p">[</span><span class="n">fn_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">extract_one</span><span class="p">(</span><span class="n">fn_name</span><span class="p">,</span> <span class="n">signal_1d</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+
+<span class="n">extracted_features_final</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">row</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Proses Ekstraksi Selesai!&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dimensi matriks fitur </span><span class="si">{</span><span class="n">target_pollutant</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">extracted_features_final</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> (1 baris x </span><span class="si">{</span><span class="n">extracted_features_final</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> kolom fitur)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Contoh 6 fitur pertama:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">extracted_features_final</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">6</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+</section>
+<section id="langkah-7-ekspor-hasil-ekstraksi-fitur-ke-format-csv">
+<h2>Langkah 7: Ekspor Hasil Ekstraksi Fitur ke Format CSV<a class="headerlink" href="#langkah-7-ekspor-hasil-ekstraksi-fitur-ke-format-csv" title="Link to this heading">#</a></h2>
+<p>Matriks fitur berukuran <span class="math notranslate nohighlight">\(1 \times 68\)</span> yang telah diekstrak kemudian diekspor ke dalam format CSV (<code class="docutils literal notranslate"><span class="pre">NO2_Sambeng_TSFEL.csv</span></code>).
+Berkas CSV ini merepresentasikan karakteristik dinamis deret waktu polutan NO2 wilayah Sambeng selama 1 tahun, yang nantinya akan digabungkan bersama data dari wilayah-wilayah lain di Jawa Timur untuk analisis Reduksi Dimensi (PCA) dan K-Means Clustering.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simpan hasil ekstraksi fitur ke berkas CSV</span>
+<span class="n">output_csv_no2</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">target_pollutant</span><span class="si">}</span><span class="s2">_Sambeng_TSFEL.csv&quot;</span>
+<span class="n">extracted_features_final</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_csv_no2</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Simpan juga dengan nama target Kerek untuk kompatibilitas kode turunan</span>
+<span class="n">extracted_features_final</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">target_pollutant</span><span class="si">}</span><span class="s2">_Kerek_TSFEL.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Berkas berhasil disimpan ke: &#39;</span><span class="si">{</span><span class="n">output_csv_no2</span><span class="si">}</span><span class="s2">&#39; dan &#39;</span><span class="si">{</span><span class="n">target_pollutant</span><span class="si">}</span><span class="s2">_Kerek_TSFEL.csv&#39;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section class="tex2jax_ignore mathjax_ignore" id="bagian-ii-implementasi-modular-untuk-polutan-co-dan-so2">
+<h1>BAGIAN II: IMPLEMENTASI MODULAR UNTUK POLUTAN CO DAN SO2<a class="headerlink" href="#bagian-ii-implementasi-modular-untuk-polutan-co-dan-so2" title="Link to this heading">#</a></h1>
+<p>Sesuai prinsip <em>Clean Code</em> dan <em>Separation of Concerns</em> (Modular Architecture), kita membungkus seluruh alur 7 tahapan pra-pemrosesan dan ekstraksi fitur di atas ke dalam satu fungsi terisolasi:
+<code class="docutils literal notranslate"><span class="pre">preprocess_and_extract_tsfel(df_input,</span> <span class="pre">pollutant_name,</span> <span class="pre">output_csv_prefix)</span></code>.</p>
+<p>Dengan fungsi ini:</p>
+<ol class="arabic simple">
+<li><p>Pemrosesan polutan lain (seperti <strong>CO</strong> dan <strong>SO2</strong>) dapat dijalankan secara konsisten tanpa pengulangan kode (<em>Don’t Repeat Yourself - DRY</em>).</p></li>
+<li><p>Setiap polutan memiliki isolasi variabel tersendiri sehingga meminimalisir risiko efek samping (<em>side-effects</em>).</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">preprocess_and_extract_tsfel</span><span class="p">(</span><span class="n">df_input</span><span class="p">,</span> <span class="n">pollutant_name</span><span class="p">,</span> <span class="n">output_csv_prefix</span><span class="o">=</span><span class="s2">&quot;Sambeng&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fungsi modular untuk menjalankan pipeline 7-tahap pra-pemrosesan data</span>
+<span class="sd">    dan ekstraksi 68 fitur TSFEL pada variabel polutan yang dipilih.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="mi">60</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MEMPROSES VARIABEL POLUTAN: </span><span class="si">{</span><span class="n">pollutant_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="mi">60</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># 1 &amp; 2. Konversi datetime dan paksa tipe data numerik</span>
+    <span class="n">df_p</span> <span class="o">=</span> <span class="n">df_input</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">df_p</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_p</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">])</span>
+    <span class="n">df_p</span> <span class="o">=</span> <span class="n">df_p</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df_p</span><span class="p">[</span><span class="n">pollutant_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df_p</span><span class="p">[</span><span class="n">pollutant_name</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
+    
+    <span class="n">n_missing</span> <span class="o">=</span> <span class="n">df_p</span><span class="p">[</span><span class="n">pollutant_name</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;1. Missing values awal           : </span><span class="si">{</span><span class="n">n_missing</span><span class="si">}</span><span class="s2"> baris&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># 3. Deteksi pencilan IQR &amp; ganti menjadi NaN</span>
+    <span class="n">q1</span> <span class="o">=</span> <span class="n">df_p</span><span class="p">[</span><span class="n">pollutant_name</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+    <span class="n">q3</span> <span class="o">=</span> <span class="n">df_p</span><span class="p">[</span><span class="n">pollutant_name</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+    <span class="n">iqr</span> <span class="o">=</span> <span class="n">q3</span> <span class="o">-</span> <span class="n">q1</span>
+    <span class="n">lower</span> <span class="o">=</span> <span class="n">q1</span> <span class="o">-</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">iqr</span>
+    <span class="n">upper</span> <span class="o">=</span> <span class="n">q3</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">iqr</span>
+    
+    <span class="n">outlier_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_p</span><span class="p">[</span><span class="n">pollutant_name</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lower</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df_p</span><span class="p">[</span><span class="n">pollutant_name</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">upper</span><span class="p">)</span>
+    <span class="n">n_outliers</span> <span class="o">=</span> <span class="n">outlier_mask</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;2. Pencilan IQR terdeteksi       : </span><span class="si">{</span><span class="n">n_outliers</span><span class="si">}</span><span class="s2"> baris (diganti -&gt; NaN)&quot;</span><span class="p">)</span>
+    <span class="n">df_p</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">outlier_mask</span><span class="p">,</span> <span class="n">pollutant_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    
+    <span class="c1"># 4. Interpolasi berbasis waktu + ffill + bfill</span>
+    <span class="n">df_clean_p</span> <span class="o">=</span> <span class="n">df_p</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span><span class="o">.</span><span class="n">bfill</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;3. Sisa NaN setelah interpolasi  : </span><span class="si">{</span><span class="n">df_clean_p</span><span class="p">[</span><span class="n">pollutant_name</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2"> (Gapless)&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># 5. Konversi sinyal 1D</span>
+    <span class="n">sig_1d</span> <span class="o">=</span> <span class="n">df_clean_p</span><span class="p">[</span><span class="n">pollutant_name</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">fs_val</span> <span class="o">=</span> <span class="mi">1</span>
+    
+    <span class="c1"># 6. Ekstraksi 68 fitur TSFEL</span>
+    <span class="n">feat_row</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">FEATURE_LIST</span><span class="p">:</span>
+        <span class="n">feat_row</span><span class="p">[</span><span class="n">fn</span><span class="p">]</span> <span class="o">=</span> <span class="n">extract_one</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">sig_1d</span><span class="p">,</span> <span class="n">fs_val</span><span class="p">)</span>
+        
+    <span class="n">df_feat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">feat_row</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;4. Ekstraksi fitur TSFEL selesai : </span><span class="si">{</span><span class="n">df_feat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> fitur&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># 7. Ekspor CSV</span>
+    <span class="n">csv_sambeng</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pollutant_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">output_csv_prefix</span><span class="si">}</span><span class="s2">_TSFEL.csv&quot;</span>
+    <span class="n">csv_kerek</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pollutant_name</span><span class="si">}</span><span class="s2">_Kerek_TSFEL.csv&quot;</span>
+    <span class="n">df_feat</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">csv_sambeng</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">df_feat</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">csv_kerek</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;5. Disimpan ke file              : &#39;</span><span class="si">{</span><span class="n">csv_sambeng</span><span class="si">}</span><span class="s2">&#39; dan &#39;</span><span class="si">{</span><span class="n">csv_kerek</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">df_feat</span>
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<section id="eksekusi-polutan-co-karbon-monoksida">
+<h2>Eksekusi Polutan CO (Karbon Monoksida)<a class="headerlink" href="#eksekusi-polutan-co-karbon-monoksida" title="Link to this heading">#</a></h2>
+<p>Tahapan pra-pemrosesan (sanitasi, eliminasi pencilan dengan IQR, interpolasi waktu, dan ekstraksi 68 fitur TSFEL) dijalankan untuk polutan <strong>CO</strong>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Eksekusi pipeline terpadu untuk polutan CO</span>
+<span class="n">df_feat_co</span> <span class="o">=</span> <span class="n">preprocess_and_extract_tsfel</span><span class="p">(</span><span class="n">df_raw</span><span class="p">,</span> <span class="s2">&quot;CO&quot;</span><span class="p">,</span> <span class="n">output_csv_prefix</span><span class="o">=</span><span class="s2">&quot;Sambeng&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Contoh 6 fitur pertama CO:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_feat_co</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">6</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+</section>
+<section id="eksekusi-polutan-so2-sulfur-dioksida">
+<h2>Eksekusi Polutan SO2 (Sulfur Dioksida)<a class="headerlink" href="#eksekusi-polutan-so2-sulfur-dioksida" title="Link to this heading">#</a></h2>
+<p>Tahapan pra-pemrosesan (sanitasi, eliminasi pencilan dengan IQR, interpolasi waktu, dan ekstraksi 68 fitur TSFEL) dijalankan untuk polutan <strong>SO2</strong>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Eksekusi pipeline terpadu untuk polutan SO2</span>
+<span class="n">df_feat_so2</span> <span class="o">=</span> <span class="n">preprocess_and_extract_tsfel</span><span class="p">(</span><span class="n">df_raw</span><span class="p">,</span> <span class="s2">&quot;SO2&quot;</span><span class="p">,</span> <span class="n">output_csv_prefix</span><span class="o">=</span><span class="s2">&quot;Sambeng&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Contoh 6 fitur pertama SO2:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_feat_so2</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">6</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section class="tex2jax_ignore mathjax_ignore" id="bagian-iii-kesimpulan-evaluasi-pra-pemrosesan-data">
+<h1>BAGIAN III: KESIMPULAN &amp; EVALUASI PRA-PEMROSESAN DATA<a class="headerlink" href="#bagian-iii-kesimpulan-evaluasi-pra-pemrosesan-data" title="Link to this heading">#</a></h1>
+<p>Melalui rangkaian 7 tahapan pra-pemrosesan data deret waktu yang telah dipraktikkan pada notebook ini:</p>
+<ol class="arabic simple">
+<li><p><strong>Integritas Kronologis Terjaga:</strong>
+Penggunaan <code class="docutils literal notranslate"><span class="pre">method='time'</span></code> pada proses interpolasi menjamin bahwa perhitungan nilai imputasi didasarkan pada interval waktu fisik antar-tanggal observasi satelit sesungguhnya, bukan sekadar urutan indeks numerik semata.</p></li>
+<li><p><strong>Kekebalan dari Efek Distorsi Outlier:</strong>
+Mengisolasi nilai pencilan ke dalam format <code class="docutils literal notranslate"><span class="pre">NaN</span></code> sebelum interpolasi terbukti ampuh mencegah terjadinya bias energi spektral (seperti kasus anomali <span class="math notranslate nohighlight">\(10^8\)</span> yang kerap merusak grafik <em>Scatter Plot</em> dan analisis klastering).</p></li>
+<li><p><strong>Data Utuh 100% (<em>Gapless Time Series</em>):</strong>
+Kombinasi <code class="docutils literal notranslate"><span class="pre">interpolate(method='time')</span></code>, <code class="docutils literal notranslate"><span class="pre">.ffill()</span></code>, dan <code class="docutils literal notranslate"><span class="pre">.bfill()</span></code> berhasil menambal tutupan awan hingga menghasilkan 366 titik sampel harian yang utuh tanpa celah.</p></li>
+<li><p><strong>Kesiapan Analisis Lanjutan (Machine Learning):</strong>
+Seluruh berkas CSV keluaran (<code class="docutils literal notranslate"><span class="pre">NO2_Sambeng_TSFEL.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">CO_Sambeng_TSFEL.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">SO2_Sambeng_TSFEL.csv</span></code>) telah memiliki 68 dimensi fitur standar yang terkalibrasi dan siap diintegrasikan ke tahap <strong>Reduksi Dimensi (PCA)</strong> dan <strong>K-Means Clustering</strong>.</p></li>
+</ol>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Pra-Pemrosesan Data (<em>Data Preprocessing</em>) &amp; Ekstraksi Fitur Deret Waktu Polutan Udara</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ringkasan-7-tahapan-pra-pemrosesan">Ringkasan 7 Tahapan Pra-Pemrosesan:</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#bagian-i-step-by-step-pra-pemrosesan-ekstraksi-fitur-studi-kasus-no2">BAGIAN I: STEP-BY-STEP PRA-PEMROSESAN &amp; EKSTRAKSI FITUR (STUDI KASUS NO2)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-1-pemuatan-data-pengurutan-kronologis-waktu-time-series-setup">Langkah 1: Pemuatan Data &amp; Pengurutan Kronologis Waktu (<em>Time Series Setup</em>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-2-sanitasi-tipe-data-numerik-type-casting-coercion">Langkah 2: Sanitasi Tipe Data Numerik (<em>Type Casting &amp; Coercion</em>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-3-deteksi-penanganan-pencilan-outliers-dengan-metode-iqr">Langkah 3: Deteksi &amp; Penanganan Pencilan (<em>Outliers</em>) dengan Metode IQR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-4-imputasi-nilai-hilang-menggunakan-interpolasi-waktu-time-based-interpolation">Langkah 4: Imputasi Nilai Hilang Menggunakan Interpolasi Waktu (<em>Time-based Interpolation</em>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-5-pembentukan-sinyal-1-dimensi-frekuensi-sampling-fs-1">Langkah 5: Pembentukan Sinyal 1-Dimensi &amp; Frekuensi Sampling (<code class="docutils literal notranslate"><span class="pre">fs</span> <span class="pre">=</span> <span class="pre">1</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-6-ekstraksi-68-fitur-tsfel-dinamis-robust">Langkah 6: Ekstraksi 68 Fitur TSFEL Dinamis &amp; Robust</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-7-ekspor-hasil-ekstraksi-fitur-ke-format-csv">Langkah 7: Ekspor Hasil Ekstraksi Fitur ke Format CSV</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#bagian-ii-implementasi-modular-untuk-polutan-co-dan-so2">BAGIAN II: IMPLEMENTASI MODULAR UNTUK POLUTAN CO DAN SO2</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eksekusi-polutan-co-karbon-monoksida">Eksekusi Polutan CO (Karbon Monoksida)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eksekusi-polutan-so2-sulfur-dioksida">Eksekusi Polutan SO2 (Sulfur Dioksida)</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#bagian-iii-kesimpulan-evaluasi-pra-pemrosesan-data">BAGIAN III: KESIMPULAN &amp; EVALUASI PRA-PEMROSESAN DATA</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dedy Nurohim
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
