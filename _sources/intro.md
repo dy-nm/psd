@@ -17,3 +17,8 @@ Catatan ini disusun selama menempuh mata kuliah Proyek Sains Data pada semester 
 
 ```{tableofcontents}
 ```
+
+
+## 🚀 Aplikasi Web GIS Interaktif (Streamlit Live)
+Aplikasi analisis tutupan lahan (LULC) Jawa Timur berbasis Sentinel-2A dan 4 Model ML dapat diakses langsung pada:
+👉 **[https://dy-nm-psd.streamlit.app/](https://dy-nm-psd.streamlit.app/)**
