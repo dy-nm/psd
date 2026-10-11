@@ -550,18 +550,27 @@ $<span class="math notranslate nohighlight">\(\text{NDMI} = \frac{\text{B08} - \
 </ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
 <span class="c1"># LANGKAH 1: INSTALASI PUSTAKA GEOSPASIAL &amp; MACHINE LEARNING DI GOOGLE COLAB</span>
 <span class="c1"># =============================================================================</span>
-<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">q</span> <span class="n">openeo</span> <span class="n">rasterio</span> <span class="n">geopandas</span> <span class="n">xgboost</span> <span class="n">scikit</span><span class="o">-</span><span class="n">learn</span> <span class="n">folium</span> <span class="n">matplotlib</span> <span class="n">seaborn</span> <span class="n">shapely</span>
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-q<span class="w"> </span>openeo<span class="w"> </span>rasterio<span class="w"> </span>geopandas<span class="w"> </span>xgboost<span class="w"> </span>scikit-learn<span class="w"> </span>folium<span class="w"> </span>matplotlib<span class="w"> </span>seaborn<span class="w"> </span>shapely
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✅ Pustaka geospasial dan machine learning berhasil dipasang di runtime Colab!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Pustaka geospasial dan machine learning berhasil dipasang di runtime Colab!
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;pip&#39; is not recognized as an internal or external command,
+operable program or batch file.
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
 <span class="c1"># LANGKAH 2: IMPORT PUSTAKA LENGKAP</span>
 <span class="c1"># =============================================================================</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -601,10 +610,15 @@ $<span class="math notranslate nohighlight">\(\text{NDMI} = \frac{\text{B08} - \
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Seluruh modul Python siap digunakan!
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
 <span class="c1"># LANGKAH 3: MEMUAT BERKAS BATAS WILAYAH JAWA TIMUR &amp; SAMPEL GROUND-TRUTH</span>
 <span class="c1"># =============================================================================</span>
 <span class="c1"># Jika Anda menjalankan di Google Colab dan berkas belum ada di direktori kerja,</span>
@@ -637,10 +651,16 @@ $<span class="math notranslate nohighlight">\(\text{NDMI} = \frac{\text{B08} - \
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Berkas &#39;batas_jawa_timur.geojson&#39; tersedia di direktori kerja.
+✅ Berkas &#39;sampel_lulc_jawa_timur.geojson&#39; tersedia di direktori kerja.
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
 <span class="c1"># LANGKAH 4: PREPARASI POLIGON BOUNDARY JAWA TIMUR (AOI)</span>
 <span class="c1"># =============================================================================</span>
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;batas_jawa_timur.geojson&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -670,10 +690,20 @@ $<span class="math notranslate nohighlight">\(\text{NDMI} = \frac{\text{B08} - \
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== BATAS KOORDINAT GEOGRAFIS JAWA TIMUR ===
+Bujur Barat  (West) : 110.8972° E
+Bujur Timur  (East) : 116.2702° E
+Lintang Selatan     : -8.7804° S
+Lintang Utara       : -5.0432° S
+Tipe Geometri       : MultiPolygon
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
 <span class="c1"># LANGKAH 5: OTENTIKASI KE COPERNICUS DATA SPACE ECOSYSTEM (CDSE) OPENEO</span>
 <span class="c1"># =============================================================================</span>
 <span class="c1"># PANDUAN LOGIN:</span>
@@ -694,10 +724,60 @@ $<span class="math notranslate nohighlight">\(\text{NDMI} = \frac{\text{B08} - \
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Menghubungkan ke CDSE openEO: https://openeo.dataspace.copernicus.eu ...
+</pre></div>
+</div>
+<div class="output text_html">Visit <a href="https://identity.dataspace.copernicus.eu/auth/realms/CDSE/device?user_code=AYTT-HSSC" title="Authenticate at https://identity.dataspace.copernicus.eu/auth/realms/CDSE/device?user_code=AYTT-HSSC" target="_blank" rel="noopener noreferrer">https://identity.dataspace.copernicus.eu/auth/realms/CDSE/device?user_code=AYTT-HSSC</a> <a href="#" onclick="navigator.clipboard.writeText('https://identity.dataspace.copernicus.eu/auth/realms/CDSE/device?user_code=AYTT-HSSC');return false;" title="Copy authentication URL to clipboard">&#128203;</a> to authenticate.</div><div class="output text_html"><code>[###################################--]</code> ⌛ Authorization pending</div><div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">line</span> <span class="mi">14</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Menghubungkan ke CDSE openEO: </span><span class="si">{</span><span class="n">CDSE_URL</span><span class="si">}</span><span class="s2"> ...&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">14</span>     <span class="n">connection</span> <span class="o">=</span> <span class="n">openeo</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">CDSE_URL</span><span class="p">)</span><span class="o">.</span><span class="n">authenticate_oidc</span><span class="p">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span>     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;🎉 Berhasil terhubung dan terotentikasi ke Copernicus CDSE!&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+
+<span class="nn">File c:\laragon\bin\python\python-3.10\lib\site-packages\openeo\rest\connection.py:697,</span> in <span class="ni">Connection.authenticate_oidc</span><span class="nt">(self, provider_id, client_id, client_secret, store_refresh_token, use_pkce, display, max_poll_time)</span>
+<span class="g g-Whitespace">    </span><span class="mi">693</span> <span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Trying device code flow.&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">694</span> <span class="n">authenticator</span> <span class="o">=</span> <span class="n">OidcDeviceAuthenticator</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">695</span>     <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">,</span> <span class="n">use_pkce</span><span class="o">=</span><span class="n">use_pkce</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="n">display</span><span class="p">,</span> <span class="n">max_poll_time</span><span class="o">=</span><span class="n">max_poll_time</span>
+<span class="g g-Whitespace">    </span><span class="mi">696</span> <span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">697</span> <span class="n">con</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_authenticate_oidc</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">698</span>     <span class="n">authenticator</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">699</span>     <span class="n">provider_id</span><span class="o">=</span><span class="n">provider_id</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">700</span>     <span class="n">store_refresh_token</span><span class="o">=</span><span class="n">store_refresh_token</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">701</span>     <span class="c1"># TODO: expose `auto_renew_from_refresh_token` directly as option instead of reusing `store_refresh_token` arg?</span>
+<span class="g g-Whitespace">    </span><span class="mi">702</span>     <span class="n">auto_renew_from_refresh_token</span><span class="o">=</span><span class="n">store_refresh_token</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">703</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">704</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Authenticated using device code flow.&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">705</span> <span class="k">return</span> <span class="n">con</span>
+
+<span class="nn">File c:\laragon\bin\python\python-3.10\lib\site-packages\openeo\rest\connection.py:413,</span> in <span class="ni">Connection._authenticate_oidc</span><span class="nt">(self, authenticator, provider_id, store_refresh_token, auto_renew_from_refresh_token, fallback_refresh_token, oidc_auth_renewer)</span>
+<span class="g g-Whitespace">    </span><span class="mi">409</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">410</span><span class="sd"> Authenticate through OIDC and set up bearer token (based on OIDC access_token) for further requests.</span>
+<span class="g g-Whitespace">    </span><span class="mi">411</span><span class="sd"> &quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">412</span> <span class="n">request_refresh_token</span> <span class="o">=</span> <span class="n">store_refresh_token</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">oidc_auth_renewer</span> <span class="ow">and</span> <span class="n">auto_renew_from_refresh_token</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">413</span> <span class="n">tokens</span> <span class="o">=</span> <span class="n">authenticator</span><span class="o">.</span><span class="n">get_tokens</span><span class="p">(</span><span class="n">request_refresh_token</span><span class="o">=</span><span class="n">request_refresh_token</span><span class="p">)</span>
+<span class="nn">    414 _log.info(&quot;Obtained tokens: {t}&quot;.format(t=[k for k, v</span> in <span class="ni">tokens._asdict().items</span><span class="nt">() if v]))</span>
+<span class="g g-Whitespace">    </span><span class="mi">416</span> <span class="n">refresh_token</span> <span class="o">=</span> <span class="n">tokens</span><span class="o">.</span><span class="n">refresh_token</span> <span class="ow">or</span> <span class="n">fallback_refresh_token</span>
+
+<span class="nn">File c:\laragon\bin\python\python-3.10\lib\site-packages\openeo\rest\auth\oidc.py:928,</span> in <span class="ni">OidcDeviceAuthenticator.get_tokens</span><span class="nt">(self, request_refresh_token)</span>
+<span class="g g-Whitespace">    </span><span class="mi">926</span> <span class="k">while</span> <span class="n">elapsed</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_poll_time</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">927</span>     <span class="n">poll_ui</span><span class="o">.</span><span class="n">show_progress</span><span class="p">()</span>
+<span class="ne">--&gt; </span><span class="mi">928</span>     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">sleep</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">930</span>     <span class="k">if</span> <span class="n">elapsed</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">next_poll</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">931</span>         <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">932</span>             <span class="sa">f</span><span class="s2">&quot;Doing </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">grant_type</span><span class="si">!r}</span><span class="s2"> token request </span><span class="si">{</span><span class="n">token_endpoint</span><span class="si">!r}</span><span class="s2"> with post data fields </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">post_data</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">!r}</span><span class="s2"> (client_id </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">client_id</span><span class="si">!r}</span><span class="s2">)&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">933</span>         <span class="p">)</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
 <span class="c1"># LANGKAH 6: MEMUAT DATA CUBE SENTINEL-2 L2A &amp; EKSPOR KOMPOSIT CITRA</span>
 <span class="c1"># =============================================================================</span>
 <span class="n">OUTPUT_TIF</span> <span class="o">=</span> <span class="s2">&quot;sentinel2_jawa_timur_composite.tif&quot;</span>
@@ -747,7 +827,7 @@ $<span class="math notranslate nohighlight">\(\text{NDMI} = \frac{\text{B08} - \
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
 <span class="c1"># LANGKAH 7: VERIFIKASI METADATA CITRA &amp; VISUALISASI TRUE-COLOR (RGB: B04, B03, B02)</span>
 <span class="c1"># =============================================================================</span>
 <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">OUTPUT_TIF</span><span class="p">)</span> <span class="k">as</span> <span class="n">src</span><span class="p">:</span>
@@ -781,7 +861,7 @@ $<span class="math notranslate nohighlight">\(\text{NDMI} = \frac{\text{B08} - \
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
 <span class="c1"># LANGKAH 8: MEMUAT DATASET GROUND TRUTH 6 KELAS TUTUPAN LAHAN</span>
 <span class="c1"># =============================================================================</span>
 <span class="n">gdf_samples</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s2">&quot;sampel_lulc_jawa_timur.geojson&quot;</span><span class="p">)</span>
@@ -810,7 +890,7 @@ $<span class="math notranslate nohighlight">\(\text{NDMI} = \frac{\text{B08} - \
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
 <span class="c1"># LANGKAH 9: VISUALISASI SEBARAN SAMPEL DI PROVINSI JAWA TIMUR</span>
 <span class="c1"># =============================================================================</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
@@ -841,7 +921,7 @@ $<span class="math notranslate nohighlight">\(\text{NDMI} = \frac{\text{B08} - \
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
 <span class="c1"># LANGKAH 10: EKSPOR DATASET SAMPEL KE SHAPEFILE ZIP &amp; FILE GAYA QGIS (.QML)</span>
 <span class="c1"># =============================================================================</span>
 <span class="n">temp_shp_dir</span> <span class="o">=</span> <span class="s2">&quot;temp_qgis_samples_colab&quot;</span>
@@ -900,7 +980,7 @@ $<span class="math notranslate nohighlight">\(\text{NDMI} = \frac{\text{B08} - \
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
 <span class="c1"># LANGKAH 11: EKSTRAKSI FITUR SPEKTRAL RIIL &amp; KALKULASI 6 INDEKS SPEKTRAL</span>
 <span class="c1"># =============================================================================</span>
 <span class="n">coords</span> <span class="o">=</span> <span class="p">[(</span><span class="n">geom</span><span class="o">.</span><span class="n">centroid</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">geom</span><span class="o">.</span><span class="n">centroid</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">geom</span> <span class="ow">in</span> <span class="n">gdf_samples</span><span class="o">.</span><span class="n">geometry</span><span class="p">]</span>
@@ -947,7 +1027,7 @@ $<span class="math notranslate nohighlight">\(\text{NDMI} = \frac{\text{B08} - \
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
 <span class="c1"># LANGKAH 12: EKSPERIMEN &amp; KOMPARASI MULTI-MODEL MACHINE LEARNING (5-FOLD CV)</span>
 <span class="c1"># =============================================================================</span>
 <span class="n">feature_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;B02_Blue&#39;</span><span class="p">,</span> <span class="s1">&#39;B03_Green&#39;</span><span class="p">,</span> <span class="s1">&#39;B04_Red&#39;</span><span class="p">,</span> <span class="s1">&#39;B08_NIR&#39;</span><span class="p">,</span> <span class="s1">&#39;B11_SWIR1&#39;</span><span class="p">,</span> <span class="s1">&#39;B12_SWIR2&#39;</span><span class="p">,</span>
@@ -1000,7 +1080,7 @@ $<span class="math notranslate nohighlight">\(\text{NDMI} = \frac{\text{B08} - \
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
 <span class="c1"># LANGKAH 13: EVALUASI MENDALAM MODEL TERBAIK &amp; CONFUSION MATRIX HEATMAP</span>
 <span class="c1"># =============================================================================</span>
 <span class="n">best_model_name</span> <span class="o">=</span> <span class="n">comparison_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;Model Machine Learning&#39;</span><span class="p">]</span>
@@ -1040,7 +1120,7 @@ $<span class="math notranslate nohighlight">\(\text{NDMI} = \frac{\text{B08} - \
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
 <span class="c1"># LANGKAH 14: ANALISIS KEPENTINGAN FITUR SPEKTRAL (FEATURE IMPORTANCE)</span>
 <span class="c1"># =============================================================================</span>
 <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">best_model</span><span class="p">,</span> <span class="s1">&#39;feature_importances_&#39;</span><span class="p">):</span>
@@ -1067,7 +1147,7 @@ $<span class="math notranslate nohighlight">\(\text{NDMI} = \frac{\text{B08} - \
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
 <span class="c1"># LANGKAH 15: PREDIKSI CITRA SATELIT MENYELURUH &amp; EKSPOR GEOTIFF KLASIFIKASI</span>
 <span class="c1"># =============================================================================</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Melatih model pada seluruh 300 sampel data...&quot;</span><span class="p">)</span>
@@ -1120,7 +1200,7 @@ $<span class="math notranslate nohighlight">\(\text{NDMI} = \frac{\text{B08} - \
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
 <span class="c1"># LANGKAH 16: PEMBUATAN PETA INTERAKTIF SIG FOLIUM MULTI-LAYER &amp; IMAGE OVERLAY</span>
 <span class="c1"># =============================================================================</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
@@ -1269,7 +1349,7 @@ $<span class="math notranslate nohighlight">\(\text{NDMI} = \frac{\text{B08} - \
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
 <span class="c1"># LANGKAH 17: PENGUNDUHAN OTOMATIS SELURUH ASET HASIL ANALISIS KE LAPTOP</span>
 <span class="c1"># =============================================================================</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">google.colab</span><span class="w"> </span><span class="kn">import</span> <span class="n">files</span>
